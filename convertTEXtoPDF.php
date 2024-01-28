@@ -1,10 +1,9 @@
 <?php
     $latexFilePath = "ICT_Inventory.tex";
-    $logFilePath = "compile_log.txt";
-    $pdfFilePath = compileLatex($latexFilePath, $logFilePath);
+    $pdfFilePath = compileLatex($latexFilePath);
     echo json_encode(['success' => true, 'filePath' => $pdfFilePath]);
 
-    function compileLatex($filePath, $logFilePath) {
+    function compileLatex($filePath) {
         try {
             // Run pdflatex command and capture output and errors
             $command = "pdflatex -interaction=nonstopmode $filePath";
