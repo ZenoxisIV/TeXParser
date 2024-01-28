@@ -1,0 +1,350 @@
+\documentclass[a4paper,10pt, total={10.95in, 8in}]{article} % only 10 (default), 11 and 12 pt are available
+
+% NECESSARY PACKAGES
+\usepackage[utf8]{inputenc} % to be able to use non-English characters
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{url} % to incorporate clickable links
+% \usepackage{cite} % takes care of citations
+\usepackage[final]{hyperref} % adds hyper links inside the generated PDF file
+
+% ADDITIONAL PACKAGES
+\usepackage{latexsym}      % Provides additional LaTeX symbols
+\usepackage{setspace}      % Allows for setting line spacing
+\usepackage{enumitem}      % Customization of enumerate and itemize environments
+\usepackage{makecell}      % Allows for multi-line cells in tables
+\usepackage{multicol}      % Allows for multiple columns in the document
+\usepackage{multirow}      % Allows for multiple rows in the document
+\usepackage{lastpage}      % Allows referencing the last page (e.g., for page numbering)
+\usepackage{mdframed}      % Allows frames with text inside	
+\usepackage{titlesec}
+\usepackage[bottom]{footmisc}
+
+% NECESSARY FOR INCREASED CUSTOMIZATION PACKAGES
+\usepackage{fancyhdr} % Allows header and footer customizations
+\usepackage{newfloat} % for defining new float in environments (e.g: figure and tables are floats)
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage{array} % provides 'programmable' tables (cells can be tweaked much more)
+\usepackage[export]{adjustbox} % to include boxed content other than figures (e.g: boxed equations)
+
+% TWEAKS FOR PACKAGES
+\usepackage[margin=2cm,a4paper]{geometry} % tweaks margins
+
+\titleformat{\section}
+  {\normalfont\fontsize{10}{15}\bfseries}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{10}{15}\bfseries}{\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{10}{15}\bfseries}{\thesubsubsection}{1em}{}
+
+
+\hypersetup{
+    colorlinks,
+    linkcolor={black},
+    citecolor={black},
+    urlcolor={black}
+}
+
+\newcommand\tab[1][0.30cm]{\hspace*{#1}}
+
+\pagestyle{fancy}
+\fancyhf{} % sets both header and footer to nothing
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[R]{%
+  \small\emph{Page \thepage\ of \pageref{LastPage}}\hspace{15pt}%
+}
+
+\begin{document}
+
+%-------------------------------------------------------------------------
+% This is the start of the document. Feel free to do anything!
+%-------------------------------------------------------------------------
+
+\begin{center}
+\textsc{\large \textbf{ANNEX A-5: EXISTING INFORMATION \& COMMUNICATIONS}}\\[0.15cm]
+\textsc{\large \textbf{TECHNOLOGY (ICT) INFRASTRUCTURE INVENTORY}}
+\end{center}
+\vspace{1em}
+
+\begin{quote}
+\begin{mdframed}
+{\fontfamily{cmss}\selectfont
+
+AGENCY NAME: (variable) University of the Philippines Diliman (variable) \\
+Respondent (IS Planner/CIO/MIS Head)\footnotemark[1]: (variable) Dr. Manuel C. Ramos, Jr. (variable) \\
+Position/D\'esignation: (variable) Director (variable) \\
+Division/Section/Unit: (variable) University Computer Center (variable) \\
+Telephone/Fax Number: (variable) 8981-8500 local 2050 (variable) \\
+Respondent’s Email Address: (variable) computer.center@upd.edu.ph (variable)
+
+}
+\end{mdframed}
+\end{quote}
+
+\textbf{\textit{Objectives:}}
+\begin{itemize}[left=3.5em]
+\item \tab To identify the hardware, software, network and other ICT resources being used to manage information by National Government Agencies (NGAs), Government-owned and Controlled Corporations (GOCCs), State Colleges and Universities (SUCs), and Constitutional and Financial Autonomous Group (CFAG);
+\item \tab To update existing benchmark and standards; and
+\item \tab To provide inputs to the MITHI Steering Committee in determining the ICT budget requirements of the agency.
+\end{itemize}
+
+
+\section{HARDWARE / OTHER ICT EQUIPMENT}
+\textbf{Fill-out Instruction:}
+\begin{itemize}[left=3.5em]
+\item \tab Please count all existing computing devices and peripherals owned or leased by your office that are functioning including those acquired through projects. In case of multi-year contract for leased units, then just write the number of units under the appropriate year when the leased units were acquired. Do not include in succeeding years unless another batch was leased. \textbf{Reference year is last year}. Kindly replace “last year” and preceding years by the actual year number. For example, if last year is 2013, then write 2013 under the 1st column. For last 2 years, write 2012 and for last 3 years, write 2011.
+\end{itemize}
+
+\footnotetext[1]{In case all three positions are occupied by different persons, then the IS Planner should have priority in answering this survey.}
+\footnotetext[2]{Count only the mobile phones owned or leased by your agency.}
+
+\subsection{Number of Computing Devices and Peripherals by Type and by Year Acquired}
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=6in}
+\begin{tabular}{|p{6.5cm}|lllllll|}
+\hline
+\multicolumn{1}{|c|}{\multirow{3}{*}{\textbf{TYPES}}}              & \multicolumn{7}{c|}{\textbf{TOTAL NUMBER OF FUNCTIONING UNITS BY YEAR ACQUIRED}}                                                                                                                                                                                                                        \\ \cline{2-8} 
+\multicolumn{1}{|c|}{}                                             & \multicolumn{2}{c|}{\textbf{$<$Last Year$>$}}                                  & \multicolumn{2}{c|}{\textbf{$<$Last 2 Years$>$}}                               & \multicolumn{2}{c|}{\textbf{$<$Last 3 Years$>$}}                               & \multicolumn{1}{c|}{\multirow{2}{*}{\textbf{More than 3 years}}} \\ \cline{2-7}
+\multicolumn{1}{|c|}{}                                             & \multicolumn{1}{c|}{\textbf{Owned}} & \multicolumn{1}{c|}{\textbf{Leased}} & \multicolumn{1}{c|}{\textbf{Owned}} & \multicolumn{1}{c|}{\textbf{Leased}} & \multicolumn{1}{c|}{\textbf{Owned}} & \multicolumn{1}{c|}{\textbf{Leased}} & \multicolumn{1}{c|}{}                                            \\ \hline
+Mainframe                                                          & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Servers                                                            & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Desktop PC                                                         & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Laptop / Notebook / Netbook PC                                     & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Mobile Phone\footnotemark[2] (incl. smart phones)                                  & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Tablet PC                                                          & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Multi-function printer (print, copy, etc.)                         & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Printer only                                                       & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Digital Camera (Include DSLR, if any)                              & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Wide-format Printer or Plotter                                     & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Small Scanner (ex. flatbed scanner)                                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Smart Card Reader                                                  & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Wide-format Scanner                                                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+External Hard Drive                                                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Generator Set                                                      & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+Others, please specify (continue on a separate sheet if necessary) & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{}               & \multicolumn{1}{l|}{}                &                                                                  \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{Number of Computing Devices and Peripherals by Usage}
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{|l|ccc|c|c|}
+\hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{TYPES}}} & \multicolumn{3}{c|}{\textbf{Operations}}                                                                       & \textbf{\begin{tabular}[c]{@{}c@{}}General Administration\\ and Support Services\\ Support to Operations\footnotemark[3]\end{tabular}} & \begin{tabular}[c]{@{}c@{}}\textbf{Projects} \\ \textit{(Not-agency funded)}\end{tabular} \\ \cline{2-6} 
+\multicolumn{1}{|c|}{}                                & \multicolumn{1}{c|}{\textbf{Employees}} & \multicolumn{1}{c|}{\textbf{Training}} & \textbf{Frontline Services\footnotemark[4]} & \textbf{}                                                                                                            & \textbf{}                                                                        \\ \hline
+Servers                                               & \multicolumn{1}{c|}{\textbf{}}          & \multicolumn{1}{c|}{\textbf{}}         & \textbf{}                   & \textbf{}                                                                                                            & \textbf{}                                                                        \\ \hline
+Desktop PC                                            & \multicolumn{1}{c|}{}                   & \multicolumn{1}{c|}{}                  &                             &                                                                                                                      &                                                                                  \\ \hline
+Laptop / Notebook / Netbook PC                        & \multicolumn{1}{c|}{}                   & \multicolumn{1}{c|}{}                  &                             &                                                                                                                      &                                                                                  \\ \hline
+Multi-function printer (print, copy, etc.)            & \multicolumn{1}{c|}{}                   & \multicolumn{1}{c|}{}                  &                             &                                                                                                                      &                                                                                  \\ \hline
+Printer only                                          & \multicolumn{1}{l|}{}                   & \multicolumn{1}{l|}{}                  & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{}                                                                                                & \multicolumn{1}{l|}{}                                                            \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{Number of Servers by Capacity and by Location}
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=4in}
+\begin{tabular}{|l|cc|}
+\hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{TOTAL CAPACITY OF HDD}}} & \multicolumn{2}{c|}{\textbf{LOCATION}}                       \\ \cline{2-3} 
+\multicolumn{1}{|c|}{}                                                & \multicolumn{1}{c|}{\textbf{IN-HOUSE}} & \textbf{CO-LOCATED} \\ \hline
+Above 4 TB                                                            & \multicolumn{1}{c|}{\textbf{}}         & \textbf{}           \\ \hline
+2 TB to 4 TB                                                          & \multicolumn{1}{c|}{}                  &                     \\ \hline
+Below 2 TB                                                            & \multicolumn{1}{c|}{}                  &                     \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\section{SOFTWARE, APPLICATION SYSTEMS, INFORMATION SYSTEMS AND DATABASES}
+
+
+
+\subsection{Operating Systems}
+\subsubsection{OS for Stand-alone PCs (desktops and laptops)}
+\footnotetext[3]{Those used in planning, coordination, internal training, monitoring and evaluation}
+\footnotetext[4]{Those used by external clients}
+\footnotetext[5]{Mark if yes. Examples are OEM license (software is already installed in the hardware) and Enterprise (Perpetual) license, which does not require renewal and is for life long. (source: \href{http://www.manageengine.com/products/service-desk/help/adminguide/configurations/software/software-license-type.html}{http://www.manageengine.com/products/service-desk/help/adminguide/configurations/software/software-license-type.html})}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=6.5in}
+\begin{tabular}{|p{6.5cm}|c|l|}
+\hline
+\multicolumn{1}{|c|}{OPERATING SYSTEM}                             & Lifetime Licence?\footnotemark[5] & \multicolumn{1}{c|}{If not, write below the year of expiration} \\ \hline
+Older than Windows XP                                              & \Large$\square$       & \multicolumn{1}{c|}{\textbf{}}                                  \\ \hline
+Windows XP                                                         & \Large$\boxtimes$       & \multicolumn{1}{c|}{\textbf{}}                                  \\ \hline
+Windows Vista                                                      & \Large$\boxtimes$       & \multicolumn{1}{c|}{}                                           \\ \hline
+Windows 7                                                          & \Large$\boxtimes$       & \multicolumn{1}{c|}{}                                           \\ \hline
+Windows 8 and up                                                   & \Large$\boxtimes$       &                                                                 \\ \hline
+Linux                                                              & \Large$\boxtimes$       &                                                                 \\ \hline
+Mac OS                                                             & \Large$\boxtimes$       &                                                                 \\ \hline
+Max OS X                                                           & \Large$\boxtimes$       &                                                                 \\ \hline
+Others, please specify (continue on a separate sheet if necessary) &        &                                                                 \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsubsection{OS for Workstations (desktops and laptops)}
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=6.5in}
+\begin{tabular}{|p{6.5cm}|c|l|}
+\hline
+\multicolumn{1}{|c|}{OPERATING SYSTEM}                             & Lifetime Licence? & \multicolumn{1}{c|}{If not, write below the year of expiration} \\ \hline
+Older than Windows XP                                              & \Large$\square$       & \multicolumn{1}{c|}{\textbf{}}                                  \\ \hline
+Windows XP                                                         & \Large$\boxtimes$       & \multicolumn{1}{c|}{\textbf{}}                                  \\ \hline
+Windows Vista                                                      & \Large$\boxtimes$       & \multicolumn{1}{c|}{}                                           \\ \hline
+Windows 7                                                          & \Large$\boxtimes$       & \multicolumn{1}{c|}{}                                           \\ \hline
+Windows 8 and up                                                   & \Large$\boxtimes$       &                                                                 \\ \hline
+Solaris                                                            & \Large$\boxtimes$       &                                                                 \\ \hline
+Linux                                                              & \Large$\boxtimes$       &                                                                 \\ \hline
+Mac OS                                                             & \Large$\boxtimes$       &                                                                 \\ \hline
+Others, please specify (continue on a separate sheet if necessary) &       &                                                                 \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsubsection{OS for Servers}
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=6.5in}
+\begin{tabular}{|p{6.5cm}|c|l|}
+\hline
+\multicolumn{1}{|c|}{OPERATING SYSTEM}                             & Lifetime Licence? & \multicolumn{1}{c|}{If not, write below the year of expiration} \\ \hline
+Windows NT                                                         & \Large$\square$       & \multicolumn{1}{c|}{\textbf{}}                                  \\ \hline
+Windows 2000                                                       & \Large$\boxtimes$       & \multicolumn{1}{c|}{\textbf{}}                                  \\ \hline
+Windows Server 2003                                                & \Large$\boxtimes$       & \multicolumn{1}{c|}{}                                           \\ \hline
+Windows Server 2008                                                & \Large$\boxtimes$       & \multicolumn{1}{c|}{}                                           \\ \hline
+Windows Server 2012                                                & \Large$\boxtimes$       &                                                                 \\ \hline
+Solaris                                                            & \Large$\boxtimes$       &                                                                 \\ \hline
+OpenSolaris                                                        & \Large$\boxtimes$       &                                                                 \\ \hline
+OS/2                                                               & \Large$\boxtimes$       &                                                                 \\ \hline
+Linux                                                              & \Large$\boxtimes$       &                                                                 \\ \hline
+Mac OS X Server                                                    & \Large$\boxtimes$       &                                                                 \\ \hline
+Others, please specify (continue on a separate sheet if necessary) &       &                                                                 \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{Office Automation Office}
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=6.5in}
+\begin{tabular}{|p{6.5cm}|c|l|}
+\hline
+\multicolumn{1}{|c|}{SOFTWARE / APPLICATION PACKAGE}                             & Lifetime Licence? & \multicolumn{1}{c|}{If not, write below the year of expiration} \\ \hline
+Older than MS Office 2003                                          & \Large$\square$       & \multicolumn{1}{c|}{\textbf{}}                                  \\ \hline
+MS Office 2003                                                     & \Large$\boxtimes$       & \multicolumn{1}{c|}{\textbf{}}                                  \\ \hline
+MS Office XP                                                       & \Large$\boxtimes$       & \multicolumn{1}{c|}{}                                           \\ \hline
+MS Office 2007                                                     & \Large$\boxtimes$       & \multicolumn{1}{c|}{}                                           \\ \hline
+MS Office 2010                                                     & \Large$\boxtimes$       &                                                                 \\ \hline
+MS Visio                                                           & \Large$\boxtimes$       &                                                                 \\ \hline
+MS Project                                                         & \Large$\boxtimes$       &                                                                 \\ \hline
+Open Project                                                       & \Large$\boxtimes$       &                                                                 \\ \hline
+Open Office                                                        & \Large$\boxtimes$       &                                                                 \\ \hline
+Libre Office                                                       & \Large$\boxtimes$       &                                                                 \\ \hline
+Others, please specify (continue on a separate sheet if necessary) &       &                                                                 \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begingroup
+\titleformat{\subsection}[runin]
+  {\normalfont\fontsize{10}{15}\bfseries}{\thesubsection}{1em}{}
+
+\subsection{Operational Oversight\protect\footnotemark[6] / Administrative Systems}
+(please refer to the examples\protect\footnotemark[7] below.)
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=6.5in}
+\begin{tabular}{|p{4cm}|c|c|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}NAME OF SYSTEM\\ (Please list down the \\ name/s of your \\ administrative system/s)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}Own Intellectual \\ Property,\\ Y or N?\footnotemark[8]\end{tabular} & \begin{tabular}[c]{@{}c@{}}DEVELOPMENT \\ PLATFORM \\ (ex. LAMP, .NET, \\ Java)\end{tabular} & \begin{tabular}[c]{@{}c@{}}WORKING \\ ENVIRONMENT\footnotemark[9] \\ (Use codes \\ below)\end{tabular} & \begin{tabular}[c]{@{}c@{}}MAINTENANCE \\ COST\end{tabular} & \begin{tabular}[c]{@{}c@{}}USE\footnotemark[10] \\ (Pls. write codes only; \\ refer below)\end{tabular} \\ \hline
+                                                                                                                                                   &                                                                                  &                                                                                                 & \textbf{}                                                                                 &                                                             &                                                                                        \\ \hline
+                                                                                                                                                   &                                                                                  &                                                                                                 & \textbf{}                                                                                 &                                                             &                                                                                        \\ \hline
+                                                                                                                                                   &                                                                                  &                                                                                                 &                                                                                           &                                                             &                                                                                        \\ \hline
+                                                                                                                                                   &                                                                                  &                                                                                                 &                                                                                           &                                                             &                                                                                        \\ \hline
+(please continue on a separate sheet if necessary)                                                                                                 &                                                                                  &                                                                                                 &                                                                                           &                                                             &                                                                                        \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\footnotetext[6]{Include only those currently being used by your office or agency.}
+\footnotetext[7]{Payroll System, 201 File Information and Promotion System, Vehicle Monitoring System, Document Tracking System, Attendance and Leave Monitoring System, Financial Management Information System, Inventory System, Records Management System}
+\footnotetext[8]{Write Y for Yes if your agency has intellectual property right to the system. Write N for No.}
+\footnotetext[9]{\underline{WORKING ENVIRONMENT}: \textbf{S} - Stand alone; \textbf{C} – Client-Server; \textbf{W} - Web-based}
+\footnotetext[10]{\underline{USE}: \textbf{1} – Public Financial Management; \textbf{2} – Citizen Frontline Services; \textbf{3} – Ease of Doing Business; \textbf{4} – Higher Education; \textbf{5} – Basic Education; \textbf{6} - Health; \textbf{7} – Justice, Peace and Order; \textbf{8} – Energy; \textbf{9} – Land and Other Geospatial Information; \textbf{10} – Disaster and Climate Change Management; \textbf{11} – Public Works and Transport; \textbf{12} – iGov and ICT Infrastructure; \textbf{13} – Transparency and Citizen’s Participation; \textbf{14} – Citizen Registry; \textbf{15} – Others, please specify.}
+
+\clearpage
+
+\subsection{Operational\protect\footnotemark[11] Strategic Information Systems}
+(please refer to the examples\protect\footnotemark[12] below.)
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=6.5in}
+\begin{tabular}{|p{4cm}|c|c|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}NAME OF SYSTEM\\ (Please list down the \\ name/s of your \\ administrative system/s)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}Own Intellectual \\ Property,\\ Y or N?\footnotemark[13]\end{tabular} & \begin{tabular}[c]{@{}c@{}}DEVELOPMENT \\ PLATFORM \\ (ex. LAMP, .NET, \\ Java)\end{tabular} & \begin{tabular}[c]{@{}c@{}}WORKING \\ ENVIRONMENT\footnotemark[14] \\ (Use codes \\ below)\end{tabular} & \begin{tabular}[c]{@{}c@{}}MAINTENANCE \\ COST\end{tabular} & \begin{tabular}[c]{@{}c@{}}USE\footnotemark[15] \\ (Pls. write codes only; \\ refer below)\end{tabular} \\ \hline
+                                                                                                                                                   &                                                                                  &                                                                                                 & \textbf{}                                                                                 &                                                             &                                                                                        \\ \hline
+                                                                                                                                                   &                                                                                  &                                                                                                 & \textbf{}                                                                                 &                                                             &                                                                                        \\ \hline
+                                                                                                                                                   &                                                                                  &                                                                                                 &                                                                                           &                                                             &                                                                                        \\ \hline
+                                                                                                                                                   &                                                                                  &                                                                                                 &                                                                                           &                                                             &                                                                                        \\ \hline
+(please continue on a separate sheet if necessary)                                                                                                 &                                                                                  &                                                                                                 &                                                                                           &                                                             &                                                                                        \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{Databases}
+(please include only existing databases)
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.5}
+\centering
+\begin{adjustbox}{width=6.5in}
+\begin{tabular}{|p{4cm}|c|c|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{NAME OF DATABASE}                                                         & \begin{tabular}[c]{@{}c@{}}Own Intellectual \\ Property,\\ Y or N?\end{tabular} & \begin{tabular}[c]{@{}c@{}}BRIEF \\ DESCRIPTION AND \\ KEY FIELDS\footnotemark[16]\end{tabular} & \begin{tabular}[c]{@{}c@{}}DATABASE \\ MANAGEMENT \\ SOFTWARE\footnotemark[17] \\ USED\end{tabular} & \begin{tabular}[c]{@{}c@{}}MAINTENANCE \\ COST\end{tabular} & \begin{tabular}[c]{@{}c@{}}USE \\ (Pls. write codes only; \\ refer below)\end{tabular} \\ \hline
+\multicolumn{1}{|c|}{CRS}                                                                      &                                                                                     &                                                                                & \textbf{}                                                                          &                                                             &                                                                                        \\ \hline
+\multicolumn{1}{|c|}{iLib}                                                                     &                                                                                     &                                                                                &                                                                                    &                                                             &                                                                                        \\ \hline
+\multicolumn{1}{|c|}{DormApp}                                                                   &                                                                                     &                                                                                &                                                                                    &                                                             &                                                                                        \\ \hline
+(please continue on a separate sheet if necessary) &                                                                                     &                                                                                &                                                                                    &                                                             &                                                                                        \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\footnotetext[11]{Include only those currently being used by your office or agency.}
+\footnotetext[12]{eCensus, Electronic Filing and Payment System, eTIN, Government e-Procurement System, Automated Customs Operations System, Electronic Customs Clearance Facility, Licensure Examination \& Registration Integrated System, Machine Readable Passports and Visas, Philippine Land Registration and Information System, Government Employees Management Information System, e-GSIS, eReal Property Tax System, Business Permit \& License System, iRegister, Hospital Operations and Management Information System}
+\footnotetext[13]{Write Y for Yes if your agency has intellectual property right to the database. Write N for No.}
+\footnotetext[14]{\underline{WORKING ENVIRONMENT}: \textbf{S} - Stand alone; \textbf{C} – Client-Server; \textbf{W} - Web-based}
+\footnotetext[15]{\underline{USE}: \textbf{1} – Public Financial Management; \textbf{2} – Citizen Frontline Services; \textbf{3} – Ease of Doing Business; \textbf{4} – Higher Education; \textbf{5} – Basic Education; \textbf{6} - Health; \textbf{7} – Justice, Peace and Order; \textbf{8} – Energy; \textbf{9} – Land and Other Geospatial Information; \textbf{10} – Disaster and Climate Change Management; \textbf{11} – Public Works and Transport; \textbf{12} – iGov and ICT Infrastructure; \textbf{13} – Transparency and Citizen’s Participation; \textbf{14} – Citizen Registry; \textbf{15} – Others, please specify.}
+\footnotetext[16]{Briefly describe the purpose or importance of the database.}
+\footnotetext[17]{Examples of DBMS are MS Excel, MS Access, MS SQL Server, MySQL, IBM’s DB2, Oracle SQL, Sybase SQL, Informix, FoxPro}
+\endgroup
+
+\clearpage
+
+\section{NETWORK}
+
+%-------------------------------------------------------------------------
+% NOTHING SHOULD BE EDITED BEYONG THIS POINT.
+% This is the end of the document.  Nothing else should go past this.
+%-------------------------------------------------------------------------
+
+
+
+\end{document}
