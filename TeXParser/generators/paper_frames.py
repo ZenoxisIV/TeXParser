@@ -1,4 +1,6 @@
-from utilities.fix import translation_table
+# This file contains the class for generating the frame environments for the paper
+
+from utilities.format_fix import translation_table
 
 class MDFrame:
     def __init__(self, content: list[str]) -> None:

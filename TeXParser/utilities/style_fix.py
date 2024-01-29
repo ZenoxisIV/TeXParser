@@ -1,3 +1,5 @@
+# This file contains functions that manages and generates some important styles for the TeX file.
+
 def generate_fancyheader() -> str:
     return r"""
 \pagestyle{fancy}

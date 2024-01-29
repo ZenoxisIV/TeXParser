@@ -1,4 +1,6 @@
-from utilities.fix import translation_table
+# This file contains the class for generating headers including titles and sections for the paper.
+
+from utilities.format_fix import translation_table
         
 class Title:
     def __init__(self, title: str) -> None:
@@ -39,3 +41,7 @@ class Title:
             build_titleformat += f"{{{section_type}}}{{1em}}{{}}\n"
 
         return build_titleformat
+    
+class Section:
+    def __init__(self) -> None:
+        pass

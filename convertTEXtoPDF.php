@@ -1,6 +1,12 @@
 <?php
     $latexFilePath = "ICT_Inventory.tex";
     $pdfFilePath = compileLatex($latexFilePath);
+
+    if (is_null($pdfFilePath)) {
+        echo json_encode(['success' => false]);
+        exit();
+    }
+
     echo json_encode(['success' => true, 'filePath' => $pdfFilePath]);
 
     function compileLatex($filePath) {
@@ -23,8 +29,7 @@
     
             return "$baseFileName.pdf";
         } catch (Exception $err) {
-            echo "Error compiling LaTeX file: {$err->getMessage()}\n";
-            return 0;
+            // echo "Error compiling LaTeX file: {$err->getMessage()}\n";
+            return null;
         }
     }
-?>
