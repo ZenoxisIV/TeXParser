@@ -1,13 +1,9 @@
 <?php
-    $latexFilePath = "ICT_Inventory.tex";
-    $pdfFilePath = compileLatex($latexFilePath);
+    shell_exec('python ./TeXParser/main.py');
+    $latexFilePath = "./ICT_Inventory.tex";
+    $output = compileLatex($latexFilePath);
 
-    if (is_null($pdfFilePath)) {
-        echo json_encode(['success' => false]);
-        exit();
-    }
-
-    echo json_encode(['success' => true, 'filePath' => $pdfFilePath]);
+    echo json_encode(['isSuccess' => true, 'filePath' => $output]);
 
     function compileLatex($filePath) {
         try {
@@ -29,7 +25,6 @@
     
             return "$baseFileName.pdf";
         } catch (Exception $err) {
-            // echo "Error compiling LaTeX file: {$err->getMessage()}\n";
-            return null;
+            return $err->getMessage();
         }
     }

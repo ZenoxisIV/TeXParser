@@ -18,19 +18,15 @@ require_once 'includes/header.php';
         $('#generatePdfButton').on('click', function() {
             // Make an AJAX request to generate the PDF
             $.ajax({
-                url: 'convertTEXtoPDF.php',
+                url: './convertTEXtoPDF.php',
                 type: 'POST',
                 dataType: 'json',
                 success: function(response) {
-                    if (response.success) {
-                        // Open the generated PDF in a new tab
-                        window.open(response.filePath, '_blank');
-                    } else {
-                        alert('Failed to generate PDF.');
-                    }
+                    // Open the generated PDF in a new tab
+                    window.open(response.filePath, '_blank');
                 },
                 error: function() {
-                    alert('Error in request.');
+                    alert('A fatal error occurred in executing dependencies.');
                 }
             });
         });

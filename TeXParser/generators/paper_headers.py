@@ -4,10 +4,10 @@ from utilities.format_fix import translation_table
         
 class Title:
     def __init__(self, title: str) -> None:
-        self.title = title
+        self._title = title
 
     def generate_title(self) -> str:
-        new_title = translation_table(self.title)
+        new_title = translation_table(self._title)
 
         if len(new_title) > 50:
             temp = r"\textsc{\large \textbf{"
@@ -15,13 +15,14 @@ class Title:
             temp += r"\textsc{\large \textbf{"
             temp += new_title[50:] + r"}}"
         else:
-            temp = r"\textsc{\large \textbf{" + self.title + r"}}"
+            temp = r"\textsc{\large \textbf{" + self._title + r"}}"
 
         build_title = [
             r"\begin{center}",
             temp,
             r"\end{center}",
             r"\vspace{1em}",
+            '',
         ]
 
         return '\n'.join(build_title)

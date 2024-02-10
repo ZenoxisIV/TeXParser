@@ -1,6 +1,6 @@
 # This file contains functions that manages and generates some important styles for the TeX file.
 
-def generate_fancyheader() -> str:
+def generate_fancyheader() -> str: # Note: Requires the fancyhdr package
     return r"""
 \pagestyle{fancy}
 \fancyhf{} % sets both header and footer to nothing
@@ -10,7 +10,7 @@ def generate_fancyheader() -> str:
 }
 """
 
-def generate_hypersetup(link_color: str, cite_color: str, url_color: str) -> str:
+def generate_hypersetup(link_color: str, cite_color: str, url_color: str) -> str: # Warning: Requires the xcolor package
     temp = [r"\hypersetup{",
             r"colorlinks,",
             f"linkcolor={{{link_color}}},",

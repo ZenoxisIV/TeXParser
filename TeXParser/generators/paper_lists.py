@@ -4,6 +4,6 @@ class Bullet:
     def __init__(self) -> None:
         pass
 
-class Ordered:
+class Ordered: # Note: Requires the enumitem package.
     def __init__(self) -> None:
         pass

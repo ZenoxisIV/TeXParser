@@ -69,13 +69,11 @@ if __name__ == "__main__":
         TeXStyle.generate_fancyheader(),
         NEWLINE,
         doc.begin_document(),
-        NEWLINE,
-        NEWLINE,
+        NEWLINE * 2,
         title.generate_title(),
         NEWLINE,
         mdframe.generate_mdframe(),
-        NEWLINE,
-        NEWLINE,
+        NEWLINE * 2,
         doc.end_document(),
     ]
 
