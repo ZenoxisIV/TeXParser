@@ -1,47 +1,32 @@
 # =============================================================================
-# TeXparser -- TeX/LaTeX Parser
-# This is the main file for the TeXparser project.
+# TeXParser -- TeX/LaTeX Parser
+# This is the main file for the TeXParser project.
 # =============================================================================
 
 if __name__ == "__main__":
     import generators.paper_structure as TeXDoc
     import generators.paper_headers as TeXHead
     import generators.paper_frames as TeXFrame
+    import generators.paper_lists as TeXList
     import utilities.style_fix as TeXStyle
-
-    PAPER = "a4paper"
-    FONT_SIZE = 10
-    PAPER_TYPE = "article"
-    MARGIN = "2cm"
-
-    TITLE = "ANNEX A-5: EXISTING INFORMATION & COMMUNICATIONS TECHNOLOGY (ICT) INFRASTRUCTURE INVENTORY"
-    AGENCY_NAME = "University of the Philippines Diliman"
-    RESPONDENT = "Dr. Manuel C. Ramos, Jr."
-    POSITION = "Director"
-    DIVISION = "University Computer Center"
-    TELEPHONE = "8981-8500 local 2050"
-    EMAIL = "computer.center@upd.edu.ph"
-
-    LINK_COLOR = "black"
-    CITE_COLOR = "black"
-    URL_COLOR = "black"
-
-    TEX_FILENAME = "ICT_Inventory.tex"
-
+    import config as cfg
+    
     NEWLINE = '\n'
 
-    doc = TeXDoc.Document(PAPER, FONT_SIZE, PAPER_TYPE)
-    title = TeXHead.Title(TITLE)
+    doc = TeXDoc.Document(cfg.PAPER, cfg.FONT_SIZE, cfg.PAPER_TYPE)
+    title = TeXHead.Title(cfg.TITLE)
     mdframe = TeXFrame.MDFrame(
         content=[
-            r"AGENCY NAME: " + f"{EMAIL}" + r"\\",
-            r"Respondent (IS Planner/CIO/MIS Head)\footnotemark[1]: " + f"{RESPONDENT}" + r"\\",
-            r"Position/D\'esignation: " + f"{POSITION}" + r"\\",
-            r"Division/Section/Unit: " + f"{DIVISION}" + r"\\",
-            r"Telephone/Fax Number: " + f"{TELEPHONE}" +  r"\\",
-            r"Respondent's Email Address: " + f"{EMAIL}" + r"\\",
+            r"AGENCY NAME: " + f"{cfg.EMAIL}" + r"\\",
+            r"Respondent (IS Planner/CIO/MIS Head)" + f"{doc.generate_footnote_mark('1')}: " + f"{cfg.RESPONDENT}" + r"\\",
+            r"Position/D\'esignation: " + f"{cfg.POSITION}" + r"\\",
+            r"Division/Section/Unit: " + f"{cfg.DIVISION}" + r"\\",
+            r"Telephone/Fax Number: " + f"{cfg.TELEPHONE}" +  r"\\",
+            r"Respondent's Email Address: " + f"{cfg.EMAIL}",
         ]
     )
+    objectives = TeXList.Bullet(cfg.OBJECTIVES)
+    fill_out_instructions = TeXList.Bullet(cfg.FILL_OUT_INSTRUCTIONS)
 
     build_TeX = [
         doc.generate_document(),
@@ -58,15 +43,18 @@ if __name__ == "__main__":
         ''.join([doc.import_package(pkg) for pkg in ["fancyhdr", "newfloat", "graphicx", "array"]]),
         doc.import_package("adjustbox", ["export"]),
         NEWLINE,
-        doc.import_package("geometry", [f"margin={MARGIN}", PAPER]),
+        doc.import_package("geometry", [f"margin={cfg.MARGIN}", cfg.PAPER]),
         NEWLINE,
-        title.generate_titleformat(FONT_SIZE),
+        title.generate_titleformat(cfg.FONT_SIZE),
         NEWLINE,
-        TeXStyle.generate_hypersetup(LINK_COLOR, CITE_COLOR, URL_COLOR),
+        TeXStyle.generate_hypersetup(cfg.LINK_COLOR, cfg.CITE_COLOR, cfg.URL_COLOR),
+        NEWLINE * 2,
+        TeXStyle.generate_newcommand_TAB(),
         NEWLINE,
-        TeXStyle.generate_newcommands(),
-        NEWLINE,
-        TeXStyle.generate_fancyheader(),
+        TeXStyle.generate_fancystyle(),
+        TeXStyle.clear_fancyhf(),
+        TeXStyle.set_headerrule(0),
+        TeXStyle.set_fancyfooter(['R'], r"\small\emph{Page \thepage\ of \pageref{LastPage}}\hspace{15pt}"),
         NEWLINE,
         doc.begin_document(),
         NEWLINE * 2,
@@ -74,9 +62,24 @@ if __name__ == "__main__":
         NEWLINE,
         mdframe.generate_mdframe(),
         NEWLINE * 2,
+        TeXStyle.bold_text(TeXStyle.italic_text(cfg.OBJECTIVES["title"] + ':')),
+        NEWLINE,
+        objectives.begin_bullet(cfg.OBJECTIVES_BULLET_OFFSET),
+        objectives.generate_bullets(),
+        objectives.end_bullet(),
+        NEWLINE,
+        TeXHead.Section(cfg.SECTIONS["1"]).generate_section(),
+        TeXStyle.bold_text(cfg.FILL_OUT_INSTRUCTIONS["title"] + ':'),
+        NEWLINE,
+        fill_out_instructions.begin_bullet(cfg.FILL_OUT_INSTRUCTIONS_BULLET_OFFSET),
+        TeXStyle.modify_substring(fill_out_instructions.generate_bullets(), "Reference year is last year", TeXStyle.bold_text),
+        fill_out_instructions.end_bullet(),
+        NEWLINE,
+        TeXHead.Subsection(cfg.SECTIONS["1.1"]).generate_subsection(),
+        NEWLINE * 2,
         doc.end_document(),
     ]
 
-    tex_file = open(TEX_FILENAME, "w+")
+    tex_file = open(cfg.TEX_FILENAME, "w+")
     tex_file.writelines(build_TeX)
     tex_file.close()

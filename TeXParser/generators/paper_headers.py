@@ -39,10 +39,28 @@ class Title:
             build_titleformat += r"\titleformat"
             build_titleformat += f"{{{section_type}}}\n"
             build_titleformat += f"{{\\normalfont\\fontsize{{{font_size}}}{{15}}\\bfseries}}"
-            build_titleformat += f"{{{section_type}}}{{1em}}{{}}\n"
+            build_titleformat += f"{{{section_type[0] + "the" + section_type[1:]}}}{{1em}}{{}}\n"
 
         return build_titleformat
     
 class Section:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, section_name: str) -> None:
+        self._section_name = section_name
+
+    def generate_section(self) -> str:
+        return f"\\section{{{self._section_name}}}" + '\n'
+    
+class Subsection(Section):
+    def __init__(self, section_name: str) -> None:
+        super().__init__(section_name)
+
+    def generate_subsection(self) -> str:
+        return f"\\subsection{{{self._section_name}}}" + '\n'
+
+class Subsubsection(Subsection):
+    def __init__(self, section_name: str) -> None:
+        super().__init__(section_name)
+    
+    def generate_subsubsection(self) -> str:
+        return f"\\subsubsection{{{self._section_name}}}" + '\n'
+
