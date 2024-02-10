@@ -22,11 +22,13 @@ require_once 'includes/header.php';
                 type: 'POST',
                 dataType: 'json',
                 success: function(response) {
-                    // Open the generated PDF in a new tab
-                    window.open(response.filePath, '_blank');
+                    if (response.isSuccess) {
+                        // Open the generated PDF in a new tab
+                        window.open(response.filePath, '_blank');
+                    }
                 },
                 error: function() {
-                    alert('A fatal error occurred in executing dependencies.');
+                    alert('A fatal error occurred in PDF generation.\nSee logs for more details.');
                 }
             });
         });
