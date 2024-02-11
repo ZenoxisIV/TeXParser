@@ -7,15 +7,16 @@ class Title:
         self._title = title
 
     def generate_title(self) -> str:
-        new_title = translation_table(self._title)
+        formatted_title = translation_table(self._title).split('\n')
+        temp = ""
+        for count, line in enumerate(formatted_title, 1):
+            TeX_line = r"\textsc{\large \textbf{" + line + r"}}"
 
-        if len(new_title) > 50:
-            temp = r"\textsc{\large \textbf{"
-            temp += new_title[:49] + r"}}" + r"\\[0.15cm]" + "\n" 
-            temp += r"\textsc{\large \textbf{"
-            temp += new_title[50:] + r"}}"
-        else:
-            temp = r"\textsc{\large \textbf{" + self._title + r"}}"
+            if count == len(formatted_title):
+                temp += TeX_line
+                continue
+            
+            temp += TeX_line + r"\\[0.15cm]" + '\n'
 
         build_title = [
             r"\begin{center}",
@@ -26,22 +27,6 @@ class Title:
         ]
 
         return '\n'.join(build_title)
-    
-    def generate_titleformat(self, font_size: int) -> str:
-        section_types = [
-            r"\section",
-            r"\subsection",
-            r"\subsubsection",
-        ]
-        
-        build_titleformat = ""
-        for section_type in section_types:
-            build_titleformat += r"\titleformat"
-            build_titleformat += f"{{{section_type}}}\n"
-            build_titleformat += f"{{\\normalfont\\fontsize{{{font_size}}}{{15}}\\bfseries}}"
-            build_titleformat += f"{{{section_type[0] + "the" + section_type[1:]}}}{{1em}}{{}}\n"
-
-        return build_titleformat
     
 class Section:
     def __init__(self, section_name: str) -> None:

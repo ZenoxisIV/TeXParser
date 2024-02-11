@@ -8,7 +8,9 @@ if __name__ == "__main__":
     import generators.paper_headers as TeXHead
     import generators.paper_frames as TeXFrame
     import generators.paper_lists as TeXList
+    import generators.paper_tables as TeXTable
     import utilities.style_fix as TeXStyle
+    import utilities.format_fix as TeXFormat
     import config as cfg
     
     NEWLINE = '\n'
@@ -18,7 +20,7 @@ if __name__ == "__main__":
     mdframe = TeXFrame.MDFrame(
         content=[
             r"AGENCY NAME: " + f"{cfg.EMAIL}" + r"\\",
-            r"Respondent (IS Planner/CIO/MIS Head)" + f"{doc.generate_footnote_mark('1')}: " + f"{cfg.RESPONDENT}" + r"\\",
+            r"Respondent (IS Planner/CIO/MIS Head)" + f"{TeXStyle.generate_footnote_mark('1')}: " + f"{cfg.RESPONDENT}" + r"\\",
             r"Position/D\'esignation: " + f"{cfg.POSITION}" + r"\\",
             r"Division/Section/Unit: " + f"{cfg.DIVISION}" + r"\\",
             r"Telephone/Fax Number: " + f"{cfg.TELEPHONE}" +  r"\\",
@@ -45,16 +47,14 @@ if __name__ == "__main__":
         NEWLINE,
         doc.import_package("geometry", [f"margin={cfg.MARGIN}", cfg.PAPER]),
         NEWLINE,
-        title.generate_titleformat(cfg.FONT_SIZE),
+        TeXFormat.generate_titleformat(cfg.FONT_SIZE),
         NEWLINE,
         TeXStyle.generate_hypersetup(cfg.LINK_COLOR, cfg.CITE_COLOR, cfg.URL_COLOR),
         NEWLINE * 2,
-        TeXStyle.generate_newcommand_TAB(),
-        NEWLINE,
-        TeXStyle.generate_fancystyle(),
-        TeXStyle.clear_fancyhf(),
-        TeXStyle.set_headerrule(0),
-        TeXStyle.set_fancyfooter(['R'], r"\small\emph{Page \thepage\ of \pageref{LastPage}}\hspace{15pt}"),
+        TeXFormat.generate_fancystyle(),
+        TeXFormat.clear_fancyhf(),
+        TeXFormat.set_headerrule(0),
+        TeXFormat.set_fancyfooter(['R'], r"\small\emph{Page \thepage\ of \pageref{LastPage}}\hspace{15pt}"),
         NEWLINE,
         doc.begin_document(),
         NEWLINE * 2,
@@ -76,6 +76,8 @@ if __name__ == "__main__":
         fill_out_instructions.end_bullet(),
         NEWLINE,
         TeXHead.Subsection(cfg.SECTIONS["1.1"]).generate_subsection(),
+        TeXStyle.generate_footnote_text("1", cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text("2", cfg.FOOTNOTES),
         NEWLINE * 2,
         doc.end_document(),
     ]

@@ -14,7 +14,11 @@ FONT_SIZE = 10
 PAPER_TYPE = "article"
 MARGIN = "2cm"
 
-TITLE = "ANNEX A-5: EXISTING INFORMATION & COMMUNICATIONS TECHNOLOGY (ICT) INFRASTRUCTURE INVENTORY"
+# If the title is too long on generation, kindly split the text for each line.
+# Note: Triple single quotes should be placed at the start and end of the first and last word, respectively.
+TITLE = '''ANNEX A-5: EXISTING INFORMATION & COMMUNICATIONS
+TECHNOLOGY (ICT) INFRASTRUCTURE INVENTORY'''
+
 AGENCY_NAME = "University of the Philippines Diliman"
 RESPONDENT = "Dr. Manuel C. Ramos, Jr."
 POSITION = "Director"
@@ -50,3 +54,11 @@ FILL_OUT_INSTRUCTIONS = {
 }
 
 FILL_OUT_INSTRUCTIONS_BULLET_OFFSET = "3.5em"
+
+FOOTNOTES = {
+    "1": "In case all three positions are occupied by different persons, then the IS Planner should have priority in answering this survey.",
+    "2": "Count only the mobile phones owned or leased by your agency.",
+    "3": "Those used in planning, coordination, internal training, monitoring and evaluation",
+    "4": "Those used by external clients",
+    "5": "Mark if yes. Examples are OEM license (software is already installed in the hardware) and Enterprise (Perpetual) license, which does not require renewal and is for life long. (source: http://www.manageengine.com/products/service-desk/help/adminguide/configurations/software/software-license-type.html)",
+}

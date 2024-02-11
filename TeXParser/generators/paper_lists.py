@@ -1,4 +1,5 @@
 # This file contains the class for generating the lists for the paper.
+
 from re import match
 
 class Bullet:
@@ -19,7 +20,7 @@ class Bullet:
 
         return temp
 
-    def begin_bullet(self, indent_offset: str = None) -> str:
+    def begin_bullet(self, indent_offset: str | None = None) -> str:
         return f"\\begin{{{self.bullet_type}}}" + '\n' if indent_offset is None else f"\\begin{{{self.bullet_type}}}[left={indent_offset}]" + '\n'
     
     def end_bullet(self) -> str:

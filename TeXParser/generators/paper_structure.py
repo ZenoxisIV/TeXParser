@@ -13,14 +13,6 @@ class Document:
         return f"\\usepackage{{{package}}}" + '\n' if options is None else f"\\usepackage[{', '.join(options)}]{{{package}}}" + '\n'
     
     @staticmethod
-    def generate_footnote_mark(symbol: str) -> str:
-        return f"\\footnotemark[{symbol}]"
-
-    @staticmethod
-    def generate_footnote_text(symbol: str, content: str) -> str:
-        return f"\\footnotetext[{symbol}]{{{content}}}" + '\n'
-    
-    @staticmethod
     def begin_document() -> str:
         return r"\begin{document}" + '\n'
     
