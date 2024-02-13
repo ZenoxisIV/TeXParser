@@ -27,8 +27,11 @@ require_once 'includes/header.php';
                         window.open(response.filePath, '_blank');
                     }
                 },
-                error: function() {
-                    alert('A fatal error occurred in PDF generation.\nSee logs for more details.');
+                error: function(response) {
+                    const ans = confirm('A fatal error occurred in PDF generation.\nSee logs for more details.\n\nRefresh the page?');
+                    if (ans) {
+                        location.reload();
+                    }
                 }
             });
         });
