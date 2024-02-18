@@ -53,6 +53,31 @@ FILL_OUT_INSTRUCTIONS = {
     "b1": 'Please count all existing computing devices and peripherals owned or leased by your office that are functioning including those acquired through projects. In case of multi-year contract for leased units, then just write the number of units under the appropriate year when the leased units were acquired. Do not include in succeeding years unless another batch was leased. Reference year is last year. Kindly replace "last year" and preceding years by the actual year number. For example, if last year is 2013, then write 2013 under the 1st column. For last 2 years, write 2012 and for last 3 years, write 2011.',
 }
 
+# LEGEND:
+# l - left-align
+# c - center-align
+# r - right-align
+# p{<width>} - paragraph (fixed width; word-wrapping)
+# | - vertical separator
+TABLE_COLUMN_FORMATS = {
+    # SECTION 1
+    "1.1": "|p{6.5cm}|c|c|c|c|c|c|c|",
+    "1.2": "|l|ccc|c|c|",
+    "1.3": "|l|cc|",
+
+    # SECTION 2
+    # SUBSECTION 2.1
+    "2.1.1": "|p{6.5cm}|c|l|",
+    "2.1.2": "|p{6.5cm}|c|l|",
+    "2.1.3": "|p{6.5cm}|c|l|",
+
+    "2.2": "|p{6.5cm}|c|l|",
+    "2.3": "|p{4cm}|c|c|c|c|c|",
+    "2.4": "|p{4cm}|c|c|c|c|c|",
+    "2.5": "|p{4cm}|c|c|c|c|c|",
+}
+
+
 FILL_OUT_INSTRUCTIONS_BULLET_OFFSET = "3.5em"
 
 FOOTNOTES = {
@@ -62,3 +87,4 @@ FOOTNOTES = {
     "4": "Those used by external clients",
     "5": "Mark if yes. Examples are OEM license (software is already installed in the hardware) and Enterprise (Perpetual) license, which does not require renewal and is for life long. (source: http://www.manageengine.com/products/service-desk/help/adminguide/configurations/software/software-license-type.html)",
 }
+
