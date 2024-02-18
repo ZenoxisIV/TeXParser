@@ -59,7 +59,7 @@ FILL_OUT_INSTRUCTIONS = {
 # r - right-align
 # p{<width>} - paragraph (fixed width; word-wrapping)
 # | - vertical separator
-TABLE_COLUMN_FORMATS = {
+TABLE_FORMATS = {
     # SECTION 1
     "1.1": "|p{6.5cm}|c|c|c|c|c|c|c|",
     "1.2": "|l|ccc|c|c|",
@@ -75,6 +75,26 @@ TABLE_COLUMN_FORMATS = {
     "2.3": "|p{4cm}|c|c|c|c|c|",
     "2.4": "|p{4cm}|c|c|c|c|c|",
     "2.5": "|p{4cm}|c|c|c|c|c|",
+}
+
+TABLE_DEFAULT_FIELDS = {
+    # SECTION 1
+    "1.1": ["Mainframe", 
+            "Servers", 
+            "Desktop PC", 
+            "Laptop / Notebook / Netbook PC", 
+            "Mobile Phone (incl. smart phones)", 
+            "Tablet PC", 
+            "Multi-function printer (print, copy, etc.)",
+            "Printer only", 
+            "Digital Camera (Include DSLR, if any)", 
+            "Wide-format Printer or Plotter",
+            "Small Scanner (ex. flatbed scanner)", 
+            "Smart Card Reader", 
+            "Wide-format Scanner", 
+            "External Hard Drive", 
+            "Generator Set"
+            ]
 }
 
 

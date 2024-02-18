@@ -12,9 +12,9 @@ def parseJSONData(data: dict, table: str) -> defaultdict:
     column_data = data[table]['columns']
 
     parsed_data = defaultdict(lambda: None)
-    parsed_data['row_names'] = tuple(column_data)
-    parsed_data['row_entries'] = [tuple(row) for row in row_data]
-    parsed_data['col_len'] = len(column_data)
-    parsed_data['row_len'] = len(row_data)
+    parsed_data['row_names'] = tuple(column_data[1:])
+    parsed_data['row_entries'] = [tuple(row[1:]) for row in row_data]
+    parsed_data['col_len'] = len(column_data) - 1
+    parsed_data['row_len'] = len(row_data) - 1
 
     return parsed_data

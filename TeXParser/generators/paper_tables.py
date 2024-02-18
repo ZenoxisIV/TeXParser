@@ -1,4 +1,5 @@
 # This file contains the classes for generating the tables for the paper.
+from copy import deepcopy
 
 class ContainerTable:
     def __init__(self) -> None:
@@ -34,37 +35,67 @@ class AdjustBox(ContainerTable): # Note: Requires the adjustbox package.
         return f"\\end{{{self.table_handler}}}" + '\n'
 
 class Tabular(AdjustBox):
-    def __init__(self) -> None:
+    def __init__(self, table_format: dict[str, str]) -> None:
         super().__init__()
         self.table_env = "tabular"
+        self.table_format = table_format
 
-    def begin_tabular(self, col_format: str) -> str:
+    def begin_tabular(self, section_num: str) -> str:
         """Begins the tabular environment for the table."""
-        return f"\\begin{{{self.table_env}}}{{{col_format}}}" + '\n'
+        return f"\\begin{{{self.table_env}}}{{{self.table_format[section_num]}}}" + '\n'
     
     def end_tabular(self) -> str:
         """Ends the tabular environment for the table."""
         return f"\\end{{{self.table_env}}}" + '\n'
     
+    def generate_headers(self, headers: list[str]) -> str:
+        """Generates the headers for the table."""
+        build_table_headers = ""
+        for i, header in enumerate(headers):
+            if header == '\n':
+                build_table_headers += header
+                continue
+
+            build_table_headers += header
+
+            if i != len(headers) - 1:
+                build_table_headers += " & "
+        return build_table_headers
+    
     def generate_entries(self, data: dict, default_fields: list[str] | None = None) -> str:
         """Generates the entries for the table."""
-        for required_key in ['row_len', 'col_len', 'row_entries']:
-            if required_key not in data:
-                raise ValueError(f"Missing required key: '{required_key}'")
-        
+
+        required_keys = ['col_len', 'row_entries']
+        if any(key not in data for key in required_keys):
+            raise ValueError("Missing required key(s)")
+
         entries = ""
-        if default_fields is None:
-            for i in range(data['row_len'] - 1):
-                for j in range(data['col_len'] - 1):
-                    if j+1 != data['col_len'] - 1:
-                        entries += f"{data['row_entries'][i][j+1] if data['row_entries'][i][j+1] is not None else ''}" + " & "
-                    else:
-                        entries += f"{data['row_entries'][i][j+1] if data['row_entries'][i][j+1] is not None else ''}" + r"\\" \
-                                    + ' ' + self.generate_horizontal_line()
-                entries += '\n'
-        else:
-            ...
+        fields = deepcopy(default_fields) if default_fields is not None else []
+        prio_rows = []
+        remaining_rows = deepcopy(data['row_entries'])
+
+        for field in fields:
+            for row in data['row_entries']:
+                is_present = False
+                if field in row:
+                    prio_rows.append(remaining_rows.pop(remaining_rows.index(row)))
+                    is_present = True
+                    break
+            if not is_present:
+                prio_rows.append(tuple([field] + [None for _ in range(data['col_len'])]))
+
+        for row in prio_rows:
+            for j in range(data['col_len']):
+                entries += row[j] if row[j] is not None else ''
+                entries += " & "  if j != data['col_len'] - 1 else ' ' + r"\\" + ' ' + self.generate_horizontal_line()
+            entries += '\n'
         
+        for row in remaining_rows:
+            for j in range(data['col_len']):
+                entries += row[j] if row[j] is not None else ''
+                entries += " & "  if j != data['col_len'] - 1 else ' ' + r"\\" + ' ' + self.generate_horizontal_line()
+            entries += '\n'
+                
         return entries
     
     @staticmethod

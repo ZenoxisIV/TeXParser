@@ -30,7 +30,7 @@ def main():
     objectives = TeXList.Bullet(cfg.OBJECTIVES)
     fill_out_instructions = TeXList.Bullet(cfg.FILL_OUT_INSTRUCTIONS)
 
-    table1_1 = TeXTable.Tabular()
+    tables = TeXTable.Tabular(cfg.TABLE_FORMATS)
 
     build_TeX = [
         # --- IMPORTANT NOTE: The following lines should not be changed nor modified. ---
@@ -109,21 +109,45 @@ def main():
         TeXStyle.generate_footnote_text("2", cfg.FOOTNOTES),
         NEWLINE * 2,
 
-        table1_1.begin_table('H'),
-        table1_1.set_arraystretch(1.5),
-        table1_1.toggle_centering(),
-        table1_1.begin_adjustbox("6in"),
-        table1_1.begin_tabular(cfg.TABLE_COLUMN_FORMATS["1.1"]),
-        table1_1.generate_horizontal_line(),
+        tables.begin_table('H'),
+        tables.set_arraystretch(1.5),
+        tables.toggle_centering(),
+        tables.begin_adjustbox("6in"),
+        tables.begin_tabular("1.1"),
+        tables.generate_horizontal_line(),
 
         NEWLINE,
         
-        #TODO - make variables for localhost and table in config.py
-        table1_1.generate_entries(TeXJSON.parseJSONData(TeXJSON.requestJSONData("http://localhost/TeXParser/json_test.php"), "cd_year")),
+        tables.generate_headers([
+            tables.generate_multicolumn(1, "|c|", tables.generate_multirow(3, TeXStyle.bold_text("TYPES"))),
+            tables.generate_multicolumn(7, "c|", TeXStyle.bold_text("TOTAL NUMBER OF FUNCTIONING UNITS BY YEAR ACQUIRED")) + ' ' + r"\\" + ' ' + tables.generate_cline(2, 8),
+            NEWLINE,
+            tables.generate_multicolumn(2, "c|", TeXStyle.bold_text("$<$Last Year$>$")),
+            tables.generate_multicolumn(2, "c|", TeXStyle.bold_text("$<$Last 2 Years$>$")),
+            tables.generate_multicolumn(2, "c|", TeXStyle.bold_text("$<$Last 3 Years$>$")),
+            tables.generate_multicolumn(1, "c|", tables.generate_multirow(2, TeXStyle.bold_text("More than 3 years"))) + ' ' + r"\\" + ' ' + tables.generate_cline(2, 7),
+            NEWLINE,
+            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Owned")),
+            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Leased")),
+            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Owned")),
+            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Leased")),
+            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Owned")),
+            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Leased")),
+            tables.generate_multicolumn(1, "c|") + ' ' + r"\\" + ' ' + tables.generate_horizontal_line(),
+        ]),
 
-        table1_1.end_tabular(),
-        table1_1.end_adjustbox(),
-        table1_1.end_table(),
+        NEWLINE,
+        
+        tables.generate_entries(
+            TeXJSON.parseJSONData(
+                TeXJSON.requestJSONData("http://localhost/TeXParser/json_test.php"), "cd_year"
+            ), 
+            cfg.TABLE_DEFAULT_FIELDS["1.1"]
+        ),
+
+        tables.end_tabular(),
+        tables.end_adjustbox(),
+        tables.end_table(),
 
         # This marks the end of the document (DO NOT REMOVE)
         doc.end_document(),
