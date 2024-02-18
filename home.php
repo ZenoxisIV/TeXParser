@@ -69,9 +69,7 @@ $_SESSION['tableRows'] = [];
                             <?php
 
                             $columnsToCheck = [
-                                'archiving', 'automation_software', 'cd_usage', 'cd_year',
-                                'data_center', 'ict_issues', 'ict_projects', 'pc_os', 'security', 'servers',
-                                'server_os', 'si_systems', 'special_solutions', 'ws_os'
+                                'automation_software', 'cd_usage', 'cd_year'
                             ];
 
                             $sql = "SELECT Code, c.Office_ID, Name
