@@ -5,6 +5,7 @@ class MDFrame: # Note: Requires the mdframed package.
         self._content = content
 
     def generate_mdframe(self) -> str:
+        """Creates a framed (boxed) environment with the content inside it."""
         build_frame = [
             r"\begin{quote}",
             r"\begin{mdframed}",

@@ -7,6 +7,7 @@ class Title:
         self._title = title
 
     def generate_title(self) -> str:
+        """Creates the formatted title for the document."""
         formatted_title = translation_table(self._title).split('\n')
         temp = ""
         for count, line in enumerate(formatted_title, 1):
@@ -33,6 +34,7 @@ class Section:
         self._section_name = section_name
 
     def generate_section(self) -> str:
+        """Create a section for the document."""
         return f"\\section{{{self._section_name}}}" + '\n'
     
 class Subsection(Section):
@@ -40,6 +42,7 @@ class Subsection(Section):
         super().__init__(section_name)
 
     def generate_subsection(self) -> str:
+        """Create a subsection for the document."""
         return f"\\subsection{{{self._section_name}}}" + '\n'
 
 class Subsubsection(Subsection):
@@ -47,5 +50,6 @@ class Subsubsection(Subsection):
         super().__init__(section_name)
     
     def generate_subsubsection(self) -> str:
+        """Create a subsubsection for the document."""
         return f"\\subsubsection{{{self._section_name}}}" + '\n'
 

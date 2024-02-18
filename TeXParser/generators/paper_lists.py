@@ -8,6 +8,7 @@ class Bullet:
         self.bullet_type = "itemize"
 
     def generate_bullets(self) -> str:
+        """Creates the bullet points for the document."""
         def is_b_string(s):
             pattern = r'^b\d$' # Matches strings like 'b1', 'b2', ...
             return bool(match(pattern, s))
@@ -21,9 +22,11 @@ class Bullet:
         return temp
 
     def begin_bullet(self, indent_offset: str | None = None) -> str:
+        """Begins the bullet environment for the document."""
         return f"\\begin{{{self.bullet_type}}}" + '\n' if indent_offset is None else f"\\begin{{{self.bullet_type}}}[left={indent_offset}]" + '\n'
     
     def end_bullet(self) -> str:
+        """Ends the bullet environment for the document."""
         return f"\\end{{{self.bullet_type}}}" + '\n'
 
 class Ordered(Bullet): # Note: Requires the enumitem package.
