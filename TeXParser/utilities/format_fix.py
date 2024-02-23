@@ -1,4 +1,30 @@
 # This file contains functions that are used to fix formatting issues in LaTeX code.
+class OverrideFormat:
+    def __init__(self, tex_script: str | None = None) -> None:
+        pass
+
+    def change_titleformat(self, font_size: int, section: str, param: str) -> str:
+        """Changes the title format for the document."""
+        match section.lower():
+            case "section":
+                return generate_sectionformat(font_size, 1, param)
+            case "subsection":
+                return generate_sectionformat(font_size, 2, param)
+            case "subsubsection":
+                return generate_sectionformat(font_size, 3, param)
+            case _:
+                raise ValueError(f"Invalid section '{section}'.")
+
+    @staticmethod
+    def begingroup() -> str:
+        """Begins a group."""
+        return r"\begingroup" + '\n'
+    
+    @staticmethod
+    def endgroup() -> str:
+        """Ends a group."""
+        return r"\endgroup" + '\n'
+
 
 def translation_table(text) -> str:
     """Translates the text to LaTeX format."""
@@ -15,18 +41,20 @@ def translation_table(text) -> str:
     
     return text.translate(table)
 
-def generate_sectionformat(font_size: int) -> str:
+def generate_sectionformat(font_size: int, option: int | None = None, mode: str | None = None) -> str:
     """Generates the section format for the document."""
     section_types = [
-        r"\section",
-        r"\subsection",
-        r"\subsubsection",
+        r"\section",           # OPTION 1
+        r"\subsection",        # OPTION 2
+        r"\subsubsection",     # OPTION 3
     ]
+
+    section_types = section_types if option is None else [section_types[option - 1]]
     
     build_titleformat = ""
     for section_type in section_types:
         build_titleformat += r"\titleformat"
-        build_titleformat += f"{{{section_type}}}\n"
+        build_titleformat += f"{{{section_type}}}\n" if mode is None else f"{{{section_type}}}[{mode}]\n"
         build_titleformat += f"{{\\normalfont\\fontsize{{{font_size}}}{{15}}\\bfseries}}"
         build_titleformat += f"{{{section_type[0] + 'the' + section_type[1:]}}}{{1em}}{{}}\n"
 

@@ -28,28 +28,3 @@ class Title:
         ]
 
         return '\n'.join(build_title)
-    
-class Section:
-    def __init__(self, section_name: str) -> None:
-        self._section_name = section_name
-
-    def generate_section(self) -> str:
-        """Create a section for the document."""
-        return f"\\section{{{self._section_name}}}" + '\n'
-    
-class Subsection(Section):
-    def __init__(self, section_name: str) -> None:
-        super().__init__(section_name)
-
-    def generate_subsection(self) -> str:
-        """Create a subsection for the document."""
-        return f"\\subsection{{{self._section_name}}}" + '\n'
-
-class Subsubsection(Subsection):
-    def __init__(self, section_name: str) -> None:
-        super().__init__(section_name)
-    
-    def generate_subsubsection(self) -> str:
-        """Create a subsubsection for the document."""
-        return f"\\subsubsection{{{self._section_name}}}" + '\n'
-
