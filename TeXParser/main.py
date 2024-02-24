@@ -7,15 +7,19 @@ from generators import paper_headers as TeXHead
 from generators import paper_frames as TeXFrame
 from generators import paper_lists as TeXList
 from generators import paper_tables as TeXTable
+from generators import paper_questionnaire as TeXQues
 from utilities import style_fix as TeXStyle
 from utilities import format_fix as TeXFormat
 from utilities import json_extract as TeXJSON
 import config as cfg
 
 def main():
+    # *** CONSTANTS ***
     NEWLINE = '\n'
     REQUEST_DATA_URL = "http://localhost/TeXParser/json_test.php"
+    JSON_DATA = TeXJSON.requestJSONData(REQUEST_DATA_URL)
 
+    # *** CLASS INIT (DOCUMENT) ***
     doc = TeXDoc.Document(cfg.PAPER, cfg.FONT_SIZE, cfg.PAPER_TYPE)
     title = TeXHead.Title(cfg.TITLE)
     mdframe = TeXFrame.MDFrame(
@@ -31,11 +35,23 @@ def main():
     objectives = TeXList.Bullet(cfg.OBJECTIVES)
     fill_out_instructions = TeXList.Bullet(cfg.FILL_OUT_INSTRUCTIONS)
 
-    tables = TeXTable.Tabular(cfg.TABLE_FORMATS)
-    ovr_subsection = TeXFormat.OverrideFormat()
+    # *** CLASS INIT (OVERRIDE) ***
+    subsect_override = TeXFormat.OverrideFormat()
 
+    # *** CLASS INIT (TABLES) ***
+    tables: list[TeXTable.Tabular] = list()
+    for key, value in cfg.TABLE_FORMATS.items():
+        tables.append(TeXTable.Tabular({key: value}))
+
+    # *** CLASS INIT (QUESTIONNAIRE) ***
+    NETWORK_DATA = TeXJSON.parseJSONData(JSON_DATA, "network")
+    net_ques_y_n = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
+    net_ques_pbx = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{4cm} cccc"}, ["Private", "Hosted", "VoIP PBX or IP-PBX", "Hosted IP"])
+    net_ques_blank = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{13.75cm}"})
+
+    # *** TeX Builder ***
     build_TeX = [
-        # --- IMPORTANT NOTE: The following lines should ideally not be changed nor modified. ---
+        # !!! IMPORTANT NOTE: The following lines should ideally not be changed nor modified. !!!
         doc.generate_document(),
         NEWLINE,
         doc.import_package("inputenc", ["utf8"]),
@@ -54,7 +70,7 @@ def main():
         NEWLINE,
         TeXFormat.generate_sectionformat(cfg.FONT_SIZE),
         NEWLINE,
-        # --- END OF IMPORTANT NOTE ---
+        # !!! END OF IMPORTANT NOTE !!!
 
         # === Color of hyperlinks, citations, and URLs ===
         TeXStyle.generate_hypersetup(cfg.LINK_COLOR, cfg.CITE_COLOR, cfg.URL_COLOR),
@@ -69,7 +85,7 @@ def main():
 
         NEWLINE,
 
-        # === This marks the start of the document (DO NOT REMOVE) ===
+        # !!! This marks the start of the document (DO NOT REMOVE) !!!
         doc.begin_document(),
 
         NEWLINE * 2,
@@ -111,47 +127,47 @@ def main():
         TeXStyle.generate_footnote_text('2', cfg.FOOTNOTES),
         NEWLINE * 2,
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox("6in"),
-        tables.begin_tabular("1.1"),
-        tables.generate_horizontal_line(),
+        tables[0].begin_table('H'),
+        tables[0].set_arraystretch(1.5),
+        tables[0].toggle_centering(),
+        tables[0].begin_adjustbox("6in"),
+        tables[0].begin_tabular("1.1"),
+        tables[0].generate_horizontal_line(),
 
         NEWLINE,
         
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", tables.generate_multirow(3, TeXStyle.bold_text("TYPES"))),
-            tables.generate_multicolumn(7, "c|", TeXStyle.bold_text("TOTAL NUMBER OF FUNCTIONING UNITS BY YEAR ACQUIRED")) + ' ' + r"\\" + ' ' + tables.generate_cline(2, 8),
+        tables[0].generate_headers([
+            tables[0].generate_multicolumn(1, "|c|", tables[0].generate_multirow(3, TeXStyle.bold_text("TYPES"))),
+            tables[0].generate_multicolumn(7, "c|", TeXStyle.bold_text("TOTAL NUMBER OF FUNCTIONING UNITS BY YEAR ACQUIRED")) + r" \\ " + tables[0].generate_cline(2, 8),
             NEWLINE,
-            tables.generate_multicolumn(2, "c|", TeXStyle.bold_text("$<$Last Year$>$")),
-            tables.generate_multicolumn(2, "c|", TeXStyle.bold_text("$<$Last 2 Years$>$")),
-            tables.generate_multicolumn(2, "c|", TeXStyle.bold_text("$<$Last 3 Years$>$")),
-            tables.generate_multicolumn(1, "c|", tables.generate_multirow(2, TeXStyle.bold_text("More than 3 years"))) + ' ' + r"\\" + ' ' + tables.generate_cline(2, 7),
+            tables[0].generate_multicolumn(2, "c|", TeXStyle.bold_text("$<$Last Year$>$")),
+            tables[0].generate_multicolumn(2, "c|", TeXStyle.bold_text("$<$Last 2 Years$>$")),
+            tables[0].generate_multicolumn(2, "c|", TeXStyle.bold_text("$<$Last 3 Years$>$")),
+            tables[0].generate_multicolumn(1, "c|", tables[0].generate_multirow(2, TeXStyle.bold_text("More than 3 years"))) + r" \\ " + tables[0].generate_cline(2, 7),
             NEWLINE,
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Owned")),
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Leased")),
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Owned")),
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Leased")),
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Owned")),
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Leased")),
-            tables.generate_multicolumn(1, "c|") + ' ' + r"\\" + ' ' + tables.generate_horizontal_line(),
+            tables[0].generate_multicolumn(1, "c|", TeXStyle.bold_text("Owned")),
+            tables[0].generate_multicolumn(1, "c|", TeXStyle.bold_text("Leased")),
+            tables[0].generate_multicolumn(1, "c|", TeXStyle.bold_text("Owned")),
+            tables[0].generate_multicolumn(1, "c|", TeXStyle.bold_text("Leased")),
+            tables[0].generate_multicolumn(1, "c|", TeXStyle.bold_text("Owned")),
+            tables[0].generate_multicolumn(1, "c|", TeXStyle.bold_text("Leased")),
+            tables[0].generate_multicolumn(1, "c|") + r" \\ " + tables[0].generate_horizontal_line(),
         ]),
 
         NEWLINE,
         
         TeXStyle.modify_substring(
-            tables.generate_entries(
+            tables[0].generate_entries(
                 TeXJSON.parseJSONData(
-                    TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["1.1"]
+                    JSON_DATA, cfg.FORM_NAMES["1.1"]
                 ), 
             default_fields=cfg.TABLE_DEFAULT_FIELDS["1.1"], limit=16
             ), "Mobile Phone", TeXStyle.append_footnotemark, '2'
         ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[0].end_tabular(),
+        tables[0].end_adjustbox(),
+        tables[0].end_table(),
 
         NEWLINE,
 
@@ -161,77 +177,77 @@ def main():
         TeXStyle.generate_footnote_text('4', cfg.FOOTNOTES),
         NEWLINE * 2,
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox(r"\textwidth"),
-        tables.begin_tabular("1.2"),
-        tables.generate_horizontal_line(),
+        tables[1].begin_table('H'),
+        tables[1].set_arraystretch(1.5),
+        tables[1].toggle_centering(),
+        tables[1].begin_adjustbox(r"\textwidth"),
+        tables[1].begin_tabular("1.2"),
+        tables[1].generate_horizontal_line(),
 
         NEWLINE,
 
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", tables.generate_multirow(2, TeXStyle.bold_text("TYPES"))),
+        tables[1].generate_headers([
+            tables[1].generate_multicolumn(1, "|c|", tables[1].generate_multirow(2, TeXStyle.bold_text("TYPES"))),
 
-            tables.generate_multicolumn(3, "c|", TeXStyle.bold_text("Operations")),
+            tables[1].generate_multicolumn(3, "c|", TeXStyle.bold_text("Operations")),
 
-            TeXStyle.bold_text(tables.begin_tabular(r"@{}c@{}", "c") + r"General Administration\\ and Support Services\\ Support to Operations" + 
-            TeXStyle.generate_footnote_mark('3') + tables.end_tabular()),
+            TeXStyle.bold_text(tables[1].begin_tabular(r"@{}c@{}", "c") + r"General Administration\\ and Support Services\\ Support to Operations" + 
+            TeXStyle.generate_footnote_mark('3') + tables[1].end_tabular()),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + TeXStyle.bold_text("Projects") + r"\\" +  TeXStyle.italic_text("(Not agency-funded)") + 
-            tables.end_tabular() + ' ' + r"\\" + ' ' + tables.generate_cline(2, 6),
+            tables[1].begin_tabular(r"@{}c@{}", "c") + TeXStyle.bold_text("Projects") + r"\\" +  TeXStyle.italic_text("(Not agency-funded)") + 
+            tables[1].end_tabular() + r" \\ " + tables[1].generate_cline(2, 6),
 
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Employees")),
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Training")),
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("Frontline Services") + TeXStyle.generate_footnote_mark('4')),
+            tables[1].generate_multicolumn(1, "c|", TeXStyle.bold_text("Employees")),
+            tables[1].generate_multicolumn(1, "c|", TeXStyle.bold_text("Training")),
+            tables[1].generate_multicolumn(1, "c|", TeXStyle.bold_text("Frontline Services") + TeXStyle.generate_footnote_mark('4')),
             TeXStyle.bold_text(""),
-            TeXStyle.bold_text("") + ' ' + r"\\" + ' ' + tables.generate_horizontal_line()
+            TeXStyle.bold_text("") + r" \\ " + tables[1].generate_horizontal_line()
         ]),
 
         NEWLINE,
 
-        tables.generate_entries(
+        tables[1].generate_entries(
             TeXJSON.parseJSONData(
-                TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["1.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["1.2"]
+                JSON_DATA, cfg.FORM_NAMES["1.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["1.2"]
         ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[1].end_tabular(),
+        tables[1].end_adjustbox(),
+        tables[1].end_table(),
 
         NEWLINE,
 
         # === Subsection 1.3 ===
         TeXStyle.generate_subsection(cfg.SECTIONS["1.3"]),
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox("4in"),
-        tables.begin_tabular("1.3"),
-        tables.generate_horizontal_line(),
+        tables[2].begin_table('H'),
+        tables[2].set_arraystretch(1.5),
+        tables[2].toggle_centering(),
+        tables[2].begin_adjustbox("4in"),
+        tables[2].begin_tabular("1.3"),
+        tables[2].generate_horizontal_line(),
 
         NEWLINE,
 
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", tables.generate_multirow(2, TeXStyle.bold_text("TOTAL CAPACITY OF HDD"))),
+        tables[2].generate_headers([
+            tables[2].generate_multicolumn(1, "|c|", tables[2].generate_multirow(2, TeXStyle.bold_text("TOTAL CAPACITY OF HDD"))),
 
-            tables.generate_multicolumn(2, "c|", TeXStyle.bold_text("LOCATION")) + ' ' + r"\\" + ' ' + tables.generate_cline(2, 3),
+            tables[2].generate_multicolumn(2, "c|", TeXStyle.bold_text("LOCATION")) + r" \\ " + tables[2].generate_cline(2, 3),
 
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("IN-HOUSE")),
-            tables.generate_multicolumn(1, "c|", TeXStyle.bold_text("CO-LOCATED")) + ' ' + r"\\" + ' ' + tables.generate_horizontal_line()
+            tables[2].generate_multicolumn(1, "c|", TeXStyle.bold_text("IN-HOUSE")),
+            tables[2].generate_multicolumn(1, "c|", TeXStyle.bold_text("CO-LOCATED")) + r" \\ " + tables[2].generate_horizontal_line()
         ]),
 
         NEWLINE,
 
-        tables.generate_entries(
+        tables[2].generate_entries(
             TeXJSON.parseJSONData(
-                TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["1.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["1.3"]
+                JSON_DATA, cfg.FORM_NAMES["1.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["1.3"]
         ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[2].end_tabular(),
+        tables[2].end_adjustbox(),
+        tables[2].end_table(),
 
         NEWLINE,
 
@@ -246,130 +262,130 @@ def main():
         TeXStyle.generate_footnote_text('5', cfg.FOOTNOTES),
         NEWLINE * 2,
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox("5.5in"),
-        tables.begin_tabular("2.1.1"),
-        tables.generate_horizontal_line(),
+        tables[3].begin_table('H'),
+        tables[3].set_arraystretch(1.5),
+        tables[3].toggle_centering(),
+        tables[3].begin_adjustbox("5.5in"),
+        tables[3].begin_tabular("2.1.1"),
+        tables[3].generate_horizontal_line(),
 
         NEWLINE,
 
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", "OPERATING SYSTEM"),
-            tables.generate_multicolumn(1, "c|", f"Lifetime License?{TeXStyle.generate_footnote_mark('5')}"),
-            tables.generate_multicolumn(1, "c|", "If not, write below the year of expiration") + ' ' + r"\\" + ' ' + tables.generate_horizontal_line()
+        tables[3].generate_headers([
+            tables[3].generate_multicolumn(1, "|c|", "OPERATING SYSTEM"),
+            tables[3].generate_multicolumn(1, "c|", f"Lifetime License?{TeXStyle.generate_footnote_mark('5')}"),
+            tables[3].generate_multicolumn(1, "c|", "If not, write below the year of expiration") + r" \\ " + tables[3].generate_horizontal_line()
         ]),
 
         NEWLINE,
 
-        tables.generate_entries(
+        tables[3].generate_entries(
             TeXJSON.parseJSONData(
-                TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["2.1.1"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.1"], bool_cols=cfg.TABLE_BOOL_COLS["2.1.1"]
+                JSON_DATA, cfg.FORM_NAMES["2.1.1"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.1"], tickbox_cols=cfg.TICKBOX_COLS["2.1.1"]
         ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[3].end_tabular(),
+        tables[3].end_adjustbox(),
+        tables[3].end_table(),
 
         NEWLINE,
 
         # === Subsubsection 2.1.2 ===
         TeXStyle.generate_subsubsection(cfg.SECTIONS["2.1.2"]),
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox("5.5in"),
-        tables.begin_tabular("2.1.2"),
-        tables.generate_horizontal_line(),
+        tables[4].begin_table('H'),
+        tables[4].set_arraystretch(1.5),
+        tables[4].toggle_centering(),
+        tables[4].begin_adjustbox("5.5in"),
+        tables[4].begin_tabular("2.1.2"),
+        tables[4].generate_horizontal_line(),
 
         NEWLINE,
 
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", "OPERATING SYSTEM"),
-            tables.generate_multicolumn(1, "c|", "Lifetime License?"),
-            tables.generate_multicolumn(1, "c|", "If not, write below the year of expiration") + ' ' + r"\\" + ' ' + tables.generate_horizontal_line()
+        tables[4].generate_headers([
+            tables[4].generate_multicolumn(1, "|c|", "OPERATING SYSTEM"),
+            tables[4].generate_multicolumn(1, "c|", "Lifetime License?"),
+            tables[4].generate_multicolumn(1, "c|", "If not, write below the year of expiration") + r" \\ " + tables[4].generate_horizontal_line()
         ]),
 
         NEWLINE,
 
-        tables.generate_entries(
+        tables[4].generate_entries(
             TeXJSON.parseJSONData(
-                TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["2.1.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.2"], bool_cols=cfg.TABLE_BOOL_COLS["2.1.2"]
+                JSON_DATA, cfg.FORM_NAMES["2.1.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.2"], tickbox_cols=cfg.TICKBOX_COLS["2.1.2"]
         ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[4].end_tabular(),
+        tables[4].end_adjustbox(),
+        tables[4].end_table(),
 
         NEWLINE,
 
         # === Subsubsection 2.1.3 ===
         TeXStyle.generate_subsubsection(cfg.SECTIONS["2.1.3"]),
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox("5.5in"),
-        tables.begin_tabular("2.1.2"),
-        tables.generate_horizontal_line(),
+        tables[5].begin_table('H'),
+        tables[5].set_arraystretch(1.5),
+        tables[5].toggle_centering(),
+        tables[5].begin_adjustbox("5.5in"),
+        tables[5].begin_tabular("2.1.3"),
+        tables[5].generate_horizontal_line(),
 
         NEWLINE,
 
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", "OPERATING SYSTEM"),
-            tables.generate_multicolumn(1, "c|", "Lifetime License?"),
-            tables.generate_multicolumn(1, "c|", "If not, write below the year of expiration") + ' ' + r"\\" + ' ' + tables.generate_horizontal_line()
+        tables[5].generate_headers([
+            tables[5].generate_multicolumn(1, "|c|", "OPERATING SYSTEM"),
+            tables[5].generate_multicolumn(1, "c|", "Lifetime License?"),
+            tables[5].generate_multicolumn(1, "c|", "If not, write below the year of expiration") + r" \\ " + tables[5].generate_horizontal_line()
         ]),
 
         NEWLINE,
 
-        tables.generate_entries(
+        tables[5].generate_entries(
             TeXJSON.parseJSONData(
-                TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["2.1.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.3"], bool_cols=cfg.TABLE_BOOL_COLS["2.1.3"]
+                JSON_DATA, cfg.FORM_NAMES["2.1.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.3"], tickbox_cols=cfg.TICKBOX_COLS["2.1.3"]
         ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[5].end_tabular(),
+        tables[5].end_adjustbox(),
+        tables[5].end_table(),
 
         NEWLINE,
 
         # === Subsection 2.2 ===
         TeXStyle.generate_subsection(cfg.SECTIONS["2.2"]),
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox("6.5in"),
-        tables.begin_tabular("2.2"),
-        tables.generate_horizontal_line(),
+        tables[6].begin_table('H'),
+        tables[6].set_arraystretch(1.5),
+        tables[6].toggle_centering(),
+        tables[6].begin_adjustbox("6.5in"),
+        tables[6].begin_tabular("2.2"),
+        tables[6].generate_horizontal_line(),
 
         NEWLINE,
 
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", "SOFTWARE / APPLICATION PACKAGE"),
-            tables.generate_multicolumn(1, "c|", "Lifetime License?"),
-            tables.generate_multicolumn(1, "c|", "If not, write below the year of expiration") + ' ' + r"\\" + ' ' + tables.generate_horizontal_line()
+        tables[6].generate_headers([
+            tables[6].generate_multicolumn(1, "|c|", "SOFTWARE / APPLICATION PACKAGE"),
+            tables[6].generate_multicolumn(1, "c|", "Lifetime License?"),
+            tables[6].generate_multicolumn(1, "c|", "If not, write below the year of expiration") + r" \\ " + tables[6].generate_horizontal_line()
         ]),
 
         NEWLINE,
 
-        tables.generate_entries(
+        tables[6].generate_entries(
             TeXJSON.parseJSONData(
-                TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["2.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.2"], bool_cols=cfg.TABLE_BOOL_COLS["2.2"]
+                JSON_DATA, cfg.FORM_NAMES["2.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.2"], tickbox_cols=cfg.TICKBOX_COLS["2.2"]
         ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[6].end_tabular(),
+        tables[6].end_adjustbox(),
+        tables[6].end_table(),
 
         NEWLINE,
 
         # === Subsection 2.3 ===
-        ovr_subsection.begingroup(), # Start wrapper for the section title.
-        ovr_subsection.change_titleformat(cfg.FONT_SIZE, "subsection", "runin"), # Simply just to allow text beside a section title.
+        subsect_override.begingroup(), # Start wrapper for the section title.
+        subsect_override.change_titleformat(cfg.FONT_SIZE, "subsection", "runin"), # Simply just to allow text beside a section title.
 
         TeXStyle.modify_substring(TeXStyle.generate_subsection(cfg.SECTIONS["2.3"]), "Oversight", TeXStyle.append_footnotemark, '6', True),
         cfg.SECTION_NOTES["2.3"],
@@ -381,48 +397,48 @@ def main():
 
         NEWLINE,
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox(r"\textwidth"),
-        tables.begin_tabular("2.3"),
-        tables.generate_horizontal_line(),
+        tables[7].begin_table('H'),
+        tables[7].set_arraystretch(1.5),
+        tables[7].toggle_centering(),
+        tables[7].begin_adjustbox(r"\textwidth"),
+        tables[7].begin_tabular("2.3"),
+        tables[7].generate_horizontal_line(),
 
         NEWLINE,
 
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", tables.begin_tabular(r"@{}c@{}", "c") + "NAME OF SYSTEM" + r"\\" + 
-                                            r"(Please list down the \\ name/s of your \\ administrative system/s)" + tables.end_tabular()),
+        tables[7].generate_headers([
+            tables[7].generate_multicolumn(1, "|c|", tables[7].begin_tabular(r"@{}c@{}", "c") + "NAME OF SYSTEM" + r"\\" + 
+                                            r"(Please list down the \\ name/s of your \\ administrative system/s)" + tables[7].end_tabular()),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"Own Intellectual \\ Property," + 
-                                            r"\\" +  "Y or N?" + TeXStyle.generate_footnote_mark('8') + tables.end_tabular(),
+            tables[7].begin_tabular(r"@{}c@{}", "c") + r"Own Intellectual \\ Property," + 
+                                            r"\\" +  "Y or N?" + TeXStyle.generate_footnote_mark('8') + tables[7].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"DEVELOPMENT \\ PLATFORM" + 
-                                            r"\\" +  r"(ex. LAMP, .NET, \\ Java)" + tables.end_tabular(),
+            tables[7].begin_tabular(r"@{}c@{}", "c") + r"DEVELOPMENT \\ PLATFORM" + 
+                                            r"\\" +  r"(ex. LAMP, .NET, \\ Java)" + tables[7].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"WORKING \\ ENVIRONMENT" + 
-                                            TeXStyle.generate_footnote_mark('9') + r"\\" +  r"(Use codes \\ below)" + tables.end_tabular(),
+            tables[7].begin_tabular(r"@{}c@{}", "c") + r"WORKING \\ ENVIRONMENT" + 
+                                            TeXStyle.generate_footnote_mark('9') + r"\\" +  r"(Use codes \\ below)" + tables[7].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"MAINTENANCE \\ COST" + tables.end_tabular(),
+            tables[7].begin_tabular(r"@{}c@{}", "c") + r"MAINTENANCE \\ COST" + tables[7].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + "USE" + TeXStyle.generate_footnote_mark('10') + 
-                                            r"\\" +  r"(Pls. write codes \\ only; refer below)" + tables.end_tabular(),
+            tables[7].begin_tabular(r"@{}c@{}", "c") + "USE" + TeXStyle.generate_footnote_mark('10') + 
+                                            r"\\" +  r"(Pls. write codes \\ only; refer below)" + tables[7].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + "Others" + r"\\" +  r"(Please specify \\ if USE code is 15)" + tables.end_tabular() + 
-                ' ' + r"\\" + ' ' + tables.generate_horizontal_line(),
+            tables[7].begin_tabular(r"@{}c@{}", "c") + "Others" + r"\\" +  r"(Please specify \\ if USE code is 15)" + tables[7].end_tabular() + 
+                r" \\ " + tables[7].generate_horizontal_line(),
 
         ]),
 
         NEWLINE,
 
-        tables.generate_entries(
+        tables[7].generate_entries(
             TeXJSON.parseJSONData(
-                TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["2.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.3"]
+                JSON_DATA, cfg.FORM_NAMES["2.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.3"]
         ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[7].end_tabular(),
+        tables[7].end_adjustbox(),
+        tables[7].end_table(),
 
         NEWLINE,
 
@@ -439,48 +455,48 @@ def main():
 
         NEWLINE,
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox(r"\textwidth"),
-        tables.begin_tabular("2.4"),
-        tables.generate_horizontal_line(),
+        tables[8].begin_table('H'),
+        tables[8].set_arraystretch(1.5),
+        tables[8].toggle_centering(),
+        tables[8].begin_adjustbox(r"\textwidth"),
+        tables[8].begin_tabular("2.4"),
+        tables[8].generate_horizontal_line(),
 
         NEWLINE,
 
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", tables.begin_tabular(r"@{}c@{}", "c") + "NAME OF SYSTEM" + r"\\" + 
-                                            r"(Please list down the \\ name/s of your \\ administrative system/s)" + tables.end_tabular()),
+        tables[8].generate_headers([
+            tables[8].generate_multicolumn(1, "|c|", tables[8].begin_tabular(r"@{}c@{}", "c") + "NAME OF SYSTEM" + r"\\" + 
+                                            r"(Please list down the \\ name/s of your \\ administrative system/s)" + tables[8].end_tabular()),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"Own Intellectual \\ Property," + 
-                                            r"\\" +  "Y or N?" + TeXStyle.generate_footnote_mark('8') + tables.end_tabular(),
+            tables[8].begin_tabular(r"@{}c@{}", "c") + r"Own Intellectual \\ Property," + 
+                                            r"\\" +  "Y or N?" + TeXStyle.generate_footnote_mark('8') + tables[8].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"DEVELOPMENT \\ PLATFORM" + 
-                                            r"\\" +  r"(ex. LAMP, .NET, \\ Java)" + tables.end_tabular(),
+            tables[8].begin_tabular(r"@{}c@{}", "c") + r"DEVELOPMENT \\ PLATFORM" + 
+                                            r"\\" +  r"(ex. LAMP, .NET, \\ Java)" + tables[8].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"WORKING \\ ENVIRONMENT" + 
-                                            TeXStyle.generate_footnote_mark('9') + r"\\" +  r"(Use codes \\ below)" + tables.end_tabular(),
+            tables[8].begin_tabular(r"@{}c@{}", "c") + r"WORKING \\ ENVIRONMENT" + 
+                                            TeXStyle.generate_footnote_mark('9') + r"\\" +  r"(Use codes \\ below)" + tables[8].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"MAINTENANCE \\ COST" + tables.end_tabular(),
+            tables[8].begin_tabular(r"@{}c@{}", "c") + r"MAINTENANCE \\ COST" + tables[8].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + "USE" + TeXStyle.generate_footnote_mark('10') + 
-                                            r"\\" +  r"(Pls. write codes \\ only; refer below)" + tables.end_tabular(),
+            tables[8].begin_tabular(r"@{}c@{}", "c") + "USE" + TeXStyle.generate_footnote_mark('10') + 
+                                            r"\\" +  r"(Pls. write codes \\ only; refer below)" + tables[8].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + "Others" + r"\\" +  r"(Please specify \\ if USE code is 15)" + tables.end_tabular() + 
-                ' ' + r"\\" + ' ' + tables.generate_horizontal_line(),
+            tables[8].begin_tabular(r"@{}c@{}", "c") + "Others" + r"\\" +  r"(Please specify \\ if USE code is 15)" + tables[8].end_tabular() + 
+                r" \\ " + tables[8].generate_horizontal_line(),
 
         ]),
 
         NEWLINE,
 
-        tables.generate_entries(
+        tables[8].generate_entries(
             TeXJSON.parseJSONData(
-                TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["2.4"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.4"]
+                JSON_DATA, cfg.FORM_NAMES["2.4"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.4"]
         ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[8].end_tabular(),
+        tables[8].end_adjustbox(),
+        tables[8].end_table(),
 
         NEWLINE,
 
@@ -490,64 +506,69 @@ def main():
 
         NEWLINE,
 
-        tables.begin_table('H'),
-        tables.set_arraystretch(1.5),
-        tables.toggle_centering(),
-        tables.begin_adjustbox(r"\textwidth"),
-        tables.begin_tabular("2.4"),
-        tables.generate_horizontal_line(),
+        tables[9].begin_table('H'),
+        tables[9].set_arraystretch(1.5),
+        tables[9].toggle_centering(),
+        tables[9].begin_adjustbox(r"\textwidth"),
+        tables[9].begin_tabular("2.5"),
+        tables[9].generate_horizontal_line(),
 
         NEWLINE,
 
-        tables.generate_headers([
-            tables.generate_multicolumn(1, "|c|", "NAME OF DATABASE"),
+        tables[9].generate_headers([
+            tables[9].generate_multicolumn(1, "|c|", "NAME OF DATABASE"),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"Own Intellectual \\ Property," + 
-                                            r"\\" +  "Y or N?" + TeXStyle.generate_footnote_mark('8') + tables.end_tabular(),
+            tables[9].begin_tabular(r"@{}c@{}", "c") + r"Own Intellectual \\ Property," + 
+                                            r"\\" +  "Y or N?" + TeXStyle.generate_footnote_mark('8') + tables[9].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"BRIEF \\ DESCRIPTION AND \\ KEY FIELDS" + TeXStyle.generate_footnote_mark('16') + tables.end_tabular(),
+            tables[9].begin_tabular(r"@{}c@{}", "c") + r"BRIEF \\ DESCRIPTION AND \\ KEY FIELDS" + TeXStyle.generate_footnote_mark('16') + tables[9].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"DATABASE \\ MANAGEMENT \\ SOFTWARE" + 
-                                            TeXStyle.generate_footnote_mark('17') + r"\\" +  r"USED" + tables.end_tabular(),
+            tables[9].begin_tabular(r"@{}c@{}", "c") + r"DATABASE \\ MANAGEMENT \\ SOFTWARE" + 
+                                            TeXStyle.generate_footnote_mark('17') + r"\\" +  r"USED" + tables[9].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + r"MAINTENANCE \\ COST" + tables.end_tabular(),
+            tables[9].begin_tabular(r"@{}c@{}", "c") + r"MAINTENANCE \\ COST" + tables[9].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + "USE" + TeXStyle.generate_footnote_mark('10') + 
-                                            r"\\" +  r"(Pls. write codes \\ only; refer below)" + tables.end_tabular(),
+            tables[9].begin_tabular(r"@{}c@{}", "c") + "USE" + TeXStyle.generate_footnote_mark('10') + 
+                                            r"\\" +  r"(Pls. write codes \\ only; refer below)" + tables[9].end_tabular(),
 
-            tables.begin_tabular(r"@{}c@{}", "c") + "Others" + r"\\" +  r"(Please specify \\ if USE code is 15)" + tables.end_tabular() + 
-                ' ' + r"\\" + ' ' + tables.generate_horizontal_line(),
+            tables[9].begin_tabular(r"@{}c@{}", "c") + "Others" + r"\\" +  r"(Please specify \\ if USE code is 15)" + tables[9].end_tabular() + 
+                r" \\ " + tables[9].generate_horizontal_line(),
 
         ]),
 
         NEWLINE,
 
-        # tables.generate_entries(
-        #     TeXJSON.parseJSONData(
-        #         TeXJSON.requestJSONData(REQUEST_DATA_URL), cfg.TABLE_FORM_NAMES["2.5"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.5"]
-        # ),
+        tables[9].generate_entries(
+            TeXJSON.parseJSONData(
+                JSON_DATA, cfg.FORM_NAMES["2.5"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.5"]
+        ),
 
-        tables.end_tabular(),
-        tables.end_adjustbox(),
-        tables.end_table(),
+        tables[9].end_tabular(),
+        tables[9].end_adjustbox(),
+        tables[9].end_table(),
 
         NEWLINE,
 
-        ovr_subsection.endgroup(), # End wrapper
+        subsect_override.endgroup(), # End wrapper
 
         # === Section 3 ====
         TeXStyle.generate_section(cfg.SECTIONS["3"]),
 
-        # generate_network_checklist
-
-        # generate_security_checklist
-
-        # generate_archiving_checklist
-
+        net_ques_y_n.generate_options_inline(cfg.SECT_THREE_QUESTIONS, 0, 4, start_col_search="LAN"),
+        TeXStyle.vertical_space("-2.25em"), # remove whitespace in between the tables
+        net_ques_pbx.generate_options_inline(cfg.SECT_THREE_QUESTIONS, 5, 5, start_col_search="PBX_Setup"),
+        TeXStyle.vertical_space("-2.25em"),
+        net_ques_y_n.generate_options_inline(cfg.SECT_THREE_QUESTIONS, 6, 6, start_col_search="Internet"),
+        TeXStyle.vertical_space("-2.25em"),
+        net_ques_blank.generate_fill_blank(cfg.SECT_THREE_QUESTIONS, 8, 11, start_col_search="ISPs"),
+        TeXStyle.vertical_space("-2.25em"),
+        net_ques_y_n.generate_options_inline(cfg.SECT_THREE_QUESTIONS, 12, 12, start_col_search="Website"),
+        TeXStyle.vertical_space("-2.25em"),
+        net_ques_blank.generate_fill_blank(cfg.SECT_THREE_QUESTIONS, 13, 13, start_col_search="URL"),
 
         NEWLINE * 2,
 
-        # === This marks the end of the document (DO NOT REMOVE) ===
+        # !!! This marks the end of the document (DO NOT REMOVE) !!!
         doc.end_document()
     ]
 

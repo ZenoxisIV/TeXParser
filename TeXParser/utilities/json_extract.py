@@ -24,5 +24,3 @@ def parseJSONData(data: dict, table: str) -> defaultdict:
     parsed_data['row_len'] = len(row_data)
 
     return parsed_data
-
-print(requestJSONData("http://localhost/TeXParser/json_test.php"))

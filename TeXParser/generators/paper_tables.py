@@ -52,8 +52,18 @@ class Tabular(AdjustBox):
 
     def begin_tabular(self, section_num: str, parameter: str | None = None) -> str:
         """Begins the tabular environment for the table."""
+        # SPECIAL ENVIRONMENT:
+        # The @{}c@{} specifies that the column should be centered with no space on either side.
+        if section_num == "@{}c@{}":
+            table_format = section_num
+        else:
+            try:
+                table_format = self.table_format[section_num]
+            except KeyError:
+                raise KeyError(f"Table format not found for section number: {section_num}")
+        
         self.section_num = section_num
-        return f"\\begin{{{self.table_env}}}{{{self.table_format[section_num]}}}" + '\n' if parameter is None else f"\\begin{{{self.table_env}}}[{parameter}]{{{section_num}}}" + '\n'
+        return f"\\begin{{{self.table_env}}}{{{table_format}}}" + '\n' if parameter is None else f"\\begin{{{self.table_env}}}[{parameter}]{{{section_num}}}" + '\n'
     
     def end_tabular(self) -> str:
         """Ends the tabular environment for the table."""
@@ -74,7 +84,7 @@ class Tabular(AdjustBox):
         self.header_set = build_table_headers
         return build_table_headers
     
-    def generate_entries(self, data: dict, default_fields: list[str] | None = None, limit: int = 30, reset_limit: int = 30, bool_cols: list[str] | None = None) -> str:
+    def generate_entries(self, data: dict, default_fields: list[str] | None = None, limit: int = 30, reset_limit: int = 30, tickbox_cols: list[str] | None = None) -> str:
         """Generates the entries for the table."""
 
         def premature_end_table(self) -> str:
@@ -94,13 +104,13 @@ class Tabular(AdjustBox):
         if missing_keys:
             raise ValueError(f"Required key(s) not found in the data: {', '.join(missing_keys)}")
         
-        if bool_cols is not None:
-            missing_cols = [col for col in bool_cols if col not in data['col_names']]
+        if tickbox_cols is not None:
+            missing_cols = [col for col in tickbox_cols if col not in data['col_names']]
             if missing_cols:
                 raise ValueError(f"Column(s) not found for boolean entries: {', '.join(missing_cols)}")
             
             for idx, col in enumerate(data['col_names']):
-                if col in bool_cols:
+                if col in tickbox_cols:
                     for i in range(data['row_len']):
                         data['row_entries'][i][idx] = make_tickbox(bool(int(data['row_entries'][i][idx])))
 
@@ -124,7 +134,7 @@ class Tabular(AdjustBox):
         for row in prio_rows:
             for j in range(data['col_len']):
                 entries += row[j] if row[j] is not None else ''
-                entries += " & "  if j != data['col_len'] - 1 else ' ' + r"\\" + ' ' + self.generate_horizontal_line()
+                entries += " & "  if j != data['col_len'] - 1 else r" \\ " + self.generate_horizontal_line()
             entries += '\n'
             row_track += 1
 
@@ -136,7 +146,7 @@ class Tabular(AdjustBox):
         for row in remaining_rows:
             for j in range(data['col_len']):
                 entries += row[j] if row[j] is not None else ''
-                entries += " & "  if j != data['col_len'] - 1 else ' ' + r"\\" + ' ' + self.generate_horizontal_line()
+                entries += " & "  if j != data['col_len'] - 1 else r" \\ " + self.generate_horizontal_line()
             entries += '\n'
             row_track += 1
 
