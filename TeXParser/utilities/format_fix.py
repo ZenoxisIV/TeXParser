@@ -1,7 +1,16 @@
 # This file contains functions that are used to fix formatting issues in LaTeX code.
 class OverrideFormat:
-    def __init__(self, tex_script: str | None = None) -> None:
-        pass
+    def __init__(self, file: str | None = None) -> None:
+        if file is None:
+            self.tex = ""
+        else:
+            fd = open(file, "r")
+            self.tex = fd.read()
+            fd.close()
+
+    def include_tex(self) -> str:
+        """Includes the LaTeX code in the document."""
+        return self.tex
 
     def change_titleformat(self, font_size: int, section: str, param: str) -> str:
         """Changes the title format for the document."""
