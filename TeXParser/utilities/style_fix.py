@@ -25,9 +25,10 @@ def generate_hypersetup(link_color: str, cite_color: str, url_color: str) -> str
     ]
     return '\n'.join(temp)
 
-def make_tickbox(is_ticked: bool = False) -> str:
+def make_tickbox(is_ticked: bool = False, name: str | None = None) -> str:
     """Creates a tickbox for the document."""
-    return r"\Large$\boxtimes$" if is_ticked else r"\Large$\square$"
+    tickbox = r"\Large$\boxtimes$" if is_ticked else r"\Large$\square$"
+    return tickbox if name is None else f"{tickbox} \\footnotesize {name}"
 
 def generate_footnote_mark(symbol: str, is_protected = False) -> str:
     """Generates a footnote mark for the document."""
@@ -67,3 +68,7 @@ def modify_substring(paragraph: str, substring: str, func: Callable, symbol: str
 def newpage() -> str:
     """Creates a new page."""
     return '\n' + r"\newpage" + '\n' * 2
+
+def vertical_space(space: str) -> str:
+    """Creates a vertical space."""
+    return '\n' + f"\\vspace{{{space}}}" + '\n'
