@@ -1,6 +1,6 @@
 # This file contains the classes for generating the tables for the paper.
 from copy import deepcopy
-from utilities.style_fix import make_tickbox, newpage
+from utilities.fix_style import make_tickbox, newpage
 
 
 class ContainerTable:
@@ -84,7 +84,7 @@ class Tabular(AdjustBox):
         self.header_set = build_table_headers
         return build_table_headers
     
-    def generate_entries(self, data: dict, default_fields: list[str] | None = None, limit: int = 30, reset_limit: int = 30, tickbox_cols: list[str] | None = None) -> str:
+    def generate_entries(self, data: dict | None, default_fields: list[str] | None = None, limit: int = 30, reset_limit: int = 30, tickbox_cols: list[str] | None = None) -> str:
         """Generates the entries for the table."""
 
         def premature_end_table(self) -> str:
@@ -98,6 +98,9 @@ class Tabular(AdjustBox):
         def regen_headers(self) -> str:
             """Regenerates the headers for the table."""
             return self.header_set + '\n'
+        
+        if data is None:
+            raise ValueError("Data not found.")
 
         required_keys = ['col_len', 'col_names', 'row_entries']
         missing_keys = [key for key in required_keys if key not in data]

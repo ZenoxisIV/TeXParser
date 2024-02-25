@@ -11,7 +11,7 @@ catch(mysqli_sql_exception){
 	echo"Could not connect!";
 }
 
-$tables = ['cd_year', 'cd_usage', 'servers', 'pc_os', 'ws_os', 'server_os', 'automation_software', 'admin_systems', 'si_systems', 'databases', 'network'];
+$tables = ['cd_year', 'cd_usage', 'servers', 'pc_os', 'ws_os', 'server_os', 'automation_software', 'admin_systems', 'si_systems', 'databases', 'network', 'security'];
 
 foreach ($tables as $table) {
     $sql = "SELECT * FROM `$table` WHERE Code = '991901'";

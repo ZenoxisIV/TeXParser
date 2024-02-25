@@ -2,16 +2,21 @@
 # TeXParser -- TeX/LaTeX Parser
 # This is the main file for the TeXParser project.
 # =============================================================================
-from generators import paper_structure as TeXDoc
-from generators import paper_headers as TeXHead
-from generators import paper_frames as TeXFrame
-from generators import paper_lists as TeXList
-from generators import paper_tables as TeXTable
-from generators import paper_questionnaire as TeXQues
-from utilities import style_fix as TeXStyle
-from utilities import format_fix as TeXFormat
-from utilities import json_extract as TeXJSON
-import config as cfg
+import generators.paper_structure as TeXDoc
+import generators.paper_headers as TeXHead
+import generators.paper_frames as TeXFrame
+import generators.paper_lists as TeXList
+import generators.paper_tables as TeXTable
+import generators.paper_questionnaire as TeXQues
+
+import utilities.fix_style as TeXStyle
+import utilities.fix_format as TeXFormat
+import utilities.extract_json as TeXJSON
+
+import settings.config as cfg
+import settings.db_config as db_cfg
+import settings.footer_config as foot_cfg
+import settings.misc_config as misc_cfg
 
 def main():
     # *** CONSTANTS ***
@@ -32,8 +37,8 @@ def main():
             r"Respondent's Email Address: " + f"{cfg.EMAIL}",
         ]
     )
-    objectives = TeXList.Bullet(cfg.OBJECTIVES)
-    fill_out_instructions = TeXList.Bullet(cfg.FILL_OUT_INSTRUCTIONS)
+    objectives = TeXList.Bullet(misc_cfg.OBJECTIVES)
+    fill_out_instructions = TeXList.Bullet(misc_cfg.FILL_OUT_INSTRUCTIONS)
 
     # *** CLASS INIT (OVERRIDE) ***
     subsect_override = TeXFormat.OverrideFormat()
@@ -47,7 +52,12 @@ def main():
     NETWORK_DATA = TeXJSON.parseJSONData(JSON_DATA, "network")
     net_ques_y_n = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
     net_ques_pbx = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{4cm} cccc"}, ["Private", "Hosted", "VoIP PBX or IP-PBX", "Hosted IP"])
+    net_ques_moa = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["3.8"])
     net_ques_blank = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{13.75cm}"})
+
+    SECURITY_DATA = TeXJSON.parseJSONData(JSON_DATA, "security")
+    sec_ques_y_n = TeXQues.Questionnaire(SECURITY_DATA, {"4": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
+    sec_ques_meas = TeXQues.Questionnaire(SECURITY_DATA, {"4": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["4.2"])
 
     # *** TeX Builder ***
     build_TeX = [
@@ -101,9 +111,9 @@ def main():
         NEWLINE * 2,
 
         # === Objectives ===
-        TeXStyle.bold_text(TeXStyle.italic_text(cfg.OBJECTIVES["title"] + ':')),
+        TeXStyle.bold_text(TeXStyle.italic_text(misc_cfg.OBJECTIVES["title"] + ':')),
         NEWLINE,
-        objectives.begin_bullet(cfg.OBJECTIVES_BULLET_OFFSET),
+        objectives.begin_bullet(misc_cfg.OBJECTIVES_BULLET_OFFSET),
         objectives.generate_bullets(),
         objectives.end_bullet(),
 
@@ -113,9 +123,9 @@ def main():
         TeXStyle.generate_section(cfg.SECTIONS["1"]),
 
         # === Fill-out instructions ===
-        TeXStyle.bold_text(cfg.FILL_OUT_INSTRUCTIONS["title"] + ':'),
+        TeXStyle.bold_text(misc_cfg.FILL_OUT_INSTRUCTIONS["title"] + ':'),
         NEWLINE,
-        fill_out_instructions.begin_bullet(cfg.FILL_OUT_INSTRUCTIONS_BULLET_OFFSET),
+        fill_out_instructions.begin_bullet(misc_cfg.FILL_OUT_INSTRUCTIONS_BULLET_OFFSET),
         TeXStyle.modify_substring(fill_out_instructions.generate_bullets(), "Reference year is last year", TeXStyle.bold_text),
         fill_out_instructions.end_bullet(),
 
@@ -123,8 +133,8 @@ def main():
 
         # === Subsection 1.1 === 
         TeXStyle.generate_subsection(cfg.SECTIONS["1.1"]),
-        TeXStyle.generate_footnote_text('1', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('2', cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('1', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('2', foot_cfg.FOOTNOTES),
         NEWLINE * 2,
 
         tables[0].begin_table('H'),
@@ -159,7 +169,7 @@ def main():
         TeXStyle.modify_substring(
             tables[0].generate_entries(
                 TeXJSON.parseJSONData(
-                    JSON_DATA, cfg.FORM_NAMES["1.1"]
+                    JSON_DATA, db_cfg.FORM_NAMES["1.1"]
                 ), 
             default_fields=cfg.TABLE_DEFAULT_FIELDS["1.1"], limit=16
             ), "Mobile Phone", TeXStyle.append_footnotemark, '2'
@@ -173,8 +183,8 @@ def main():
 
         # === Subsection 1.2 ===
         TeXStyle.generate_subsection(cfg.SECTIONS["1.2"]),
-        TeXStyle.generate_footnote_text('3', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('4', cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('3', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('4', foot_cfg.FOOTNOTES),
         NEWLINE * 2,
 
         tables[1].begin_table('H'),
@@ -208,7 +218,7 @@ def main():
 
         tables[1].generate_entries(
             TeXJSON.parseJSONData(
-                JSON_DATA, cfg.FORM_NAMES["1.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["1.2"]
+                JSON_DATA, db_cfg.FORM_NAMES["1.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["1.2"]
         ),
 
         tables[1].end_tabular(),
@@ -242,7 +252,7 @@ def main():
 
         tables[2].generate_entries(
             TeXJSON.parseJSONData(
-                JSON_DATA, cfg.FORM_NAMES["1.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["1.3"]
+                JSON_DATA, db_cfg.FORM_NAMES["1.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["1.3"]
         ),
 
         tables[2].end_tabular(),
@@ -259,7 +269,7 @@ def main():
 
         # === Subsubsection 2.1.1 ===
         TeXStyle.generate_subsubsection(cfg.SECTIONS["2.1.1"]),
-        TeXStyle.generate_footnote_text('5', cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('5', foot_cfg.FOOTNOTES),
         NEWLINE * 2,
 
         tables[3].begin_table('H'),
@@ -281,7 +291,7 @@ def main():
 
         tables[3].generate_entries(
             TeXJSON.parseJSONData(
-                JSON_DATA, cfg.FORM_NAMES["2.1.1"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.1"], tickbox_cols=cfg.TICKBOX_COLS["2.1.1"]
+                JSON_DATA, db_cfg.FORM_NAMES["2.1.1"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.1"], tickbox_cols=db_cfg.TICKBOX_COLS["2.1.1"]
         ),
 
         tables[3].end_tabular(),
@@ -312,7 +322,7 @@ def main():
 
         tables[4].generate_entries(
             TeXJSON.parseJSONData(
-                JSON_DATA, cfg.FORM_NAMES["2.1.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.2"], tickbox_cols=cfg.TICKBOX_COLS["2.1.2"]
+                JSON_DATA, db_cfg.FORM_NAMES["2.1.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.2"], tickbox_cols=db_cfg.TICKBOX_COLS["2.1.2"]
         ),
 
         tables[4].end_tabular(),
@@ -343,7 +353,7 @@ def main():
 
         tables[5].generate_entries(
             TeXJSON.parseJSONData(
-                JSON_DATA, cfg.FORM_NAMES["2.1.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.3"], tickbox_cols=cfg.TICKBOX_COLS["2.1.3"]
+                JSON_DATA, db_cfg.FORM_NAMES["2.1.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.1.3"], tickbox_cols=db_cfg.TICKBOX_COLS["2.1.3"]
         ),
 
         tables[5].end_tabular(),
@@ -374,7 +384,7 @@ def main():
 
         tables[6].generate_entries(
             TeXJSON.parseJSONData(
-                JSON_DATA, cfg.FORM_NAMES["2.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.2"], tickbox_cols=cfg.TICKBOX_COLS["2.2"]
+                JSON_DATA, db_cfg.FORM_NAMES["2.2"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.2"], tickbox_cols=db_cfg.TICKBOX_COLS["2.2"]
         ),
 
         tables[6].end_tabular(),
@@ -389,11 +399,11 @@ def main():
 
         TeXStyle.modify_substring(TeXStyle.generate_subsection(cfg.SECTIONS["2.3"]), "Oversight", TeXStyle.append_footnotemark, '6', True),
         cfg.SECTION_NOTES["2.3"],
-        TeXStyle.generate_footnote_text('6', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('7', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('8', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('9', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('10', cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('6', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('7', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('8', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('9', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('10', foot_cfg.FOOTNOTES),
 
         NEWLINE,
 
@@ -433,7 +443,7 @@ def main():
 
         tables[7].generate_entries(
             TeXJSON.parseJSONData(
-                JSON_DATA, cfg.FORM_NAMES["2.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.3"]
+                JSON_DATA, db_cfg.FORM_NAMES["2.3"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.3"]
         ),
 
         tables[7].end_tabular(),
@@ -445,13 +455,13 @@ def main():
         # === Subsection 2.4 ===
         TeXStyle.modify_substring(TeXStyle.generate_subsection(cfg.SECTIONS["2.4"]), "Operational", TeXStyle.append_footnotemark, '11', True),
         cfg.SECTION_NOTES["2.4"],
-        TeXStyle.generate_footnote_text('11', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('12', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('13', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('14', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('15', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('16', cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('17', cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('11', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('12', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('13', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('14', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('15', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('16', foot_cfg.FOOTNOTES),
+        TeXStyle.generate_footnote_text('17', foot_cfg.FOOTNOTES),
 
         NEWLINE,
 
@@ -491,7 +501,7 @@ def main():
 
         tables[8].generate_entries(
             TeXJSON.parseJSONData(
-                JSON_DATA, cfg.FORM_NAMES["2.4"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.4"]
+                JSON_DATA, db_cfg.FORM_NAMES["2.4"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.4"]
         ),
 
         tables[8].end_tabular(),
@@ -540,7 +550,7 @@ def main():
 
         tables[9].generate_entries(
             TeXJSON.parseJSONData(
-                JSON_DATA, cfg.FORM_NAMES["2.5"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.5"]
+                JSON_DATA, db_cfg.FORM_NAMES["2.5"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["2.5"]
         ),
 
         tables[9].end_tabular(),
@@ -554,17 +564,33 @@ def main():
         # === Section 3 ====
         TeXStyle.generate_section(cfg.SECTIONS["3"]),
 
-        net_ques_y_n.generate_options_inline(cfg.SECT_THREE_QUESTIONS, 0, 4, start_col_search="LAN"),
+        TeXStyle.vertical_space("-2em"),
+
+        net_ques_y_n.generate_options_inline(cfg.QUESTIONS["3"], 0, 4, start_col_search="LAN"),
         TeXStyle.vertical_space("-2.25em"), # remove whitespace in between the tables
-        net_ques_pbx.generate_options_inline(cfg.SECT_THREE_QUESTIONS, 5, 5, start_col_search="PBX_Setup"),
+        net_ques_pbx.generate_options_inline(cfg.QUESTIONS["3"], 5, 5, start_col_search="PBX_Setup"),
         TeXStyle.vertical_space("-2.25em"),
-        net_ques_y_n.generate_options_inline(cfg.SECT_THREE_QUESTIONS, 6, 6, start_col_search="Internet"),
+        net_ques_y_n.generate_options_inline(cfg.QUESTIONS["3"], 6, 6, start_col_search="Internet"),
         TeXStyle.vertical_space("-2.25em"),
-        net_ques_blank.generate_fill_blank(cfg.SECT_THREE_QUESTIONS, 8, 11, start_col_search="ISPs"),
+        net_ques_moa.generate_options_multi(cfg.QUESTIONS["3"][7], q_idx=7, start_col_search="MOA", num_of_cols=3, col_adjust="4.5in"),
         TeXStyle.vertical_space("-2.25em"),
-        net_ques_y_n.generate_options_inline(cfg.SECT_THREE_QUESTIONS, 12, 12, start_col_search="Website"),
+        net_ques_blank.generate_fill_blank(cfg.QUESTIONS["3"], 8, 11, start_col_search="ISPs"),
         TeXStyle.vertical_space("-2.25em"),
-        net_ques_blank.generate_fill_blank(cfg.SECT_THREE_QUESTIONS, 13, 13, start_col_search="URL"),
+        net_ques_y_n.generate_options_inline(cfg.QUESTIONS["3"], 12, 12, start_col_search="Website"),
+        TeXStyle.vertical_space("-2.25em"),
+        net_ques_blank.generate_fill_blank(cfg.QUESTIONS["3"], 13, 13, start_col_search="URL"),
+
+        # === Section 4 ===
+        TeXStyle.generate_section(cfg.SECTIONS["4"]),
+
+        TeXStyle.vertical_space("-2em"),
+
+        sec_ques_y_n.generate_options_inline(cfg.QUESTIONS["4"], 0, 0, start_col_search="Protection"),
+        TeXStyle.vertical_space("-2.25em"),
+        sec_ques_meas.generate_options_multi(cfg.QUESTIONS["4"][1], q_idx=1, start_col_search="Measures", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
+
+        # === Section 5 ===
+        TeXStyle.generate_section(cfg.SECTIONS["5"]),
 
         NEWLINE * 2,
 
