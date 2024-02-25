@@ -74,7 +74,7 @@ class Questionnaire:
             """Generates the question for the questionnaire."""
             return f"\\footnotesize {get_key}.{q_idx + 1} & \\footnotesize {question}" + '\n'
 
-        def generate_items(self) -> str: #TODO handle OTHERS logic, make a mapping for the database col to the real text
+        def generate_items(self) -> str:
             """Generates the items for the questionnaire."""
             target_idx = self.data['col_names'].index(start_col_search)
             entries = self.data['row_entries'][0][target_idx:]

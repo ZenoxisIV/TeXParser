@@ -59,6 +59,14 @@ def main():
     sec_ques_y_n = TeXQues.Questionnaire(SECURITY_DATA, {"4": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
     sec_ques_meas = TeXQues.Questionnaire(SECURITY_DATA, {"4": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["4.2"])
 
+    ARCHIVING_DATA = TeXJSON.parseJSONData(JSON_DATA, "archiving")
+    arch_ques_y_n = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
+    arch_ques_sys = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["5.2"])
+    arch_ques_elecdata = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["5.3"])
+    arch_ques_mos = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["5.4"])
+    arch_ques_elecinfo = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["5.5"])
+
+
     # *** TeX Builder ***
     build_TeX = [
         # !!! IMPORTANT NOTE: The following lines should ideally not be changed nor modified. !!!
@@ -591,6 +599,18 @@ def main():
 
         # === Section 5 ===
         TeXStyle.generate_section(cfg.SECTIONS["5"]),
+
+        TeXStyle.vertical_space("-2em"),
+
+        arch_ques_y_n.generate_options_inline(cfg.QUESTIONS["5"], 0, 0, start_col_search="System"),
+        TeXStyle.vertical_space("-2.25em"),
+        arch_ques_sys.generate_options_multi(cfg.QUESTIONS["5"][1], q_idx=1, start_col_search="System_type", num_of_cols=3, col_adjust="4.5in"),
+        TeXStyle.vertical_space("-2.25em"),
+        arch_ques_elecdata.generate_options_multi(cfg.QUESTIONS["5"][2], q_idx=2, start_col_search="Electronic_mode", num_of_cols=2, col_adjust="4.5in", col_format="p{4.75cm}p{4.75cm}"),
+        TeXStyle.vertical_space("-2.25em"),
+        arch_ques_mos.generate_options_multi(cfg.QUESTIONS["5"][3], q_idx=3, start_col_search="Conventional_Medium", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
+        TeXStyle.vertical_space("-2.25em"),
+        arch_ques_elecinfo.generate_options_multi(cfg.QUESTIONS["5"][4], q_idx=4, start_col_search="Electronic_Info", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
 
         NEWLINE * 2,
 
