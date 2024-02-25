@@ -219,5 +219,13 @@ QUESTIONS = {
     "4": [
         "Does your agency have a protection scheme for your ICT resources?",
         "If YES, what is/are the measure/s being used by your office? (Check all applicable)"
+    ],
+
+    "5": [
+        "Does you agency have a data archiving system?",
+        "If yes, what type of data archiving system does your agency use?",
+        "If electronic data archiving is being utilized, what is the mode?",
+        "If conventional mode, what is the medium of storage of the archived data?",
+        "What information is archived by your agency electronically? (Check all items that are applicable)"
     ]
 }

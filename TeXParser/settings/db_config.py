@@ -60,6 +60,38 @@ QUES_OPTION_MAPPING = {
         "Non-local back-up media": "Storage of back-up media in localities other than the operating environment",
         "Security training": "Regular ICT security training of employees",
         "Others": None
+    },
+
+    "5.2": {
+        "Manual": "Manual",
+        "Electronic": "Electronic",
+        "Both": "Both/Combination"
+    },
+
+    "5.3": {
+        "Conventional": "Conventional",
+        "Cloud": "Cloud"
+    },
+
+    "5.4": {
+        "Optical disks": "Optical disks (e.g. CD-Rom, DVD)",
+        "Hard Disk": "Hard Disk",
+        "Tape": "Tape",
+        "External Hard Drive": "External Hard Drive",
+        "Microfiche": "Microfiche",
+        "Diskette": "Diskette",
+        "Others": None
+    },
+
+    "5.5": {
+        "Publications": "Publications (Annual Report, Statistical Report, etc.)",
+        "Letters": "Letters, memorandum orders, communications, etc.",
+        "Audio-visual recordings": "Audio-visual recordings",
+        "Unprocessed": "Unprocessed/Raw Data",
+        "Maps": "Maps",
+        "Photographs": "Photographs",
+        "Public documents": "Public documents (civil registration forms, passports, land titles, etc.)",
+        "Others": None
     }
 }
 
