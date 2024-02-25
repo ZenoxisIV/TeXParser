@@ -1,13 +1,14 @@
 from collections import defaultdict
+from typing import Any
 import requests
 
-def requestJSONData(url: str) -> dict:
+def requestJSONData(url: str) -> dict[str, Any]:
     response = requests.get(url)
     if response.status_code != 200:
         raise ConnectionError(f"Failed to retrieve JSON data from '{url}'. Status code: {response.status_code}")
     return response.json()
 
-def parseJSONData(data: dict, table: str) -> defaultdict:
+def parseJSONData(data: dict[str, Any], table: str) -> defaultdict[str, Any] | None:
     if table not in data:
         raise ValueError(f"Table '{table}' not found in the JSON data.")
 

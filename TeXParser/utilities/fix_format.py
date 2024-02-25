@@ -34,7 +34,6 @@ class OverrideFormat:
         """Ends a group."""
         return r"\endgroup" + '\n'
 
-
 def translation_table(text) -> str:
     """Translates the text to LaTeX format."""
     table = str.maketrans({'%': r"\%",

@@ -71,4 +71,4 @@ def newpage() -> str:
 
 def vertical_space(space: str) -> str:
     """Creates a vertical space."""
-    return '\n' + f"\\vspace{{{space}}}" + '\n'
+    return '\n' + f"\\vspace{{{space}}}" + '\n' * 2

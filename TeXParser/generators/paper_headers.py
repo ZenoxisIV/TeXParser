@@ -1,6 +1,6 @@
 # This file contains the class for generating headers including titles and sections for the paper.
 
-from utilities.format_fix import translation_table
+from utilities.fix_format import translation_table
         
 class Title:
     def __init__(self, title: str) -> None:
