@@ -21,6 +21,21 @@ MARGIN = "2cm"
 # If ypu want to add underline text, enclose the text with \underline{<text>}.
 # If you want to add a hyperlink, enclose the text with \href{<link>}{<text>}.
 # If you want to add a footnote mark, use \footnotemark[<symbol>].
+
+# If you want to add the following characters as TEXT, use the following mapping:
+# %: \%
+# $: \$
+# &: \&
+# #: \#
+# _: \_
+# {: \{
+# }: \}
+# ~: \textasciitilde
+# ^: \textasciicircum
+# \: \textbackslash
+# <: $<$
+# >: $>$
+
 # Lastly, make sure to add a 'r' just right before you write inside the "" to avoid escape characters issues!
 # ===================================================================================================================
 
@@ -56,6 +71,13 @@ SECTIONS = {
     "2.4": "Operational Strategic Information Systems",
     "2.5": "Databases",
     "3": "NETWORK",
+    "4": r"SECURITY, DISASTER RECOVERY \& BACK-UP",
+    "5": "DATA ARCHIVING",
+    "6": "SPECIAL SOLUTIONS AND OTHER SERVICES",
+    "7": "DATA CENTER",
+    "8": "ICT PROJECTS",
+    "8.1": "Details of Ongoing ICT Projects",
+    "8.2": "Issues Encountered in the Implementation of ICT Projects"
 }
 
 # For footnote marks in sections, add \protect just before the \footnotemark command.
@@ -176,19 +198,26 @@ TABLE_DEFAULT_FIELDS = {
 }
 # ======================================
 
-SECT_THREE_QUESTIONS = [
-    "Does your agency have a Local Area Network (LAN)?",
-    "Does your agency have an Intranet?",
-    "If yes, does your agency have a Virtual Private Network (VPN)?",
-    "Does your agency have a Wide Area Network (WAN)?",
-    "Does your agency have a Private Automatic Branch Exchange (PABX or PBX)?",
-    "If yes, what is the PBX set up?",
-    "Is your agency connected to the Internet?",
-    "What is/are your agency's mode/s of access to the Internet? (Check all items that are applicable)",
-    "Who is (are) your Internet Service Provider(s)? If more than one, please state who is the primary and who is the secondary provider?",
-    "What is the combined internet bandwidth (voice and data)?",
-    "How many employees have access to the Internet in the office?",
-    "How many employees have their own official e-mail address?",
-    "Does your agency have a web site?",
-    "If YES, what is the URL of your agency's web site?",
-]
+QUESTIONS = {
+    "3": [
+        "Does your agency have a Local Area Network (LAN)?",
+        "Does your agency have an Intranet?",
+        "If yes, does your agency have a Virtual Private Network (VPN)?",
+        "Does your agency have a Wide Area Network (WAN)?",
+        "Does your agency have a Private Automatic Branch Exchange (PABX or PBX)?",
+        "If yes, what is the PBX set up?",
+        "Is your agency connected to the Internet?",
+        "What is/are your agency's mode/s of access to the Internet? (Check all items that are applicable)",
+        "Who is (are) your Internet Service Provider(s)? If more than one, please state who is the primary and who is the secondary provider?",
+        "What is the combined internet bandwidth (voice and data)?",
+        "How many employees have access to the Internet in the office?",
+        "How many employees have their own official e-mail address?",
+        "Does your agency have a web site?",
+        "If YES, what is the URL of your agency's web site?"
+    ],
+
+    "4": [
+        "Does your agency have a protection scheme for your ICT resources?",
+        "If YES, what is/are the measure/s being used by your office? (Check all applicable)"
+    ]
+}
