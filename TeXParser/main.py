@@ -24,7 +24,7 @@ def main():
     REQUEST_DATA_URL = "http://localhost/TeXParser/json_test.php"
     JSON_DATA = TeXJSON.requestJSONData(REQUEST_DATA_URL)
 
-    # *** CLASS INIT (DOCUMENT) ***
+    # *** CLASS INIT (DOCUMENT TOP) ***
     docu = TeXDoc.Document(cfg.PAPER, cfg.FONT_SIZE, cfg.PAPER_TYPE)
     title = TeXHead.Title(cfg.TITLE)
     metadata = TeXFrame.MDFrame(
@@ -70,6 +70,29 @@ def main():
     cen_ques_y_n = TeXQues.Questionnaire(CENTER_DATA, {"7": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
     cen_ques_blank = TeXQues.Questionnaire(CENTER_DATA, {"7": "p{0.25cm} p{13.75cm}"})
     cen_ques_hous_out = TeXQues.Questionnaire(CENTER_DATA, {"7": "p{0.25cm} p{10cm} cc"}, ["In-house", "Outsourced"])
+
+    ICT_ISSUES_DATA = TeXJSON.parseJSONData(JSON_DATA, db_cfg.FORM_NAMES["8.2"])
+    issues_ques_proj = TeXQues.Questionnaire(ICT_ISSUES_DATA, {"8.2": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["8.2"])
+
+
+    # *** CLASS INIT (DOCUMENT BOTTOM) ***
+    send_ques = TeXFrame.MDFrame(
+        content=[
+            "Please send accomplished questionnaire to:"
+        ]
+    )
+
+    receiver = TeXFrame.MDFrame(
+        content=[
+            TeXStyle.bold_text(cfg.OFFICE_NAME) + r"\\",
+            cfg.OFFICE_TYPE + r"\\",
+            cfg.OFFICE_ADDRESS + r"\\",
+            f"or email soft copy to {TeXStyle.bold_text(TeXFormat.translation_table(cfg.OFFICE_EMAIL))}" + r"\\",
+            TeXFormat.force_linebreak(),
+            f"You may download the form at {cfg.OFFICE_LINK}." + r"\\",
+            f"Call {cfg.OFFICE_CONTACTS[0]} or {cfg.OFFICE_CONTACTS[1]} for assistance."
+        ]
+    )
 
 
     # *** TeX Builder ***
@@ -609,7 +632,42 @@ def main():
 
         # === Section 6 ===
         TeXStyle.generate_section(cfg.SECTIONS["6"]),
-        
+
+        NEWLINE,
+
+        tables[10].begin_table('H'),
+        tables[10].set_arraystretch(1.5),
+        tables[10].toggle_centering(),
+        tables[10].begin_adjustbox(r"\textwidth"),
+        tables[10].begin_tabular("6"),
+        tables[10].generate_horizontal_line(),
+
+        NEWLINE,
+
+        tables[10].generate_headers([
+            tables[10].generate_multicolumn(1, "|c|", "SPECIAL SOLUTIONS PACKAGE"),
+
+            tables[10].begin_tabular(r"@{}c@{}", "c") + r"USE" + TeXStyle.generate_footnote_mark('18') +
+                                            r"\\" +  "(Pls. write  codes only; refer below)"  + tables[10].end_tabular(),
+
+            tables[10].begin_tabular(r"@{}c@{}", "c") + "Others" + r"\\" +  r"(Please specify \\ if USE code is 15)" + tables[10].end_tabular(),
+
+            tables[10].generate_multicolumn(1, "c|", "MAINTENANCE COST") + r" \\ " + tables[10].generate_horizontal_line(),
+        ]),
+
+        NEWLINE,
+
+        tables[10].generate_entries(
+            TeXJSON.parseJSONData(
+                JSON_DATA, db_cfg.FORM_NAMES["6"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["6"]
+        ),
+
+        tables[10].end_tabular(),
+        tables[10].end_adjustbox(),
+        tables[10].end_table(),
+
+        NEWLINE,
+
         # === Section 7 ===
         TeXStyle.generate_section(cfg.SECTIONS["7"]),
 
@@ -627,7 +685,26 @@ def main():
         TeXStyle.generate_section(cfg.SECTIONS["8"]),
         ''.join([TeXStyle.generate_footnote_text(str(num), foot_cfg.FOOTNOTES) for num in range(18, 24)]),
 
-        # temp: DoT
+        # === Subsection 8.1 ===
+        TeXStyle.generate_subsection(cfg.SECTIONS["8.1"]),
+
+        # === Subsection 8.2 ===
+        TeXStyle.generate_subsection(cfg.SECTIONS["8.2"]),
+
+        TeXStyle.vertical_space("-1.75em"),
+
+        issues_ques_proj.generate_options_multi(start_col_search="Issues", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
+
+        # === Outro ===
+        send_ques.generate_mdframe(),
+
+        NEWLINE,
+        TeXStyle.vertical_space("-1.25em"),
+
+        receiver.generate_mdframe(is_centered=True),
+
+        NEWLINE,
+
         TeXStyle.bold_text(override_pref.change_fontsize("large") + ' ' + "Definition of Terms:") + ' ' + r"\\",
 
         NEWLINE,
@@ -635,6 +712,13 @@ def main():
         TeXStyle.process_text(misc_cfg.DEFINITION_OF_TERMS[0:11]),
 
         ''.join([TeXStyle.generate_footnote_text(str(num), foot_cfg.FOOTNOTES) for num in range(24, 33)]),
+
+        NEWLINE,
+
+        TeXFormat.toggle_noindent(),
+        TeXStyle.process_text(misc_cfg.DEFINITION_OF_TERMS[11:]),
+
+        ''.join([TeXStyle.generate_footnote_text(str(num), foot_cfg.FOOTNOTES) for num in range(33, 49)]),
 
         NEWLINE * 2,
 
