@@ -9,6 +9,21 @@
 # If ypu want to add underline text, enclose the text with \underline{<text>}.
 # If you want to add a hyperlink, enclose the text with \href{<link>}{<text>}.
 # If you want to add a footnote mark, use \footnotemark[<symbol>].
+
+# If you want to add the following characters as TEXT, use the following mapping:
+# %: \%
+# $: \$
+# &: \&
+# #: \# NOTE: # must be escaped even for the <link> in \href{<link>}{<text>}
+# _: \_
+# {: \{
+# }: \}
+# ~: \textasciitilde
+# ^: \textasciicircum
+# \: \textbackslash
+# <: $<$
+# >: $>$
+
 # Lastly, make sure to add a 'r' just right before you write inside the "" to avoid escape characters issues!
 # ===================================================================================================================
 

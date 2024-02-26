@@ -14,6 +14,10 @@ FORM_NAMES = {
     "2.3": "admin_systems",
     "2.4": "si_systems",
     "2.5": "databases",
+    "3": "network",
+    "4": "security",
+    "5": "archiving",
+    "7": "data_center"
 }
 # ======================================
 

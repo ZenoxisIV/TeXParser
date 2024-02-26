@@ -26,7 +26,7 @@ MARGIN = "2cm"
 # %: \%
 # $: \$
 # &: \&
-# #: \#
+# #: \# NOTE: # must be escaped even for the <link> in \href{<link>}{<text>}
 # _: \_
 # {: \{
 # }: \}
@@ -227,5 +227,12 @@ QUESTIONS = {
         "If electronic data archiving is being utilized, what is the mode?",
         "If conventional mode, what is the medium of storage of the archived data?",
         "What information is archived by your agency electronically? (Check all items that are applicable)"
+    ],
+
+    "7": [
+        "Does your agency have a data center?",
+        "If yes, how many sites?",
+        "Please check applicable maintenance set-up:",
+        "Does it have a back-up site?"
     ]
 }
