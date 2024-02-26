@@ -72,6 +72,14 @@ def generate_sectionformat(font_size: int, option: int | None = None, mode: str 
 
     return build_titleformat
 
+def toggle_noindent() -> str:
+    """Toggles the no indent on line for the document."""
+    return r"\noindent" + '\n'
+
+def force_linebreak() -> str:
+    """Forces a line break in the document."""
+    return r"\hfill" + r"\break"
+
 def generate_fancystyle() -> str: # Note: Requires the fancyhdr package
     """Generates the fancy style for the document."""
     return r"\pagestyle{fancy}" + '\n'
