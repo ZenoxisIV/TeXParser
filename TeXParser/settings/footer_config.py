@@ -11,7 +11,7 @@
 # If you want to add a footnote mark, use \footnotemark[<symbol>].
 
 # If you want to add the following characters as TEXT, use the following mapping:
-# %: \%
+# %: \% NOTE: % must be escaped even for the <link> in \href{<link>}{<text>}
 # $: \$
 # &: \&
 # #: \# NOTE: # must be escaped even for the <link> in \href{<link>}{<text>}
@@ -59,7 +59,7 @@ FOOTNOTES = {
     "30": r"\href{http://linux.about.com/cs/linux101/g/digital_signatu.htm?terms=Digital+signature}{http://linux.about.com/cs/linux101/g/digital\_signatu.htm?terms=Digital+signature}",
     "31": r"\href{http://www.wisegeek.com/what-is-an-external-hard-drive.htm}{http://www.wisegeek.com/what-is-an-external-hard-drive.htm}",
     "32": r"\href{http://www.nwgis.com/gisdefn.htm}{http://www.nwgis.com/gisdefn.htm}",
-    "33": r"\href{http://searchwebservices.techtarget.com/sDefinition/0,,sid26_gci212377,00.html}{http://searchwebservices.techtarget.com/sDefinition/0,,sid26\_gci212377,00.html",
+    "33": r"\href{http://searchwebservices.techtarget.com/sDefinition/0,,sid26_gci212377,00.html}{http://searchwebservices.techtarget.com/sDefinition/0,,sid26\_gci212377,00.html}",
     "34": r"\href{http://computer.howstuffworks.com/10-types-of-computers.htm\#page=3}{http://computer.howstuffworks.com/10-types-of-computers.htm\#page=3}",
     "35": r"\href{http://searchsmallbizit.techtarget.com/sDefinition/0,,sid44_gci212495,00.html}{http://searchsmallbizit.techtarget.com/sDefinition/0,,sid44\_gci212495,00.html}",
     "36": r"\href{http://en.wikipedia.org/wiki/Card_reader}{http://en.wikipedia.org/wiki/Card\_reader}",
@@ -67,10 +67,10 @@ FOOTNOTES = {
     "38": r"\href{http://simple.wikipedia.org/wiki/MICR}{http://simple.wikipedia.org/wiki/MICR}",
     "39": r"\href{http://www.m-w.com/cgi-bin/dictionary?book=Dictionary&va=microfiche}{http://www.m-w.com/cgi-bin/dictionary?book=Dictionary\&va=microfiche}",
     "40": r"\href{http://electronics.howstuffworks.com/gadgets/travel/pda1.htm}{http://electronics.howstuffworks.com/gadgets/travel/pda1.htm}",
-    "41": r"\href{http://www.auditnet.org/articles/softwarelicenses.htm#What%20Types}{http://www.auditnet.org/articles/softwarelicenses.htm\#What\%20Types}",
+    "41": r"\href{http://www.auditnet.org/articles/softwarelicenses.htm\#What\%20Types}{http://www.auditnet.org/articles/softwarelicenses.htm\#What\%20Types}",
     "42": r"\href{http://www.ehow.com/facts_7267523_definition-pabx.html}{http://www.ehow.com/facts\_7267523\_definition-pabx.html}",
-    "43": r"\href{http://computer.howstuffworks.com/10-types-of-computers.htm#page=5}{http://computer.howstuffworks.com/10-types-of-computers.htm\#page=5}",
-    "44": r"\href{http://computer.howstuffworks.com/10-types-of-computers.htm#page=7}{http://computer.howstuffworks.com/10-types-of-computers.htm\#page=7}",
+    "43": r"\href{http://computer.howstuffworks.com/10-types-of-computers.htm\#page=5}{http://computer.howstuffworks.com/10-types-of-computers.htm\#page=5}",
+    "44": r"\href{http://computer.howstuffworks.com/10-types-of-computers.htm\#page=7}{http://computer.howstuffworks.com/10-types-of-computers.htm\#page=7}",
     "45": r"\href{http://en.wikipedia.org/wiki/Card_reader}{http://en.wikipedia.org/wiki/Card\_reader}",
     "46": r"\href{http://mashable.com/follow/topics/tablets}{http://mashable.com/follow/topics/tablets}",
     "47": r"\href{http://www.voip-info.org/wiki/view/What+is+VOIP}{http://www.voip-info.org/wiki/view/What+is+VOIP}",

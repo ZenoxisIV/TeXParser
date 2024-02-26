@@ -14,6 +14,10 @@ FONT_SIZE = 10
 PAPER_TYPE = "article"
 MARGIN = "2cm"
 
+LINK_COLOR = "black"
+CITE_COLOR = "black"
+URL_COLOR = "black"
+
 # ===================================================================================================================
 # GUIDELINES:
 # If you want to add bold text, enclose the text with \textbf{<text>}.
@@ -23,7 +27,7 @@ MARGIN = "2cm"
 # If you want to add a footnote mark, use \footnotemark[<symbol>].
 
 # If you want to add the following characters as TEXT, use the following mapping:
-# %: \%
+# %: \% NOTE: % must be escaped even for the <link> in \href{<link>}{<text>}
 # $: \$
 # &: \&
 # #: \# NOTE: # must be escaped even for the <link> in \href{<link>}{<text>}
@@ -51,9 +55,12 @@ DIVISION = "University Computer Center"
 TELEPHONE = "8981-8500 local 2050"
 EMAIL = "computer.center@upd.edu.ph"
 
-LINK_COLOR = "black"
-CITE_COLOR = "black"
-URL_COLOR = "black"
+OFFICE_NAME = "E-GOVERNMENT FUND MANAGEMENT OFFICE"
+OFFICE_TYPE = "Information and Communications Technology Office"
+OFFICE_ADDRESS = "Carlos P. Garcia Ave., UP Diliman, Quezon City 1101"
+OFFICE_EMAIL = "mithi_survey@ncc.gov.ph"
+OFFICE_LINK = "http://www.icto.dost.gov.ph"
+OFFICE_CONTACTS = ["920-7421", "920-01-01 loc. 3912"]
 
 # ======================================
 SECTIONS = {
@@ -111,6 +118,9 @@ TABLE_FORMATS = {
     "2.3": "|p{4cm}|c|c|c|c|c|c|",
     "2.4": "|p{4cm}|c|c|c|c|c|c|",
     "2.5": "|p{4cm}|c|c|c|c|c|c|",
+
+    # === SECTION 6 ===
+    "6": "|p{7cm}|c|c|c|",
 }
 
 TABLE_DEFAULT_FIELDS = {
@@ -194,10 +204,18 @@ TABLE_DEFAULT_FIELDS = {
 
     "2.5": ["CRS",
             "iLib",
-            "DormApp"],
+            "DormApp"
+            ],
+
+    "6": ["Geographic Information System",
+          "Automated Fingerprint Identification System",
+          "Cloud computing",
+          "CCTV System"
+          ]
 }
 # ======================================
 
+# ======================================
 QUESTIONS = {
     "3": [
         "Does your agency have a Local Area Network (LAN)?",
@@ -236,3 +254,4 @@ QUESTIONS = {
         "Does it have a back-up site?"
     ]
 }
+# ======================================

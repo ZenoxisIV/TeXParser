@@ -17,7 +17,10 @@ FORM_NAMES = {
     "3": "network",
     "4": "security",
     "5": "archiving",
-    "7": "data_center"
+    "6": "special_solutions",
+    "7": "data_center",
+    "8.1": "ict_projects",
+    "8.2": "ict_issues"
 }
 # ======================================
 
@@ -95,6 +98,20 @@ QUES_OPTION_MAPPING = {
         "Maps": "Maps",
         "Photographs": "Photographs",
         "Public documents": "Public documents (civil registration forms, passports, land titles, etc.)",
+        "Others": None
+    },
+
+    "8.2": {
+        "Budget": "No budget or insufficient budget",
+        "Delayed funding": "Delay in the release of projects funds",
+        "Opposition": "Opposition or reluctance of stakeholders",
+        "Support": "Lack of support by management",
+        "Recruitment": "Difficulty in recruiting and/or retaining qualified ICT personnel",
+        "ICT skill": "Low level of ICT skills among employees",
+        "Bandwidth": "Unavailability of required bandwidth to support system/s",
+        "Contracts": "Not used or seldom used by intended users and/or clients",
+        "Usage": "Problems in contract management for outsourced services",
+        "Procurement": "Problems in procurement",
         "Others": None
     }
 }

@@ -11,7 +11,7 @@
 # If you want to add a footnote mark, use \footnotemark[<symbol>].
 
 # If you want to add the following characters as TEXT, use the following mapping:
-# %: \%
+# %: \% NOTE: % must be escaped even for the <link> in \href{<link>}{<text>}
 # $: \$
 # &: \&
 # #: \# NOTE: # must be escaped even for the <link> in \href{<link>}{<text>}
