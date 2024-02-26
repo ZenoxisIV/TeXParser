@@ -15,7 +15,7 @@ class Questionnaire:
         self.table = Tabular(self.format)
 
     def generate_options_inline(self, questions: list[str], q_start_idx: int = 0, q_end_idx: int = 99, start_col_search: str | None = None) -> str:
-        """Generates the questionnaire with options inline with the question."""
+        """Generates the questionnaire with options inline with the question. Can process multiple inline questions in succession."""
         get_key = list(self.format.keys())[0]
 
         def generate_items(self) -> str:
@@ -65,14 +65,14 @@ class Questionnaire:
 
         return build_ques
     
-    def generate_options_multi(self, question: str, q_idx: int = 0, start_col_search: str | None = None, num_of_cols: int = 2, col_adjust: str = "3.5in", col_format: str | None = None) -> str:
-        """Generates the questionnaire with options column-wise."""
+    def generate_options_multi(self, questions: list[str], q_idx: int = 0, start_col_search: str | None = None, num_of_cols: int = 2, col_adjust: str = "3.5in", col_format: str | None = None) -> str:
+        """Generates the questionnaire with options column-wise. Only processes one question at a time."""
         get_key = list(self.format.keys())[0]
 
         @staticmethod
         def generate_question() -> str:
             """Generates the question for the questionnaire."""
-            return f"\\footnotesize {get_key}.{q_idx + 1} & \\footnotesize {question}" + '\n'
+            return f"\\footnotesize {get_key}.{q_idx + 1} & \\footnotesize {questions[q_idx]}" + '\n'
 
         def generate_items(self) -> str:
             """Generates the items for the questionnaire."""
@@ -138,7 +138,7 @@ class Questionnaire:
 
         return build_ques
     
-    def generate_fill_blank(self, questions: list[str], q_start_idx: int = 0, q_end_idx: int = 99, start_col_search: str | None = None) -> str:
+    def generate_fill_blank(self, questions: list[str], q_start_idx: int = 0, q_end_idx: int = 99, start_col_search: str | None = None, col_format: str = r"\textwidth") -> str:
         """Generates the questionnaire with fill-in-the-blank answers."""
         get_key = list(self.format.keys())[0]
 
@@ -159,7 +159,7 @@ class Questionnaire:
             raise ValueError("Column to search not found.")
         
         build_ques = ''.join([self.table.begin_table("H"),
-                              self.table.begin_adjustbox(r"\textwidth"),
+                              self.table.begin_adjustbox(col_format),
                               self.table.begin_tabular(get_key),
 
                               generate_items(self),

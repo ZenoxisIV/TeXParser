@@ -25,9 +25,9 @@ def main():
     JSON_DATA = TeXJSON.requestJSONData(REQUEST_DATA_URL)
 
     # *** CLASS INIT (DOCUMENT) ***
-    doc = TeXDoc.Document(cfg.PAPER, cfg.FONT_SIZE, cfg.PAPER_TYPE)
+    docu = TeXDoc.Document(cfg.PAPER, cfg.FONT_SIZE, cfg.PAPER_TYPE)
     title = TeXHead.Title(cfg.TITLE)
-    mdframe = TeXFrame.MDFrame(
+    metadata = TeXFrame.MDFrame(
         content=[
             r"AGENCY NAME: " + f"{cfg.EMAIL}" + r"\\",
             r"Respondent (IS Planner/CIO/MIS Head)" + f"{TeXStyle.generate_footnote_mark('1')}: " + f"{cfg.RESPONDENT}" + r"\\",
@@ -41,7 +41,7 @@ def main():
     fill_out_instructions = TeXList.Bullet(misc_cfg.FILL_OUT_INSTRUCTIONS)
 
     # *** CLASS INIT (OVERRIDE) ***
-    subsect_override = TeXFormat.OverrideFormat()
+    override_pref = TeXFormat.OverrideFormat()
 
     # *** CLASS INIT (TABLES) ***
     tables: list[TeXTable.Tabular] = list()
@@ -49,42 +49,47 @@ def main():
         tables.append(TeXTable.Tabular({key: value}))
 
     # *** CLASS INIT (QUESTIONNAIRE) ***
-    NETWORK_DATA = TeXJSON.parseJSONData(JSON_DATA, "network")
+    NETWORK_DATA = TeXJSON.parseJSONData(JSON_DATA, db_cfg.FORM_NAMES["3"])
     net_ques_y_n = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
     net_ques_pbx = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{4cm} cccc"}, ["Private", "Hosted", "VoIP PBX or IP-PBX", "Hosted IP"])
     net_ques_moa = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["3.8"])
     net_ques_blank = TeXQues.Questionnaire(NETWORK_DATA, {"3": "p{0.25cm} p{13.75cm}"})
 
-    SECURITY_DATA = TeXJSON.parseJSONData(JSON_DATA, "security")
+    SECURITY_DATA = TeXJSON.parseJSONData(JSON_DATA, db_cfg.FORM_NAMES["4"])
     sec_ques_y_n = TeXQues.Questionnaire(SECURITY_DATA, {"4": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
     sec_ques_meas = TeXQues.Questionnaire(SECURITY_DATA, {"4": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["4.2"])
 
-    ARCHIVING_DATA = TeXJSON.parseJSONData(JSON_DATA, "archiving")
+    ARCHIVING_DATA = TeXJSON.parseJSONData(JSON_DATA, db_cfg.FORM_NAMES["5"])
     arch_ques_y_n = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
     arch_ques_sys = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["5.2"])
     arch_ques_elecdata = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["5.3"])
     arch_ques_mos = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["5.4"])
     arch_ques_elecinfo = TeXQues.Questionnaire(ARCHIVING_DATA, {"5": "p{0.25cm} p{13.75cm}"}, db_cfg.QUES_OPTION_MAPPING["5.5"])
 
+    CENTER_DATA = TeXJSON.parseJSONData(JSON_DATA, db_cfg.FORM_NAMES["7"])
+    cen_ques_y_n = TeXQues.Questionnaire(CENTER_DATA, {"7": "p{0.25cm} p{10cm} cc"}, ["YES", "NO"])
+    cen_ques_blank = TeXQues.Questionnaire(CENTER_DATA, {"7": "p{0.25cm} p{13.75cm}"})
+    cen_ques_hous_out = TeXQues.Questionnaire(CENTER_DATA, {"7": "p{0.25cm} p{10cm} cc"}, ["In-house", "Outsourced"])
+
 
     # *** TeX Builder ***
     build_TeX = [
         # !!! IMPORTANT NOTE: The following lines should ideally not be changed nor modified. !!!
-        doc.generate_document(),
+        docu.generate_document(),
         NEWLINE,
-        doc.import_package("inputenc", ["utf8"]),
-        ''.join([doc.import_package(pkg) for pkg in ["amssymb", "float", "url"]]),
-        doc.import_package("hyperref", ["final"]),
+        docu.import_package("inputenc", ["utf8"]),
+        ''.join([docu.import_package(pkg) for pkg in ["amssymb", "float", "url"]]),
+        docu.import_package("hyperref", ["final"]),
         NEWLINE,
-        ''.join([doc.import_package(pkg) for pkg in ["latexsym", "setspace", "enumitem", "makecell", 
+        ''.join([docu.import_package(pkg) for pkg in ["latexsym", "setspace", "enumitem", "makecell", 
                                                        "multicol", "multirow", "lastpage", "mdframed",
                                                        "titlesec"]]),
-        doc.import_package("footmisc", ["bottom"]),
+        docu.import_package("footmisc", ["bottom"]),
         NEWLINE,
-        ''.join([doc.import_package(pkg) for pkg in ["fancyhdr", "newfloat", "graphicx", "array"]]),
-        doc.import_package("adjustbox", ["export"]),
+        ''.join([docu.import_package(pkg) for pkg in ["fancyhdr", "newfloat", "graphicx", "array"]]),
+        docu.import_package("adjustbox", ["export"]),
         NEWLINE,
-        doc.import_package("geometry", [f"margin={cfg.MARGIN}", cfg.PAPER]),
+        docu.import_package("geometry", [f"margin={cfg.MARGIN}", cfg.PAPER]),
         NEWLINE,
         TeXFormat.generate_sectionformat(cfg.FONT_SIZE),
         NEWLINE,
@@ -104,7 +109,7 @@ def main():
         NEWLINE,
 
         # !!! This marks the start of the document (DO NOT REMOVE) !!!
-        doc.begin_document(),
+        docu.begin_document(),
 
         NEWLINE * 2,
 
@@ -114,7 +119,7 @@ def main():
         NEWLINE,
 
         # === Metadata for the document ===
-        mdframe.generate_mdframe(),
+        metadata.generate_mdframe(),
 
         NEWLINE * 2,
 
@@ -402,16 +407,12 @@ def main():
         NEWLINE,
 
         # === Subsection 2.3 ===
-        subsect_override.begingroup(), # Start wrapper for the section title.
-        subsect_override.change_titleformat(cfg.FONT_SIZE, "subsection", "runin"), # Simply just to allow text beside a section title.
+        override_pref.begingroup(), # Start wrapper for the section title.
+        override_pref.change_titleformat(cfg.FONT_SIZE, "subsection", "runin"), # Simply just to allow text beside a section title.
 
         TeXStyle.modify_substring(TeXStyle.generate_subsection(cfg.SECTIONS["2.3"]), "Oversight", TeXStyle.append_footnotemark, '6', True),
         cfg.SECTION_NOTES["2.3"],
-        TeXStyle.generate_footnote_text('6', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('7', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('8', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('9', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('10', foot_cfg.FOOTNOTES),
+        ''.join([TeXStyle.generate_footnote_text(str(num), foot_cfg.FOOTNOTES) for num in range(6, 11)]),
 
         NEWLINE,
 
@@ -463,13 +464,7 @@ def main():
         # === Subsection 2.4 ===
         TeXStyle.modify_substring(TeXStyle.generate_subsection(cfg.SECTIONS["2.4"]), "Operational", TeXStyle.append_footnotemark, '11', True),
         cfg.SECTION_NOTES["2.4"],
-        TeXStyle.generate_footnote_text('11', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('12', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('13', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('14', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('15', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('16', foot_cfg.FOOTNOTES),
-        TeXStyle.generate_footnote_text('17', foot_cfg.FOOTNOTES),
+        ''.join([TeXStyle.generate_footnote_text(str(num), foot_cfg.FOOTNOTES) for num in range(11, 18)]),
 
         NEWLINE,
 
@@ -567,7 +562,7 @@ def main():
 
         NEWLINE,
 
-        subsect_override.endgroup(), # End wrapper
+        override_pref.endgroup(), # End wrapper
 
         # === Section 3 ====
         TeXStyle.generate_section(cfg.SECTIONS["3"]),
@@ -580,7 +575,7 @@ def main():
         TeXStyle.vertical_space("-2.25em"),
         net_ques_y_n.generate_options_inline(cfg.QUESTIONS["3"], 6, 6, start_col_search="Internet"),
         TeXStyle.vertical_space("-2.25em"),
-        net_ques_moa.generate_options_multi(cfg.QUESTIONS["3"][7], q_idx=7, start_col_search="MOA", num_of_cols=3, col_adjust="4.5in"),
+        net_ques_moa.generate_options_multi(cfg.QUESTIONS["3"], q_idx=7, start_col_search="MOA", num_of_cols=3, col_adjust="4.5in"),
         TeXStyle.vertical_space("-2.25em"),
         net_ques_blank.generate_fill_blank(cfg.QUESTIONS["3"], 8, 11, start_col_search="ISPs"),
         TeXStyle.vertical_space("-2.25em"),
@@ -595,7 +590,7 @@ def main():
 
         sec_ques_y_n.generate_options_inline(cfg.QUESTIONS["4"], 0, 0, start_col_search="Protection"),
         TeXStyle.vertical_space("-2.25em"),
-        sec_ques_meas.generate_options_multi(cfg.QUESTIONS["4"][1], q_idx=1, start_col_search="Measures", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
+        sec_ques_meas.generate_options_multi(cfg.QUESTIONS["4"], q_idx=1, start_col_search="Measures", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
 
         # === Section 5 ===
         TeXStyle.generate_section(cfg.SECTIONS["5"]),
@@ -604,18 +599,47 @@ def main():
 
         arch_ques_y_n.generate_options_inline(cfg.QUESTIONS["5"], 0, 0, start_col_search="System"),
         TeXStyle.vertical_space("-2.25em"),
-        arch_ques_sys.generate_options_multi(cfg.QUESTIONS["5"][1], q_idx=1, start_col_search="System_type", num_of_cols=3, col_adjust="4.5in"),
+        arch_ques_sys.generate_options_multi(cfg.QUESTIONS["5"], q_idx=1, start_col_search="System_type", num_of_cols=3, col_adjust="4.5in"),
         TeXStyle.vertical_space("-2.25em"),
-        arch_ques_elecdata.generate_options_multi(cfg.QUESTIONS["5"][2], q_idx=2, start_col_search="Electronic_mode", num_of_cols=2, col_adjust="4.5in", col_format="p{4.75cm}p{4.75cm}"),
+        arch_ques_elecdata.generate_options_multi(cfg.QUESTIONS["5"], q_idx=2, start_col_search="Electronic_mode", num_of_cols=2, col_adjust="4.5in", col_format="p{4.75cm}p{4.75cm}"),
         TeXStyle.vertical_space("-2.25em"),
-        arch_ques_mos.generate_options_multi(cfg.QUESTIONS["5"][3], q_idx=3, start_col_search="Conventional_Medium", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
+        arch_ques_mos.generate_options_multi(cfg.QUESTIONS["5"], q_idx=3, start_col_search="Conventional_Medium", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
         TeXStyle.vertical_space("-2.25em"),
-        arch_ques_elecinfo.generate_options_multi(cfg.QUESTIONS["5"][4], q_idx=4, start_col_search="Electronic_Info", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
+        arch_ques_elecinfo.generate_options_multi(cfg.QUESTIONS["5"], q_idx=4, start_col_search="Electronic_Info", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
+
+        # === Section 6 ===
+        TeXStyle.generate_section(cfg.SECTIONS["6"]),
+        
+        # === Section 7 ===
+        TeXStyle.generate_section(cfg.SECTIONS["7"]),
+
+        TeXStyle.vertical_space("-2em"),
+
+        cen_ques_y_n.generate_options_inline(cfg.QUESTIONS["7"], 0, 0, start_col_search="Data_center"),
+        TeXStyle.vertical_space("-2.25em"),
+        cen_ques_blank.generate_fill_blank(cfg.QUESTIONS["7"], 1, 1, start_col_search="Sites"),
+        TeXStyle.vertical_space("-2.25em"),
+        cen_ques_hous_out.generate_options_inline(cfg.QUESTIONS["7"], 2, 2, start_col_search="Maintenance"),
+        TeXStyle.vertical_space("-2.25em"),
+        cen_ques_y_n.generate_fill_blank(cfg.QUESTIONS["7"], 3, 3, start_col_search="Back-up_site", col_format="5.25in"),
+
+        # === Section 8 ===
+        TeXStyle.generate_section(cfg.SECTIONS["8"]),
+        ''.join([TeXStyle.generate_footnote_text(str(num), foot_cfg.FOOTNOTES) for num in range(18, 24)]),
+
+        # temp: DoT
+        TeXStyle.bold_text(override_pref.change_fontsize("large") + ' ' + "Definition of Terms:") + ' ' + r"\\",
+
+        NEWLINE,
+
+        TeXStyle.process_text(misc_cfg.DEFINITION_OF_TERMS[0:11]),
+
+        ''.join([TeXStyle.generate_footnote_text(str(num), foot_cfg.FOOTNOTES) for num in range(24, 33)]),
 
         NEWLINE * 2,
 
         # !!! This marks the end of the document (DO NOT REMOVE) !!!
-        doc.end_document()
+        docu.end_document()
     ]
 
     tex_file = open(cfg.TEX_FILENAME, "w+")
