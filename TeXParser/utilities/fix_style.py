@@ -2,6 +2,11 @@
 
 from typing import Callable
 
+def process_text(sentences: list[str]) -> str:
+    """Processes the text in a list line-by-line for the document."""
+    s = ' '+ r"\\" + '\n'
+    return s.join(sentences) + '\n'
+
 def generate_section(section_name: str) -> str:
     """Create a section for the document."""
     return f"\\section{{{section_name}}}" + '\n'
