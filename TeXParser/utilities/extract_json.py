@@ -1,5 +1,6 @@
 from collections import defaultdict
 from typing import Any
+from handle.warnings import ClassWarnings, NoTableFoundWarning
 import requests
 
 def requestJSONData(url: str) -> dict[str, Any]:
@@ -10,7 +11,8 @@ def requestJSONData(url: str) -> dict[str, Any]:
 
 def parseJSONData(data: dict[str, Any], table: str) -> defaultdict[str, Any] | None:
     if table not in data:
-        raise ValueError(f"Table '{table}' not found in the JSON data.")
+        ClassWarnings.alert(ClassWarnings(NoTableFoundWarning), f"Table '{table}' not found in the JSON data.")
+        return None
 
     row_data = data[table]['rows']
     column_data = data[table]['columns']

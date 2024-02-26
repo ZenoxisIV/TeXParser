@@ -1,7 +1,7 @@
 # This file contains the classes for generating the tables for the paper.
 from copy import deepcopy
 from utilities.fix_style import make_tickbox, newpage
-
+from handle.warnings import ClassWarnings, NoDataFoundWarning
 
 class ContainerTable:
     def __init__(self) -> None:
@@ -86,6 +86,9 @@ class Tabular(AdjustBox):
     
     def generate_entries(self, data: dict | None, default_fields: list[str] | None = None, limit: int = 30, reset_limit: int = 30, tickbox_cols: list[str] | None = None) -> str:
         """Generates the entries for the table."""
+        if data is None: 
+            ClassWarnings.alert(ClassWarnings(NoDataFoundWarning), "Data not found. Cannot generate entries for the table.")
+            return ""
 
         def premature_end_table(self) -> str:
             """Ends the table environment prematurely."""
@@ -98,9 +101,6 @@ class Tabular(AdjustBox):
         def regen_headers(self) -> str:
             """Regenerates the headers for the table."""
             return self.header_set + '\n'
-        
-        if data is None:
-            raise ValueError("Data not found.")
 
         required_keys = ['col_len', 'col_names', 'row_entries']
         missing_keys = [key for key in required_keys if key not in data]
