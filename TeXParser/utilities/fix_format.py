@@ -23,6 +23,10 @@ class OverrideFormat:
                 return generate_sectionformat(font_size, 3, param)
             case _:
                 raise ValueError(f"Invalid section '{section}'.")
+            
+    def change_fontsize(self, size: str) -> str:
+        """Changes the font size for the document."""
+        return f"\\{size}"
 
     @staticmethod
     def begingroup() -> str:
