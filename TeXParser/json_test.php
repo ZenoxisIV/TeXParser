@@ -15,7 +15,6 @@ $tables = ['cd_year', 'cd_usage', 'servers', 'pc_os', 'ws_os', 'server_os',
             'automation_software', 'admin_systems', 'si_systems', 'databases', 
                 'network', 'security', 'archiving', 'special_solutions', 'data_center', 
                     'ict_projects', 'ict_issues'];
-                    // 
 
 foreach ($tables as $table) {
     // Check if the table exists

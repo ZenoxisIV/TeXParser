@@ -121,6 +121,10 @@ TABLE_FORMATS = {
 
     # === SECTION 6 ===
     "6": "|p{7cm}|c|c|c|",
+
+    # === SECTION 8 ===
+    # === SUBSECTION 8.1 ===
+    "8.1": "|p{3cm}|p{2.5cm}|c|c|c|c|c|c|c|",
 }
 
 TABLE_DEFAULT_FIELDS = {
@@ -211,7 +215,9 @@ TABLE_DEFAULT_FIELDS = {
           "Automated Fingerprint Identification System",
           "Cloud computing",
           "CCTV System"
-          ]
+          ],
+
+    "8.1": []
 }
 # ======================================
 

@@ -53,7 +53,7 @@ def translation_table(text) -> str:
     
     return text.translate(table)
 
-def getColumnCount(table_format: str) -> int:
+def get_column_count(table_format: str) -> int:
     """Gets the number of columns in the table."""
     return table_format.count('c') + table_format.count('l') + table_format.count('r')
 

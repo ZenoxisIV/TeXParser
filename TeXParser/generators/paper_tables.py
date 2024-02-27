@@ -2,8 +2,8 @@
 
 from typing import Any
 from copy import deepcopy
-from utilities.fix_style import make_tickbox, newpage, begin_center, end_center, bold_text
-from utilities.fix_format import getColumnCount
+from utilities.fix_style import make_tickbox, newpage
+from utilities.fix_format import get_column_count
 from handle.warnings import NoDataFoundWarning
 from handle.checker import checkNoneorEmpty
 
@@ -51,7 +51,7 @@ class Tabular(AdjustBox):
         super().__init__()
         self.table_env = "tabular"
         self.table_format = table_format
-        self.section_num: str | None = None
+        self.section_num: str = ""
         self.header_set: str | None = None
 
     def begin_tabular(self, section_num: str, parameter: str | None = None) -> str:
@@ -103,7 +103,7 @@ class Tabular(AdjustBox):
             return self.header_set + '\n'
         
         if checkNoneorEmpty(data, NoDataFoundWarning) or checkNoneorEmpty(data['col_names'], NoDataFoundWarning):
-            count = getColumnCount(self.table_format[self.section_num])
+            count = get_column_count(self.table_format[self.section_num])
             return f"\\multicolumn{{{count}}}{{|c|}}{{\\textbf{{* NO DATA FOUND *}}}}" + r" \\ " + r"\hline"
         
         required_keys = ['col_len', 'col_names', 'row_entries']

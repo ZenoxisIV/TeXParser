@@ -21,6 +21,7 @@ import settings.misc_config as misc_cfg
 def main():
     # *** CONSTANTS ***
     NEWLINE = '\n'
+    EMPTY = ""
     REQUEST_DATA_URL = "http://localhost/TeXParser/json_test.php"
     JSON_DATA = TeXJSON.requestJSONData(REQUEST_DATA_URL)
 
@@ -246,8 +247,8 @@ def main():
             tables[1].generate_multicolumn(1, "c|", TeXStyle.bold_text("Employees")),
             tables[1].generate_multicolumn(1, "c|", TeXStyle.bold_text("Training")),
             tables[1].generate_multicolumn(1, "c|", TeXStyle.bold_text("Frontline Services") + TeXStyle.generate_footnote_mark('4')),
-            TeXStyle.bold_text(""),
-            TeXStyle.bold_text("") + r" \\ " + tables[1].generate_horizontal_line()
+            TeXStyle.bold_text(EMPTY),
+            TeXStyle.bold_text(EMPTY) + r" \\ " + tables[1].generate_horizontal_line()
         ]),
 
         NEWLINE,
@@ -688,10 +689,73 @@ def main():
         # === Subsection 8.1 ===
         TeXStyle.generate_subsection(cfg.SECTIONS["8.1"]),
 
+        NEWLINE,
+
+        tables[11].begin_table('H'),
+        tables[11].set_arraystretch(1.5),
+        tables[11].toggle_centering(),
+        tables[11].begin_adjustbox(r"\textwidth"),
+        tables[11].begin_tabular("8.1"),
+        tables[11].generate_horizontal_line(),
+
+        NEWLINE,
+
+        tables[11].generate_headers([
+            tables[11].generate_multirow(2, "PROJECT NAME" + TeXStyle.generate_footnote_mark('19')) ,
+
+            tables[11].generate_multirow(2, "DESCRIPTION"),
+
+            tables[11].generate_multicolumn(2, "c|", tables[11].begin_tabular(r"@{}c@{}", "c") + r"PERIOD" + 
+                                            r"\\" +  "(in mm/dd/yyyy)"  + tables[11].end_tabular()),
+
+            tables[11].generate_multirow(2,  tables[11].begin_tabular(r"@{}c@{}", "c") + r"COST" + TeXStyle.generate_footnote_mark('20') + 
+                                         r"\\" +  "(in pesos)"  + tables[11].end_tabular()),
+
+            tables[11].generate_multirow(2,  tables[11].begin_tabular(r"@{}c@{}", "c") + r"DEVELOPMENT" + r"\\" + "STRATEGY" + 
+                                         TeXStyle.generate_footnote_mark('21') + r"\\" +  r"(Please write codes only)" + tables[11].end_tabular()),
+
+            tables[11].generate_multirow(2,  tables[11].begin_tabular(r"@{}c@{}", "c") + r"STATUS" + TeXStyle.generate_footnote_mark('22') +
+                                            r"\\" +  r"(Please write \\ codes only)" + tables[11].end_tabular()),     
+
+            tables[11].generate_multirow(2,  tables[11].begin_tabular(r"@{}c@{}", "c") + r"USE" + TeXStyle.generate_footnote_mark('23') +
+                                            r"\\" +  r"(Please write \\ codes only)" + tables[11].end_tabular()),
+
+            tables[11].generate_multirow(2, tables[11].begin_tabular(r"@{}c@{}", "c") + "Others" + r"\\" +  r"(Please specify \\ if USE code is 15)" + 
+                                            tables[11].end_tabular()) + r" \\ " + tables[11].generate_cline(3 , 4),
+            
+            EMPTY,
+
+            tables[11].generate_multicolumn(1, "c|", tables[11].begin_tabular(r"@{}c@{}", "c") + "Start" + r"\\" + 
+                                            "Date" + tables[11].end_tabular()),
+
+            tables[11].begin_tabular(r"@{}c@{}", "c") + "End" + r"\\" + 
+                                            "Date" + tables[11].end_tabular(),
+
+            EMPTY,
+            EMPTY,
+            EMPTY,
+            EMPTY,
+            EMPTY + r"\\" + tables[11].generate_horizontal_line(),
+
+        ]),
+
+        NEWLINE,
+
+        tables[11].generate_entries(
+            TeXJSON.parseJSONData(
+                JSON_DATA, db_cfg.FORM_NAMES["8.1"]), default_fields=cfg.TABLE_DEFAULT_FIELDS["8.1"]
+        ),
+
+        tables[11].end_tabular(),
+        tables[11].end_adjustbox(),
+        tables[11].end_table(),
+
+        NEWLINE,
+
         # === Subsection 8.2 ===
         TeXStyle.generate_subsection(cfg.SECTIONS["8.2"]),
 
-        TeXStyle.vertical_space("-1.75em"),
+        TeXStyle.vertical_space("-1.25em"),
 
         issues_ques_proj.generate_options_multi(start_col_search="Issues", num_of_cols=2, col_adjust="6in", col_format="p{7cm}p{6cm}"),
 
