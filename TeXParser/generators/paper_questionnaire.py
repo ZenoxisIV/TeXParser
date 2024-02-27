@@ -1,12 +1,13 @@
 # This file contains the class for generating the questionnaire for the paper.
 
 from generators.paper_tables import Tabular
-from utilities.fix_style import make_tickbox, vertical_space
+from utilities.fix_style import make_tickbox, vertical_space, horizontal_space, underline_text
 from typing import Any
-from handle.warnings import ClassWarnings, NoDataFoundWarning, NoQuestionsFoundWarning
+from handle.warnings import NoQuestionsFoundWarning, NoDataFoundWarning, NoOptionsFoundWarning
+from handle.checker import checkNone
 
 class Questionnaire:
-    def __init__(self, data: dict[str, Any] | None, format: dict[str, str], options: list[str] | dict[str, dict[str, Any]] | None = None) -> None:
+    def __init__(self, data: dict[str, Any] | None, format: dict[str, str], options: list[str] | dict[str, Any] | None = None) -> None:
         self.data = data
         self.format = format
         self.options = options
@@ -14,18 +15,22 @@ class Questionnaire:
 
     def generate_options_inline(self, questions: list[str], q_start_idx: int = 0, q_end_idx: int = 99, start_col_search: str | None = None) -> str:
         """Generates the questionnaire with options inline with the question. Can process multiple inline questions in succession."""
-        if self.data is None:
-            ClassWarnings.alert(ClassWarnings(NoDataFoundWarning), "Data not found. Cannot generate options for the questionnaire.")
-            return ""
-        
-        if questions is None:
-            ClassWarnings.alert(ClassWarnings(NoQuestionsFoundWarning), "Questions not found. Cannot generate the questionnaire.")
-            return ""
-       
         get_key = list(self.format.keys())[0]
 
         def generate_items(self) -> str:
             """Generates the items for the questionnaire."""
+            if checkNone(self.data, NoDataFoundWarning) or checkNone(self.data['col_names'], NoDataFoundWarning):
+                build_ques = ""
+                for i, question in enumerate(questions[q_start_idx: q_end_idx + 1], start=q_start_idx + 1):
+                    build_ques += f"\\footnotesize {get_key}.{i} & \\footnotesize {question} & "
+                    for j, res in enumerate(self.options):
+                        build_ques += make_tickbox(name=res)
+                        if j != len(self.options) - 1:
+                            build_ques += " & "
+                    build_ques += r" \\ " + '\n'
+                return build_ques
+
+
             target_idx = self.data['col_names'].index(start_col_search)
             entries = self.data['row_entries'][0][target_idx:]
             count = 0
@@ -49,7 +54,10 @@ class Questionnaire:
         
             return build_ques
         
-        if self.options is None:
+        if checkNone(questions, NoQuestionsFoundWarning):
+            return ""
+
+        if checkNone(self.options, NoOptionsFoundWarning):
             raise ValueError("Options not found.")
         
         if not isinstance(self.options, list):
@@ -73,10 +81,6 @@ class Questionnaire:
     
     def generate_options_multi(self, questions: list[str] | None = None, q_idx: int = 0, start_col_search: str | None = None, num_of_cols: int = 2, col_adjust: str = "3.5in", col_format: str | None = None) -> str:
         """Generates the questionnaire with options column-wise. Only processes one question at a time."""
-        if self.data is None:
-            ClassWarnings.alert(ClassWarnings(NoDataFoundWarning), "Data not found. Cannot generate options for the questionnaire.")
-            return ""
-
         get_key = list(self.format.keys())[0]
 
         @staticmethod
@@ -86,6 +90,19 @@ class Questionnaire:
 
         def generate_items(self) -> str:
             """Generates the items for the questionnaire."""
+            if checkNone(self.data, NoDataFoundWarning) or checkNone(self.data['col_names'], NoDataFoundWarning):
+                build_ques = ""
+                for i, res in enumerate(self.options):
+                    k = (i + 1) % num_of_cols
+                    build_ques += make_tickbox(name=self.options[res])
+                    if k == 0 and i != len(self.options) - 1:
+                        build_ques += r" \\ " + '\n'
+                    elif i != len(self.options) - 1:
+                        build_ques += " & "
+                    elif k != 0:
+                        build_ques += " & " * (num_of_cols - k)
+                return build_ques
+
             target_idx = self.data['col_names'].index(start_col_search)
             entries = self.data['row_entries'][0][target_idx:]
             count = 0
@@ -115,7 +132,10 @@ class Questionnaire:
         
             return build_ques
         
-        if self.options is None:
+        if checkNone(questions, NoQuestionsFoundWarning):
+            return ""
+
+        if checkNone(self.options, NoOptionsFoundWarning):
             raise ValueError("Options not found.")
         
         if not isinstance(self.options, dict):
@@ -161,18 +181,16 @@ class Questionnaire:
     
     def generate_fill_blank(self, questions: list[str], q_start_idx: int = 0, q_end_idx: int = 99, start_col_search: str | None = None, col_format: str = r"\textwidth") -> str:
         """Generates the questionnaire with fill-in-the-blank answers."""
-        if self.data is None:
-            ClassWarnings.alert(ClassWarnings(NoDataFoundWarning), "Data not found. Cannot generate answers for the questionnaire.")
-            return ""
-        
-        if questions is None:
-            ClassWarnings.alert(ClassWarnings(NoQuestionsFoundWarning), "Questions not found. Cannot generate the questionnaire.")
-            return ""
-
         get_key = list(self.format.keys())[0]
 
         def generate_items(self) -> str:
             """Generates the items for the questionnaire."""
+            if checkNone(self.data, NoDataFoundWarning) or checkNone(self.data['col_names'], NoDataFoundWarning):
+                build_ques = ""
+                for i, question in enumerate(questions[q_start_idx: q_end_idx + 1], start=q_start_idx + 1):
+                    build_ques += f"\\footnotesize {get_key}.{i} & \\footnotesize {question} {underline_text(horizontal_space('3em'))}" + r" \\ " + '\n'
+                return build_ques
+
             target_idx = self.data['col_names'].index(start_col_search)
             entries = self.data['row_entries'][0][target_idx:]
             i = q_start_idx + 1
@@ -185,6 +203,9 @@ class Questionnaire:
 
             return build_ques
         
+        if checkNone(questions, NoQuestionsFoundWarning):
+            return ""
+
         if start_col_search is None:
             raise ValueError("Column to search not found.")
         

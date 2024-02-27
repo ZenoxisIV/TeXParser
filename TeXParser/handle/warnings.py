@@ -20,3 +20,6 @@ class NoDataFoundWarning(UserWarning):
 class NoQuestionsFoundWarning(UserWarning):
     pass
 
+class NoOptionsFoundWarning(UserWarning):
+    pass
+

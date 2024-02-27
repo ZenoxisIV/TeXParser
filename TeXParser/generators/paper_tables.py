@@ -1,7 +1,10 @@
 # This file contains the classes for generating the tables for the paper.
+
+from typing import Any
 from copy import deepcopy
-from utilities.fix_style import make_tickbox, newpage
-from handle.warnings import ClassWarnings, NoDataFoundWarning
+from utilities.fix_style import make_tickbox, newpage, begin_center, end_center, bold_text
+from handle.warnings import NoDataFoundWarning
+from handle.checker import checkNone
 
 class ContainerTable:
     def __init__(self) -> None:
@@ -84,12 +87,8 @@ class Tabular(AdjustBox):
         self.header_set = build_table_headers
         return build_table_headers
     
-    def generate_entries(self, data: dict | None, default_fields: list[str] | None = None, limit: int = 30, reset_limit: int = 30, tickbox_cols: list[str] | None = None) -> str:
+    def generate_entries(self, data: dict[str, Any] | None, default_fields: list[str] | None = None, limit: int = 30, reset_limit: int = 30, tickbox_cols: list[str] | None = None) -> str:
         """Generates the entries for the table."""
-        if data is None: 
-            ClassWarnings.alert(ClassWarnings(NoDataFoundWarning), "Data not found. Cannot generate entries for the table.")
-            return ""
-
         def premature_end_table(self) -> str:
             """Ends the table environment prematurely."""
             return self.end_tabular() + self.end_adjustbox() + self.end_table()
@@ -101,7 +100,11 @@ class Tabular(AdjustBox):
         def regen_headers(self) -> str:
             """Regenerates the headers for the table."""
             return self.header_set + '\n'
-
+        
+        if checkNone(data, NoDataFoundWarning) or checkNone(data['col_names'], NoDataFoundWarning):
+            count = sum(1 for letter in self.header_set if letter == '&')
+            return f"\\multicolumn{{{count+1}}}{{|c|}}{{\\textbf{{* NO DATA FOUND *}}}}" + r" \\ " + r"\hline"
+        
         required_keys = ['col_len', 'col_names', 'row_entries']
         missing_keys = [key for key in required_keys if key not in data]
         if missing_keys:
