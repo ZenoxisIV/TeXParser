@@ -16,7 +16,7 @@ makedirs(log_directory, exist_ok=True)
 
 logging.basicConfig(filename=log_filepath, level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def checkNone(value: Any, issue: Type[UserWarning]) -> bool:
+def checkNoneorEmpty(value: Any, issue: Type[UserWarning]) -> bool:
     if value is None or len(value) <= 0:
         process_name = stack()[1].function
         file_name = stack()[1].filename

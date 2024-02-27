@@ -3,8 +3,9 @@
 from typing import Any
 from copy import deepcopy
 from utilities.fix_style import make_tickbox, newpage, begin_center, end_center, bold_text
+from utilities.fix_format import getColumnCount
 from handle.warnings import NoDataFoundWarning
-from handle.checker import checkNone
+from handle.checker import checkNoneorEmpty
 
 class ContainerTable:
     def __init__(self) -> None:
@@ -101,9 +102,9 @@ class Tabular(AdjustBox):
             """Regenerates the headers for the table."""
             return self.header_set + '\n'
         
-        if checkNone(data, NoDataFoundWarning) or checkNone(data['col_names'], NoDataFoundWarning):
-            count = sum(1 for letter in self.header_set if letter == '&')
-            return f"\\multicolumn{{{count+1}}}{{|c|}}{{\\textbf{{* NO DATA FOUND *}}}}" + r" \\ " + r"\hline"
+        if checkNoneorEmpty(data, NoDataFoundWarning) or checkNoneorEmpty(data['col_names'], NoDataFoundWarning):
+            count = getColumnCount(self.table_format[self.section_num])
+            return f"\\multicolumn{{{count}}}{{|c|}}{{\\textbf{{* NO DATA FOUND *}}}}" + r" \\ " + r"\hline"
         
         required_keys = ['col_len', 'col_names', 'row_entries']
         missing_keys = [key for key in required_keys if key not in data]

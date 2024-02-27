@@ -53,6 +53,10 @@ def translation_table(text) -> str:
     
     return text.translate(table)
 
+def getColumnCount(table_format: str) -> int:
+    """Gets the number of columns in the table."""
+    return table_format.count('c') + table_format.count('l') + table_format.count('r')
+
 def generate_sectionformat(font_size: int, option: int | None = None, mode: str | None = None) -> str:
     """Generates the section format for the document."""
     section_types = [
