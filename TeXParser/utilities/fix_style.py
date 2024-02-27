@@ -51,6 +51,10 @@ def italic_text(text: str) -> str:
     """Italicizes the text."""
     return f"\\textit{{{text}}}"
 
+def underline_text(text: str) -> str:
+    """Underlines the text."""
+    return f"\\underline{{{text}}}"
+
 def hyperlink_text(link: str) -> str:
     """Creates a hyperlink for the text."""
     return f"\\href{{{link}}}{{{link}}}"
@@ -77,3 +81,15 @@ def newpage() -> str:
 def vertical_space(space: str) -> str:
     """Creates a vertical space."""
     return '\n' + f"\\vspace{{{space}}}" + '\n' * 2
+
+def horizontal_space(space: str) -> str:
+    """Creates a horizontal space."""
+    return f"\\hspace{{{space}}}"
+
+def begin_center() -> str:
+    """Toggles the center environment."""
+    return r"\begin{center}" + '\n'
+
+def end_center() -> str:
+    """Toggles the center environment."""
+    return r"\end{center}" + '\n'
