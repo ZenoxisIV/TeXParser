@@ -52,6 +52,7 @@ class Tabular(AdjustBox):
         self.table_env = "tabular"
         self.table_format = table_format
         self.section_num: str = ""
+        self.section_num_bak: str = ""
         self.header_set: str | None = None
 
     def begin_tabular(self, section_num: str, parameter: str | None = None) -> str:
@@ -62,6 +63,7 @@ class Tabular(AdjustBox):
             table_format = section_num
         else:
             try:
+                self.section_num_bak = section_num
                 table_format = self.table_format[section_num]
             except KeyError:
                 raise KeyError(f"Table format not found for section number: {section_num}")
@@ -103,7 +105,7 @@ class Tabular(AdjustBox):
             return self.header_set + '\n'
         
         if checkNoneorEmpty(data, NoDataFoundWarning) or checkNoneorEmpty(data['col_names'], NoDataFoundWarning):
-            count = get_column_count(self.table_format[self.section_num])
+            count = get_column_count(self.table_format[self.section_num_bak])
             return f"\\multicolumn{{{count}}}{{|c|}}{{\\textbf{{* NO DATA FOUND *}}}}" + r" \\ " + r"\hline"
         
         required_keys = ['col_len', 'col_names', 'row_entries']

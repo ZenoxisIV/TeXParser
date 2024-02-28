@@ -2,7 +2,7 @@
 $localhost = "localhost";
 $username = "root";
 $password = "";
-$dbname = "ict_database";
+$dbname = "sample_database";
 
 try {
 	$connect = new mysqli($localhost, $username, $password, $dbname);

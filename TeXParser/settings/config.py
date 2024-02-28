@@ -7,7 +7,7 @@
 # 3. Compile the TeX file using a LaTeX compiler.
 # =============================================================================
 
-TEX_FILENAME = "ICT_Inventory.tex"
+TEX_FILENAME = "sample_generation.tex"
 
 PAPER = "a4paper"
 FONT_SIZE = 10
@@ -48,19 +48,19 @@ URL_COLOR = "black"
 TITLE = '''ANNEX A-5: EXISTING INFORMATION & COMMUNICATIONS
 TECHNOLOGY (ICT) INFRASTRUCTURE INVENTORY'''
 
-AGENCY_NAME = "University of the Philippines Diliman"
-RESPONDENT = "Dr. Manuel C. Ramos, Jr."
-POSITION = "Director"
-DIVISION = "University Computer Center"
-TELEPHONE = "8981-8500 local 2050"
-EMAIL = "computer.center@upd.edu.ph"
+AGENCY_NAME = "Agency Name Here"
+RESPONDENT = "Respondent Name Here"
+POSITION = "Respondent Position Here"
+DIVISION = "Division VII"
+TELEPHONE = "0000-1111"
+EMAIL = "mysample@gmail.com"
 
-OFFICE_NAME = "E-GOVERNMENT FUND MANAGEMENT OFFICE"
-OFFICE_TYPE = "Information and Communications Technology Office"
-OFFICE_ADDRESS = "Carlos P. Garcia Ave., UP Diliman, Quezon City 1101"
-OFFICE_EMAIL = "mithi_survey@ncc.gov.ph"
-OFFICE_LINK = "http://www.icto.dost.gov.ph"
-OFFICE_CONTACTS = ["920-7421", "920-01-01 loc. 3912"]
+OFFICE_NAME = "Some Name Here"
+OFFICE_TYPE = "Some Type Here"
+OFFICE_ADDRESS = "Address Here"
+OFFICE_EMAIL = "mysample@gmail.com"
+OFFICE_LINK = "https://www.myoffice.ph"
+OFFICE_CONTACTS = ["012-3456", "123-45-67 loc. 8901"]
 
 # ======================================
 SECTIONS = {

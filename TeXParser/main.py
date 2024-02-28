@@ -18,6 +18,8 @@ import settings.db_config as db_cfg
 import settings.footer_config as foot_cfg
 import settings.misc_config as misc_cfg
 
+from os import system
+
 def main():
     # *** CONSTANTS ***
     NEWLINE = '\n'
@@ -208,7 +210,7 @@ def main():
                 TeXJSON.parseJSONData(
                     JSON_DATA, db_cfg.FORM_NAMES["1.1"]
                 ), 
-            default_fields=cfg.TABLE_DEFAULT_FIELDS["1.1"], limit=16
+            default_fields=cfg.TABLE_DEFAULT_FIELDS["1.1"], limit=17
             ), "Mobile Phone", TeXStyle.append_footnotemark, '2'
         ),
 
@@ -796,3 +798,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+    FILEPATH = f"./{cfg.TEX_FILENAME}"
+    for _ in range(2): # Execute twice for .aux dependencies
+        system(f"pdflatex -interaction=nonstopmode {FILEPATH}")
