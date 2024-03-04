@@ -94,7 +94,7 @@ class Questionnaire:
                 build_ques = ""
                 for i, res in enumerate(self.options):
                     k = (i + 1) % num_of_cols
-                    build_ques += make_tickbox(name=self.options[res])
+                    build_ques += make_tickbox(name=(self.options[res] if res != "Others" else res))
                     if k == 0 and i != len(self.options) - 1:
                         build_ques += r" \\ " + '\n'
                     elif i != len(self.options) - 1:

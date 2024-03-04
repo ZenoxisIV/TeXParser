@@ -18,7 +18,7 @@ import settings.db_config as db_cfg
 import settings.footer_config as foot_cfg
 import settings.misc_config as misc_cfg
 
-from os import system
+import os
 
 def main():
     # *** CONSTANTS ***
@@ -792,12 +792,15 @@ def main():
         docu.end_document()
     ]
 
-    tex_file = open(cfg.TEX_FILENAME, "w+")
-    tex_file.writelines(build_TeX)
-    tex_file.close()
+    os.makedirs(cfg.TEX_FILEDIR, exist_ok=True)
+    TEX_FILEPATH = os.path.join(cfg.TEX_FILEDIR, cfg.TEX_FILENAME)
+
+    with open(TEX_FILEPATH, "w+") as TEX_FILE:
+        TEX_FILE.writelines(build_TeX)
+
+    TEX_FILE.close()
 
 if __name__ == "__main__":
     main()
-    FILEPATH = f"./{cfg.TEX_FILENAME}"
     for _ in range(2): # Execute twice for .aux dependencies
-        system(f"pdflatex -interaction=nonstopmode {FILEPATH}")
+        os.system(f"pdflatex --enable-installer --include-directory=pdfoutput --output-directory=pdfoutput  --interaction=nonstopmode --quiet {cfg.TEX_FILENAME}")
