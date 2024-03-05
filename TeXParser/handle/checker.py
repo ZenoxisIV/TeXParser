@@ -39,3 +39,27 @@ def checkTable(data: dict[str, Any], table: str, issue: Type[UserWarning]) -> bo
         return True
     
     return False
+
+def raiseTableFormatError(section_num: str) -> None:
+    process_name = stack()[1].function
+    file_name = stack()[1].filename
+    line_number = stack()[1].lineno
+    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): Table format not found for section number: {section_num}"
+    logging.error(error_message)
+    raise KeyError(error_message)
+
+def raiseMissingKeysError(missing_keys: list[str]) -> None:
+    process_name = stack()[1].function
+    file_name = stack()[1].filename
+    line_number = stack()[1].lineno
+    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): Required key(s) not found in the data: {', '.join(missing_keys)}"
+    logging.error(error_message)
+    raise KeyError(error_message)
+
+def raiseMissingColumnsError(missing_cols: list[str]) -> None:
+    process_name = stack()[1].function
+    file_name = stack()[1].filename
+    line_number = stack()[1].lineno
+    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): Column(s) not found for boolean entries: {', '.join(missing_cols)}"
+    logging.error(error_message)
+    raise ValueError(error_message)

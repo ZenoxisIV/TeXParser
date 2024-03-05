@@ -18,6 +18,7 @@ import settings.db_config as db_cfg
 import settings.footer_config as foot_cfg
 import settings.misc_config as misc_cfg
 
+import logging
 import os
 
 def main():
@@ -801,6 +802,8 @@ def main():
     TEX_FILE.close()
 
 if __name__ == "__main__":
+    logging.info("Executing TeXParser...")
     main()
     for _ in range(2): # Execute twice for .aux dependencies
         os.system(f"pdflatex --enable-installer --include-directory=pdfoutput --output-directory=pdfoutput  --interaction=nonstopmode --quiet {cfg.TEX_FILENAME}")
+    logging.info("TeXParser terminated successfully without errors.")

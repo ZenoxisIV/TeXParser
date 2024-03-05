@@ -1,11 +1,11 @@
 # This file contains the classes for generating the tables for the paper.
 
+import handle.checker as check
 from typing import Any
 from copy import deepcopy
 from utilities.fix_style import make_tickbox, newpage
 from utilities.fix_format import get_column_count
 from handle.warnings import NoDataFoundWarning
-from handle.checker import checkNoneorEmpty
 
 class ContainerTable:
     def __init__(self) -> None:
@@ -66,7 +66,7 @@ class Tabular(AdjustBox):
                 self.section_num_bak = section_num
                 table_format = self.table_format[section_num]
             except KeyError:
-                raise KeyError(f"Table format not found for section number: {section_num}")
+                check.raiseTableFormatError(section_num)
         
         self.section_num = section_num
         return f"\\begin{{{self.table_env}}}{{{table_format}}}" + '\n' if parameter is None else f"\\begin{{{self.table_env}}}[{parameter}]{{{section_num}}}" + '\n'
@@ -104,19 +104,19 @@ class Tabular(AdjustBox):
             """Regenerates the headers for the table."""
             return self.header_set + '\n'
         
-        if checkNoneorEmpty(data, NoDataFoundWarning) or checkNoneorEmpty(data['col_names'], NoDataFoundWarning):
+        if check.checkNoneorEmpty(data, NoDataFoundWarning) or check.checkNoneorEmpty(data['col_names'], NoDataFoundWarning):
             count = get_column_count(self.table_format[self.section_num_bak])
             return f"\\multicolumn{{{count}}}{{|c|}}{{\\textbf{{* NO DATA FOUND *}}}}" + r" \\ " + r"\hline"
         
         required_keys = ['col_len', 'col_names', 'row_entries']
         missing_keys = [key for key in required_keys if key not in data]
         if missing_keys:
-            raise ValueError(f"Required key(s) not found in the data: {', '.join(missing_keys)}")
+            check.raiseMissingKeysError(missing_keys)
         
         if tickbox_cols is not None:
             missing_cols = [col for col in tickbox_cols if col not in data['col_names']]
             if missing_cols:
-                raise ValueError(f"Column(s) not found for boolean entries: {', '.join(missing_cols)}")
+                check.raiseMissingColumnsError(missing_cols)
             
             for idx, col in enumerate(data['col_names']):
                 if col in tickbox_cols:
