@@ -8,7 +8,7 @@
 # =============================================================================
 
 TEX_FILENAME = "sample_generation.tex"
-TEX_FILEDIR = "./pdfoutput"
+TEX_FILEDIR = "./pdf_output"
 
 PAPER = "a4paper"
 FONT_SIZE = 10

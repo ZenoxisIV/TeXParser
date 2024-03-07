@@ -3,8 +3,8 @@
 from generators.paper_tables import Tabular
 from utilities.fix_style import make_tickbox, vertical_space, horizontal_space, underline_text
 from typing import Any
-from handle.warnings import NoQuestionsFoundWarning, NoDataFoundWarning, NoOptionsFoundWarning
-from handle.checker import checkNoneorEmpty
+from handle.warnings import NoQuestionsFoundWarning, NoDataFoundWarning, NoOptionsFoundWarning, NoColumnsFoundWarning
+from handle.checker import check_none_or_empty, raise_column_search_error, raise_missing_options_error, raise_instance_error
 
 class Questionnaire:
     def __init__(self, data: dict[str, Any] | None, format: dict[str, str], options: list[str] | dict[str, Any] | None = None) -> None:
@@ -19,7 +19,7 @@ class Questionnaire:
 
         def generate_items(self) -> str:
             """Generates the items for the questionnaire."""
-            if checkNoneorEmpty(self.data, NoDataFoundWarning) or checkNoneorEmpty(self.data['col_names'], NoDataFoundWarning):
+            if check_none_or_empty(self.data, NoDataFoundWarning) or check_none_or_empty(self.data['col_names'], NoDataFoundWarning):
                 build_ques = ""
                 for i, question in enumerate(questions[q_start_idx: q_end_idx + 1], start=q_start_idx + 1):
                     build_ques += f"\\footnotesize {get_key}.{i} & \\footnotesize {question} & "
@@ -54,17 +54,17 @@ class Questionnaire:
         
             return build_ques
         
-        if checkNoneorEmpty(questions, NoQuestionsFoundWarning):
+        if check_none_or_empty(questions, NoQuestionsFoundWarning):
             return ""
 
-        if checkNoneorEmpty(self.options, NoOptionsFoundWarning):
-            raise ValueError("Options not found.")
+        if check_none_or_empty(self.options, NoOptionsFoundWarning):
+            raise_missing_options_error()
         
         if not isinstance(self.options, list):
-            raise ValueError("Options must be a list.")
-        
-        if start_col_search is None:
-            raise ValueError("Column to search not found.")
+            raise_instance_error("Options must be a list.")
+            
+        if check_none_or_empty(start_col_search, NoColumnsFoundWarning):
+            raise_column_search_error()
 
         build_ques = ''.join([self.table.begin_table("H"),
                               self.table.begin_adjustbox(r"\textwidth"),
@@ -90,7 +90,7 @@ class Questionnaire:
 
         def generate_items(self) -> str:
             """Generates the items for the questionnaire."""
-            if checkNoneorEmpty(self.data, NoDataFoundWarning) or checkNoneorEmpty(self.data['col_names'], NoDataFoundWarning):
+            if check_none_or_empty(self.data, NoDataFoundWarning) or check_none_or_empty(self.data['col_names'], NoDataFoundWarning):
                 build_ques = ""
                 for i, res in enumerate(self.options):
                     k = (i + 1) % num_of_cols
@@ -132,14 +132,14 @@ class Questionnaire:
         
             return build_ques
         
-        if checkNoneorEmpty(self.options, NoOptionsFoundWarning):
-            raise ValueError("Options not found.")
+        if check_none_or_empty(self.options, NoOptionsFoundWarning):
+            raise_missing_options_error()
         
         if not isinstance(self.options, dict):
-            raise ValueError("Options must be a dictionary.")
+            raise_instance_error("Options must be a dictionary.")
         
-        if start_col_search is None:
-            raise ValueError("Column to search not found.")
+        if check_none_or_empty(start_col_search, NoColumnsFoundWarning):
+            raise_column_search_error()
         
         items_table = Tabular({get_key: "p{3cm}" * num_of_cols}) if col_format is None else Tabular({get_key: col_format})
 
@@ -182,7 +182,7 @@ class Questionnaire:
 
         def generate_items(self) -> str:
             """Generates the items for the questionnaire."""
-            if checkNoneorEmpty(self.data, NoDataFoundWarning) or checkNoneorEmpty(self.data['col_names'], NoDataFoundWarning):
+            if check_none_or_empty(self.data, NoDataFoundWarning) or check_none_or_empty(self.data['col_names'], NoDataFoundWarning):
                 build_ques = ""
                 for i, question in enumerate(questions[q_start_idx: q_end_idx + 1], start=q_start_idx + 1):
                     build_ques += f"\\footnotesize {get_key}.{i} & \\footnotesize {question} {underline_text(horizontal_space('3em'))}" + r" \\ " + '\n'
@@ -200,7 +200,7 @@ class Questionnaire:
 
             return build_ques
         
-        if checkNoneorEmpty(questions, NoQuestionsFoundWarning):
+        if check_none_or_empty(questions, NoQuestionsFoundWarning):
             return ""
 
         if start_col_search is None:

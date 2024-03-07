@@ -23,3 +23,5 @@ class NoQuestionsFoundWarning(UserWarning):
 class NoOptionsFoundWarning(UserWarning):
     pass
 
+class NoColumnsFoundWarning(UserWarning):
+    pass

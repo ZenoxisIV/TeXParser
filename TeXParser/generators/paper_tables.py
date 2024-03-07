@@ -3,7 +3,7 @@
 import handle.checker as check
 from typing import Any
 from copy import deepcopy
-from utilities.fix_style import make_tickbox, newpage
+from utilities.fix_style import make_tickbox, newpage, bold_text
 from utilities.fix_format import get_column_count
 from handle.warnings import NoDataFoundWarning
 
@@ -57,6 +57,8 @@ class Tabular(AdjustBox):
 
     def begin_tabular(self, section_num: str, parameter: str | None = None) -> str:
         """Begins the tabular environment for the table."""
+        table_format = ""
+        
         # SPECIAL ENVIRONMENT:
         # The @{}c@{} specifies that the column should be centered with no space on either side.
         if section_num == "@{}c@{}":
@@ -66,7 +68,7 @@ class Tabular(AdjustBox):
                 self.section_num_bak = section_num
                 table_format = self.table_format[section_num]
             except KeyError:
-                check.raiseTableFormatError(section_num)
+                check.raise_table_format_error(section_num)
         
         self.section_num = section_num
         return f"\\begin{{{self.table_env}}}{{{table_format}}}" + '\n' if parameter is None else f"\\begin{{{self.table_env}}}[{parameter}]{{{section_num}}}" + '\n'
@@ -104,19 +106,25 @@ class Tabular(AdjustBox):
             """Regenerates the headers for the table."""
             return self.header_set + '\n'
         
-        if check.checkNoneorEmpty(data, NoDataFoundWarning) or check.checkNoneorEmpty(data['col_names'], NoDataFoundWarning):
+        if check.check_none_or_empty(data, NoDataFoundWarning):
             count = get_column_count(self.table_format[self.section_num_bak])
-            return f"\\multicolumn{{{count}}}{{|c|}}{{\\textbf{{* NO DATA FOUND *}}}}" + r" \\ " + r"\hline"
+            return self.generate_multicolumn(count, '|c|', bold_text('* NO DATA FOUND *')) + r" \\ " + self.generate_horizontal_line()
+        
+        assert data is not None
+
+        if check.check_none_or_empty(data['col_names'], NoDataFoundWarning):
+            count = get_column_count(self.table_format[self.section_num_bak])
+            return self.generate_multicolumn(count, '|c|', bold_text('* NO DATA FOUND *')) + r" \\ " + self.generate_horizontal_line()
         
         required_keys = ['col_len', 'col_names', 'row_entries']
         missing_keys = [key for key in required_keys if key not in data]
         if missing_keys:
-            check.raiseMissingKeysError(missing_keys)
+            check.raise_missing_keys_error("Required key(s) not found in the data", missing_keys)
         
         if tickbox_cols is not None:
             missing_cols = [col for col in tickbox_cols if col not in data['col_names']]
             if missing_cols:
-                check.raiseMissingColumnsError(missing_cols)
+                check.raise_missing_columns_error("Column(s) not found for boolean entries", missing_cols)
             
             for idx, col in enumerate(data['col_names']):
                 if col in tickbox_cols:

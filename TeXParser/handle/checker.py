@@ -14,9 +14,9 @@ log_filepath = f'{log_directory}/{log_filename}'
 # Create the log directory if it doesn't exist
 makedirs(log_directory, exist_ok=True)
 
-logging.basicConfig(filename=log_filepath, level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename=log_filepath, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def checkNoneorEmpty(value: Any, issue: Type[UserWarning]) -> bool:
+def check_none_or_empty(value: Any, issue: Type[UserWarning]) -> bool:
     if value is None or len(value) <= 0:
         process_name = stack()[1].function
         file_name = stack()[1].filename
@@ -28,7 +28,7 @@ def checkNoneorEmpty(value: Any, issue: Type[UserWarning]) -> bool:
     
     return False
 
-def checkTable(data: dict[str, Any], table: str, issue: Type[UserWarning]) -> bool:
+def check_table(data: dict[str, Any], table: str, issue: Type[UserWarning]) -> bool:
     if table not in data:
         process_name = stack()[1].function
         file_name = stack()[1].filename
@@ -40,7 +40,15 @@ def checkTable(data: dict[str, Any], table: str, issue: Type[UserWarning]) -> bo
     
     return False
 
-def raiseTableFormatError(section_num: str) -> None:
+def raise_instance_error(message: str) -> None:
+    process_name = stack()[1].function
+    file_name = stack()[1].filename
+    line_number = stack()[1].lineno
+    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): {message}"
+    logging.error(error_message)
+    raise ValueError(error_message)
+
+def raise_table_format_error(section_num: str) -> None:
     process_name = stack()[1].function
     file_name = stack()[1].filename
     line_number = stack()[1].lineno
@@ -48,18 +56,34 @@ def raiseTableFormatError(section_num: str) -> None:
     logging.error(error_message)
     raise KeyError(error_message)
 
-def raiseMissingKeysError(missing_keys: list[str]) -> None:
+def raise_missing_keys_error(message: str, missing_keys: list[str]) -> None:
     process_name = stack()[1].function
     file_name = stack()[1].filename
     line_number = stack()[1].lineno
-    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): Required key(s) not found in the data: {', '.join(missing_keys)}"
+    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): {message}: {', '.join(missing_keys)}"
     logging.error(error_message)
     raise KeyError(error_message)
 
-def raiseMissingColumnsError(missing_cols: list[str]) -> None:
+def raise_missing_columns_error(message: str, missing_cols: list[str]) -> None:
     process_name = stack()[1].function
     file_name = stack()[1].filename
     line_number = stack()[1].lineno
-    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): Column(s) not found for boolean entries: {', '.join(missing_cols)}"
+    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): {message}: {', '.join(missing_cols)}"
+    logging.error(error_message)
+    raise ValueError(error_message)
+
+def raise_missing_options_error() -> None:
+    process_name = stack()[1].function
+    file_name = stack()[1].filename
+    line_number = stack()[1].lineno
+    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): Options not found."
+    logging.error(error_message)
+    raise ValueError(error_message)
+
+def raise_column_search_error() -> None:
+    process_name = stack()[1].function
+    file_name = stack()[1].filename
+    line_number = stack()[1].lineno
+    error_message = f"File '{file_name}', in line {line_number}, in function {process_name}(): Column to search not found."
     logging.error(error_message)
     raise ValueError(error_message)
