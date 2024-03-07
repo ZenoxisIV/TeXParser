@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import Any
 from handle.warnings import NoTableFoundWarning
-from handle.checker import checkTable
+from handle.checker import check_table
 import requests
 
 def requestJSONData(url: str) -> dict[str, Any]:
@@ -11,7 +11,7 @@ def requestJSONData(url: str) -> dict[str, Any]:
     return response.json()
 
 def parseJSONData(data: dict[str, Any], table: str) -> defaultdict[str, Any] | None:
-    if checkTable(data, table, NoTableFoundWarning):
+    if check_table(data, table, NoTableFoundWarning):
         return None
 
     row_data = data[table]['rows']
