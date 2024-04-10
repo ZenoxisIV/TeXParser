@@ -14,7 +14,7 @@ log_filepath = f'{log_directory}/{log_filename}'
 # Create the log directory if it doesn't exist
 makedirs(log_directory, exist_ok=True)
 
-logging.basicConfig(filename=log_filepath, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename=log_filepath, level=logging.INFO, format='[%(asctime)s] [%(levelname)s] [%(name)s/%(module)s]: %(message)s')
 
 def check_none_or_empty(value: Any, issue: Type[UserWarning]) -> bool:
     if value is None or len(value) <= 0:
