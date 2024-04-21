@@ -17,7 +17,7 @@ def parseJSONData(data: dict[str, Any], table: str) -> defaultdict[str, Any] | N
     row_data = data[table]['rows']
     column_data = data[table]['columns']
 
-    parsed_data: defaultdict | None = defaultdict(lambda: None)
+    parsed_data: defaultdict[str, Any] | None = defaultdict(lambda: None)
 
     # Skip the row entries in column 'Code'
     parsed_data['col_names'] = column_data[1:]

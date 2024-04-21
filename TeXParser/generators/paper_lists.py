@@ -9,7 +9,7 @@ class Bullet:
 
     def generate_bullets(self) -> str:
         """Creates the bullet points for the document."""
-        def is_b_string(s):
+        def is_b_string(s: str):
             pattern = r'^b\d$' # Matches strings like 'b1', 'b2', ...
             return bool(match(pattern, s))
 
@@ -30,6 +30,6 @@ class Bullet:
         return f"\\end{{{self.bullet_type}}}" + '\n'
 
 class Ordered(Bullet): # Note: Requires the enumitem package.
-    def __init__(self, block_text) -> None:
+    def __init__(self, block_text: dict[str, str]) -> None:
         super().__init__(block_text)
         self.bullet_type = "enumerate"

@@ -94,15 +94,15 @@ class Tabular(AdjustBox):
     
     def generate_entries(self, data: dict[str, Any] | None, default_fields: list[str] | None = None, limit: int = 30, reset_limit: int = 30, tickbox_cols: list[str] | None = None) -> str:
         """Generates the entries for the table."""
-        def premature_end_table(self) -> str:
+        def premature_end_table(self: Any) -> str:
             """Ends the table environment prematurely."""
             return self.end_tabular() + self.end_adjustbox() + self.end_table()
         
-        def spawn_new_table(self) -> str:
+        def spawn_new_table(self: Any) -> str:
             """Spawns a new table environment."""
             return self.begin_table(self.pos) + self.set_arraystretch(self.stretch) + self.toggle_centering() + self.begin_adjustbox(self.width_val) + self.begin_tabular(self.section_num) + self.generate_horizontal_line()
         
-        def regen_headers(self) -> str:
+        def regen_headers(self: Any) -> str:
             """Regenerates the headers for the table."""
             return self.header_set + '\n'
         
@@ -133,7 +133,7 @@ class Tabular(AdjustBox):
 
         entries = ""
         fields = deepcopy(default_fields) if default_fields is not None else []
-        prio_rows = []
+        prio_rows: list[Any] = []
         remaining_rows = deepcopy(data['row_entries'])
 
         is_present = None

@@ -17,7 +17,7 @@ class Questionnaire:
         """Generates the questionnaire with options inline with the question. Can process multiple inline questions in succession."""
         get_key = list(self.format.keys())[0]
 
-        def generate_items(self) -> str:
+        def generate_items(self: Any) -> str:
             """Generates the items for the questionnaire."""
             if check_none_or_empty(self.data, NoDataFoundWarning) or check_none_or_empty(self.data['col_names'], NoDataFoundWarning):
                 build_ques = ""
@@ -88,7 +88,7 @@ class Questionnaire:
             """Generates the question for the questionnaire."""
             return f"\\footnotesize {get_key}.{q_idx + 1} & \\footnotesize {questions[q_idx]}" + '\n' if questions is not None else ""
 
-        def generate_items(self) -> str:
+        def generate_items(self: Any) -> str:
             """Generates the items for the questionnaire."""
             if check_none_or_empty(self.data, NoDataFoundWarning) or check_none_or_empty(self.data['col_names'], NoDataFoundWarning):
                 build_ques = ""
@@ -180,7 +180,7 @@ class Questionnaire:
         """Generates the questionnaire with fill-in-the-blank answers."""
         get_key = list(self.format.keys())[0]
 
-        def generate_items(self) -> str:
+        def generate_items(self: Any) -> str:
             """Generates the items for the questionnaire."""
             if check_none_or_empty(self.data, NoDataFoundWarning) or check_none_or_empty(self.data['col_names'], NoDataFoundWarning):
                 build_ques = ""

@@ -35,7 +35,7 @@ def make_tickbox(is_ticked: bool = False, name: str | None = None) -> str:
     tickbox = r"\Large$\boxtimes$" if is_ticked else r"\Large$\square$"
     return tickbox if name is None else f"{tickbox} \\footnotesize {name}"
 
-def generate_footnote_mark(symbol: str, is_protected = False) -> str:
+def generate_footnote_mark(symbol: str, is_protected: bool = False) -> str:
     """Generates a footnote mark for the document."""
     return f"\\protect\\footnotemark[{symbol}]" if is_protected else f"\\footnotemark[{symbol}]"
 
@@ -59,7 +59,7 @@ def hyperlink_text(link: str) -> str:
     """Creates a hyperlink for the text."""
     return f"\\href{{{link}}}{{{link}}}"
 
-def append_footnotemark(text: str, symbol: str, is_protected = False) -> str:
+def append_footnotemark(text: str, symbol: str, is_protected: bool = False) -> str:
     """Appends a footnote mark to the text."""
     build_string = text
 
@@ -70,7 +70,7 @@ def append_footnotemark(text: str, symbol: str, is_protected = False) -> str:
     return build_string
 
 
-def modify_substring(paragraph: str, substring: str, func: Callable, symbol: str | None = None, flag = False) -> str:
+def modify_substring(paragraph: str, substring: str, func: Callable[..., str], symbol: str | None = None, flag: bool = False) -> str:
     """Modifies a substring in a paragraph using a function."""
     return paragraph.replace(substring, func(substring)) if symbol is None else paragraph.replace(substring, func(substring, symbol, flag))
 
