@@ -23,7 +23,7 @@ class ContainerTable:
         return f"\\end{{{self.table_type}}}" + '\n'
     
     def set_arraystretch(self, stretch: float) -> str:
-        """Sets the width of each cell for the table."""
+        """Sets the height stretch of each cell for the table."""
         self.stretch = stretch
         return f"\\renewcommand{{\\arraystretch}}{{{stretch}}}" + '\n'
     
