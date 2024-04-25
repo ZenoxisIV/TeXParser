@@ -680,7 +680,7 @@ def main():
         TeXStyle.vertical_space("-2.25em"),
         cen_ques_hous_out.generate_options_inline(cfg.QUESTIONS["7"], 2, 2, start_col_search="Maintenance"),
         TeXStyle.vertical_space("-2.25em"),
-        cen_ques_y_n.generate_fill_blank(cfg.QUESTIONS["7"], 3, 3, start_col_search="Back-up_site", col_format="5.25in"),
+        cen_ques_y_n.generate_fill_blank(cfg.QUESTIONS["7"], 3, 3, start_col_search="Back-up_site", col_adjust="5.25in"),
 
         # === Section 8 ===
         TeXStyle.generate_section(cfg.SECTIONS["8"]),

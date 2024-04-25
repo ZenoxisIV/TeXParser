@@ -176,7 +176,7 @@ class Questionnaire:
 
         return build_ques
     
-    def generate_fill_blank(self, questions: list[str], q_start_idx: int = 0, q_end_idx: int = 99, start_col_search: str | None = None, col_format: str = r"\textwidth") -> str:
+    def generate_fill_blank(self, questions: list[str], q_start_idx: int = 0, q_end_idx: int = 99, start_col_search: str | None = None, col_adjust: str = r"\textwidth") -> str:
         """Generates the questionnaire with fill-in-the-blank answers."""
         get_key = list(self.format.keys())[0]
 
@@ -207,7 +207,7 @@ class Questionnaire:
             raise ValueError("Column to search not found.")
         
         build_ques = ''.join([self.table.begin_table("H"),
-                              self.table.begin_adjustbox(col_format),
+                              self.table.begin_adjustbox(col_adjust),
                               self.table.begin_tabular(get_key),
 
                               generate_items(self),
