@@ -1,7 +1,3 @@
-# TeXParser
-
-The TeXParser is a standalone program designed to streamline the process of creating LaTeX documents from data stored in a database. It offers a convenient solution for users who need to generate documents such as reports, summaries, or academic papers from structured data.
-
 ## Features
 
 - **Database Connectivity**: The program connects to various databases (e.g., MySQL, PostgreSQL, SQLite) to retrieve data efficiently.
@@ -18,11 +14,7 @@ The TeXParser is a standalone program designed to streamline the process of crea
 
 ## Installation
 
-1. **Clone the repository:**
-
-```
-git clone https://github.com/username/repository.git
-```
+1. **Clone the repository**
 
 2. **Download and Install XAMPP:**
 
@@ -49,26 +41,15 @@ git clone https://github.com/username/repository.git
 
 ## Usage
 
-1. **Connect to Database**: The user specifies the database connection details (e.g., host, port, credentials) and selects the desired database.
+1. Specify the database connection details (e.g., host, port, credentials) and select the desired database.
 
-2. **Define Query**: The user provides a SQL query to extract the required data from the database. The query can be customized to filter, aggregate, or manipulate the data as needed.
+2. Provide a SQL query to extract the required data from the database. The query can be customized to filter, aggregate, or manipulate the data as needed.
 
-3. **Configure Template**: The user defines a LaTeX template through Python that serves as the blueprint for the document. This template includes placeholders for dynamically inserted data elements.
+3. Define a LaTeX template through Python that serves as the blueprint for the document. This template includes placeholders for dynamically inserted data elements.
 
-4. **Generate Document**: The program executes the SQL query, retrieves the data from the database, and populates the LaTeX template with the fetched data. It generates a complete LaTeX document ready for compilation.
+4. The program executes the SQL query, retrieves the data from the database, and populates the LaTeX template with the fetched data. It generates a complete LaTeX document ready for compilation.
 
-5. **Compile Document**: The program compiles the generated LaTeX document using `pdflatex` with a local LaTeX compiler (e.g., TeX Live, MiKTeX) to obtain the final output in PDF format.
-
-## Contributing
-
-If you'd like to contribute to this project, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/improvement`).
-3. Make your changes.
-4. Commit your changes (`git commit -am 'Add some feature'`).
-5. Push to the branch (`git push origin feature/improvement`).
-6. Create a new Pull Request.
+5. The program compiles the generated LaTeX document using `pdflatex` with a local LaTeX compiler (e.g., TeX Live, MiKTeX) to obtain the final output in PDF format.
 
 ## License
 
